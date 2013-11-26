@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,24 +117,6 @@ public class Surface {
         }
         
         
-    }
-
-    /**
-     * Returns the color at the specified position,
-     * <code>null</code> if no color have been previously set.
-     * 
-     * @param width The width position on the surface.
-     * @param height The height position on the surface.
-     * 
-     * @return The color at the specified position.
-     */
-    public Color getColor(final int width, final int height) {
-        try {
-            rwLock.readLock().lock();
-            return colors[height*getWidth() + width];
-        } finally {
-            rwLock.readLock().unlock();
-        }
     }
 
     /**

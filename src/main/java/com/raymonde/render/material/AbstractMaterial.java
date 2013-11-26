@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import com.raymonde.scene.Scene;
  * 
  * @author aurelman
  */
-public abstract class AbstractMaterial {
+public abstract class AbstractMaterial implements Material {
 
     /**
      * The name of the material.
@@ -41,7 +41,7 @@ public abstract class AbstractMaterial {
     /**
      * The sub-material.
      */
-    private AbstractMaterial material;
+    private Material material;
 
     public AbstractMaterial() {
         
@@ -73,14 +73,14 @@ public abstract class AbstractMaterial {
     /**
      * @return the material
      */
-    public AbstractMaterial getMaterial() {
-        return this.material;
+    public Material getMaterial() {
+        return material;
     }
 
     /**
      * @param material the material to set
      */
-    public void setMaterial(final AbstractMaterial material) {
+    public void setMaterial(final Material material) {
         this.material = material;
     }
 

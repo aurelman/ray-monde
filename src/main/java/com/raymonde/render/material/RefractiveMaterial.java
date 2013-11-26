@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import com.raymonde.render.primitive.Primitive;
  * 
  * @author aurelman
  */
-public class RefractiveMaterial extends AbstractMaterial {
+public class RefractiveMaterial extends AbstractMaterial implements Material {
 
     /**
      * The reflectivity.

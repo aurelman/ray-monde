@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,10 +51,10 @@ public class QuadraticEquation {
     }
 
     /**
-     * Contructs a <code>QuadraticEquation</code> with the specified values for
+     * Constructs a <code>QuadraticEquation</code> with the specified values for
      * a, b and c.
      * 
-     * @param a The first componenet.
+     * @param a The first component.
      * @param b The second component.
      * @param c The third component.
      */

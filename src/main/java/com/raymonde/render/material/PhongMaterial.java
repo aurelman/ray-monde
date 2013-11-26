@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import com.raymonde.render.primitive.Primitive;
  *
  * @author aurelman
  */
-public class PhongMaterial extends AbstractMaterial {
+public class PhongMaterial extends AbstractMaterial implements Material {
 
     /**
      * The diffuse factor.
@@ -85,7 +85,7 @@ public class PhongMaterial extends AbstractMaterial {
 
         Color color = getMaterial().
                 computeColor(renderer, scene, intersection, ctx);
-        Color ambiantColor = scene.getAmbiantColor();
+        Color ambiantColor = scene.getAmbientColor();
         Color diffuseColor = Color.black();
         Color specularColor = Color.black();
 

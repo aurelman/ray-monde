@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,13 +94,13 @@ public class Plane extends Primitive {
      * @return The normal vector.
      */
     public Vector getNormal() {
-        return this.normal;
+        return normal;
     }
     
     /**
      * @return the distance
      */
     public double getDistance() {
-        return this.distance;
+        return distance;
     }
 }

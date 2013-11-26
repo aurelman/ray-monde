@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,9 +74,7 @@ public class SceneSaver {
             ImageIO.write(bi, "png", outputFilename);
         } catch (IOException ex) {
             getLogger().error(null, ex);
-            SaveException ex2 =
-                    new SaveException("Image couldn't be saved", ex);
-            throw ex2;
+            throw new SaveException("Image couldn't be saved", ex);
         }
     }
 
@@ -102,9 +100,7 @@ public class SceneSaver {
             ImageIO.write(bi, "png", outputFilename);
         } catch (IOException ex) {
             getLogger().error(null, ex);
-            SaveException ex2 =
-                    new SaveException("Image couldn't be saved", ex);
-            throw ex2;
+            throw new SaveException("Image couldn't be saved", ex);
         }
     }
 

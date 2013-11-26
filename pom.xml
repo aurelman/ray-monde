@@ -18,13 +18,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>1.4.12</powermock.version>
-        <slf4j.version>1.7.2</slf4j.version>
-        <logback.version>1.0.7</logback.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <logback.version>1.0.13</logback.version>
         <junit.version>4.10</junit.version>
-        <javabuilder.version>1.1</javabuilder.version>
         <apache-commons.configuration.version>1.8</apache-commons.configuration.version>
         <args4j.version>2.0.16</args4j.version>
         <jsr305.version>1.3.7</jsr305.version>
+        <json-simple.version>1.1</json-simple.version>
+        <snakeyaml.verion>1.13</snakeyaml.verion>
     </properties>
     <build>
         <plugins>
@@ -43,8 +44,12 @@
         <dependency>
             <artifactId>jsr305</artifactId>
             <groupId>com.google.code.findbugs</groupId>
-            <type>jar</type>
             <version>${jsr305.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>json-simple</artifactId>
+            <groupId>com.googlecode.json-simple</groupId>
+            <version>${json-simple.version}</version>
         </dependency>
         <dependency>
             <groupId>args4j</groupId>
@@ -61,17 +66,13 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        <dependency> 
-            <groupId>org.javabuilders</groupId> 
-            <artifactId>javabuilder-swing</artifactId> 
-            <version>${javabuilder.version}</version> 
-        </dependency> 
-        <dependency> 
-            <groupId>org.javabuilders</groupId> 
-            <artifactId>javabuilder-swing-glazedlists</artifactId> 
-            <version>${javabuilder.version}</version> 
-        </dependency> 
-        
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.verion}</version>
+        </dependency>
+
+
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>

@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,7 +151,8 @@ public class ColorTest {
 
         Color c3 = new Color(0.6, 0.6, 0.6);
         c2 = c1.add(c3);
-        expectedBlue = 1.;
+
+        expectedRed = 1.;
         expectedGreen = 1.;
         expectedBlue = 1.;
 

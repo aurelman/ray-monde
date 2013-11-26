@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,9 +64,9 @@ public class Scene {
     private Map<String, Camera> cameras;
 
     /**
-     * The ambiant color of the scene.
+     * The ambient color of the scene.
      */
-    private Color ambiantColor;
+    private Color ambientColor;
 
     /**
      *
@@ -156,7 +156,7 @@ public class Scene {
      * @return The collection of the primitives contained in the scene.
      */
     public Collection<Primitive> getPrimitives() {
-        return getPrimitivesMap().values();
+        return primitives.values();
     }
 
     /**
@@ -164,71 +164,9 @@ public class Scene {
      * @return The collection of lights contained in the scene.
      */
     public Collection<Light> getLights() {
-        return getLightsMap().values();
+        return lights.values();
     }
 
-    /**
-     *
-     * @return The collection of cameras contained in the scene.
-     */
-    public Collection<Camera> getCameras() {
-        return getCamerasMap().values();
-    }
-
-    /**
-     * 
-     * @return The map of the primitives contained in the scene
-     * indexed by their name
-     * 
-     */
-    protected Map<String, Primitive> getPrimitivesMap() {
-        return this.primitives;
-    }
-
-    /**
-     *
-     * @return The map of the lights contained in the scene
-     * indexed by their name.
-     */
-    protected Map<String, Light> getLightsMap() {
-        return this.lights;
-    }
-
-    /**
-     *
-     * @return The map of the lights contained in the scene
-     * indexed by their name.
-     */
-    protected Map<String, Camera> getCamerasMap() {
-        return this.cameras;
-    }
-
-    /**
-     *
-     * @param primitives Collection of <code>Primitive</code> object.
-     */
-    public void setPrimitives(final Collection<Primitive> primitives) {
-        getPrimitivesMap().clear();
-        addPrimitives(primitives);
-    }
-
-    /**
-     *
-     * @param lights Collection of <code>Light</code> object.
-     */
-    public void setLights(final Collection<Light> lights) {
-        getLightsMap().clear();
-        addLights(lights);
-    }
-
-    /**
-     *
-     * @param cameras Collection of <code>Light</code> object.
-     */
-    public void setCameras(final Collection<Camera> cameras) {
-        getCamerasMap().clear();
-        addCameras(cameras);
-    }
        
     /**
      * Adds the specified primitive to the scene.
@@ -236,7 +174,7 @@ public class Scene {
      * @param primitive The primitive to add to the scene.
      */
     public void addPrimitive(final Primitive primitive) {
-        getPrimitivesMap().put(primitive.getName(), primitive);
+        primitives.put(primitive.getName(), primitive);
     }
 
     /**
@@ -245,7 +183,7 @@ public class Scene {
      * @param light The light to add.
      */
     public void addLight(final Light light) {
-        getLightsMap().put(light.getName(), light);
+        lights.put(light.getName(), light);
     }
 
     /**
@@ -254,7 +192,7 @@ public class Scene {
      * @param camera The camera to add.
      */
     public void addCamera(final Camera camera) {
-        getCamerasMap().put(camera.getName(), camera);
+        cameras.put(camera.getName(), camera);
     }
 
     /**
@@ -294,83 +232,10 @@ public class Scene {
     }
 
     /**
-     * Returns the Primitive identified by the specified name.
-     *
-     * @param name The name of the Primitive.
-     *
-     * @return The primitive identified by the specified name.
-     */
-    public Primitive getPrimitive(final String name) {
-        return getPrimitivesMap().get(name);
-    }
-
-    /**
-     * Returns the light identified by the specified name.
-     * 
-     * @param name The name of the light.
-     * 
-     * @return The light identified by the specified name.
-     */
-    public Light getLight(final String name) {
-        return getLightsMap().get(name);
-    }
-    
-    /**
-     * Removes the primitive identified by the specified name.
-     * 
-     * @param name The name of the primitive to remove.
-     */
-    public void removePrimitive(final String name) {
-        getPrimitivesMap().remove(name);
-    }
-
-    /**
-     * Removes the light identified by the specified name.
-     * 
-     * @param name The name of the light to remove.
-     */
-    public void removeLight(final String name) {
-        getLightsMap().remove(name);
-    }
-
-    /**
-     * Removes the camera identified by the specified name.
-     *
-     * @param name The name of the camera to remove.
-     */
-    public void removeCamera(final String name) {
-        getCamerasMap().remove(name);
-    }
-    
-    /**
-     *
-     * @param primitive The primitive to remove.
-     */
-    public void removePrimitive(final Primitive primitive) {
-        removePrimitive(primitive.getName());
-    }
-
-    /**
-     *
-     * @param light The light to remove.
-     */
-    public void removeLight(final Light light) {
-        removeLight(light.getName());
-    }
-
-    /**
-     *
-     * @param camera The camera to remove.
-     */
-    public void removeCamera(final Camera camera) {
-        removeCamera(camera.getName());
-    }
-
-    /**
      * @return The rendering surface.
      */
     public Surface getSurface() {
-        return this.renderingSurface;
+        return renderingSurface;
     }
 
     /**
@@ -379,7 +244,7 @@ public class Scene {
      * @return The default camera.
      */
     public Camera getDefaultCamera() {
-        return getCamerasMap().values().iterator().next();
+        return cameras.values().iterator().next();
     }
 
     /**
@@ -401,20 +266,20 @@ public class Scene {
     }
 
     /**
-     * Returns the ambiant color of the scene.
+     * Returns the ambient color of the scene.
      * 
-     * @return The ambiant color of the scene.
+     * @return The ambient color of the scene.
      */
-    public Color getAmbiantColor() {
-        return this.ambiantColor;
+    public Color getAmbientColor() {
+        return ambientColor;
     }
 
     /**
-     * Sets the specified color as the ambiant color of the scene.
+     * Sets the specified color as the ambient color of the scene.
      * 
-     * @param ambiantColor The ambiant color to set to the scene.
+     * @param ambientColor The ambient color to set to the scene.
      */
-    public void setAmbiantColor(final Color ambiantColor) {
-        this.ambiantColor = ambiantColor;
+    public void setAmbientColor(final Color ambientColor) {
+        this.ambientColor = ambientColor;
     }
 }

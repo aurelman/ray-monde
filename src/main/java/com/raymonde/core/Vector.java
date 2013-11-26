@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ import javax.annotation.concurrent.ThreadSafe;
 public final class Vector {
 
     /**
-     * The cardianlity of <code>Vector</code> object.
+     * The cardinality of <code>Vector</code> object.
      */
     private static final int VECTOR_DIMENSION = 3;
     
@@ -125,7 +125,7 @@ public final class Vector {
     }
     
     /**
-     * Factory method to create a new {@ode Vector} object 
+     * Factory method to create a new {@code Vector} object
      * joining the two specified points.
      * 
      * @param src The starting point.
@@ -361,8 +361,7 @@ public final class Vector {
      */
     public Vector reflected(final Vector other) {
         // VR = V - ( 2 * ( V . N )) * N
-        Vector result = substract(other.multiply(other.dot(this) * 2.0));
-        return result;
+        return substract(other.multiply(other.dot(this) * 2.0));
     }
 
     /**
@@ -416,7 +415,8 @@ public final class Vector {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 67 * hash + (vec != null ? Arrays.hashCode(vec) : 0);
+        // vec is always != null (initialized at construction)
+        hash = 67 * hash + (Arrays.hashCode(vec));
         return hash;
     }
 

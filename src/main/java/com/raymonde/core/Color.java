@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,10 @@ import javax.annotation.concurrent.ThreadSafe;
  * component in the range from 0.0 to 1.0.
  * The 0.0 value is for absence of intensity of this component,
  * whereas 1.0 is for maximum intensity of the component.
- * 
+ *
+ * This class is Thread safe : every method that return a Color object actually returns a newly created
+ * object.
+ *
  * @author aurelman
  */
 @ThreadSafe
@@ -98,15 +101,6 @@ public final class Color {
         int b = (int) ((blue * 255.) + 0.5);
         setBasic(r, g, b);
     }
-    
-    /**
-     * The white color.
-     *
-     * @return The white color.
-     */
-    public static Color white() {
-        return new Color(Color.WHITE);
-    }
 
     /**
      * The black color.
@@ -115,15 +109,6 @@ public final class Color {
      */
     public static Color black() {
         return new Color(Color.BLACK);
-    }
-
-    /**
-     * The gray color.
-     *
-     * @return The gray color.
-     */
-    public static Color gray() {
-        return new Color(Color.GRAY);
     }
     
     /**
@@ -222,7 +207,7 @@ public final class Color {
     }
 
     /**
-     * Multiply each componenent of the current object by the specified factor.
+     * Multiply each component of the current object by the specified factor.
      * 
      * @param factor The factor to multiply each component by.
      * 

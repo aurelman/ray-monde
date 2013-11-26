@@ -1,5 +1,5 @@
 /*
- * Copyright (C) $today.year Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package com.raymonde;
 
 import com.raymonde.load.ParsingException;
 import com.raymonde.load.SceneParser;
-import com.raymonde.load.xml.XMLSceneParser;
+import com.raymonde.load.yml.YamlSceneParser;
 import com.raymonde.render.RenderException;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
@@ -62,8 +62,7 @@ public class RayMonde {
      * @param args An array of argument.
      */
     public static void main(final String [] args)
-        throws ParsingException,
-            SaveException,
+        throws SaveException,
             IOException,
             RenderException,
             ParsingException {
@@ -92,7 +91,7 @@ public class RayMonde {
     }
     
     private static SceneParser getSceneParser() {
-        return new XMLSceneParser();
+        return new YamlSceneParser();
     }
 
 }

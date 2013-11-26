@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,9 +38,16 @@ public interface Material {
      *
      * @return The color.
      */
-    public Color computeColor(final Renderer renderer,
-            final Scene scene,
-            final Intersection inter,
-            final RenderingContext ctx);
+    Color computeColor(final Renderer renderer,
+        final Scene scene,
+        final Intersection inter,
+        final RenderingContext ctx);
+
+    /**
+     * Sets the sub material of the current one.
+     *
+     * @param material the sub material to set
+     */
+    void setMaterial(final Material material);
     
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,12 +68,11 @@ public class DefaultRenderer implements Renderer {
      */
     @Override
     public Surface render(final Scene scene) {
+        setScene(scene);
         final Surface result = scene.getSurface();
-        Color color = null;
         for (int i = 0; i < result.getWidth(); i++) {
             for (int j = 0; j < result.getHeight(); j++) {
-                shootThroughPixel(i, j);
-                result.setColor(i, j, color);
+                result.setColor(i, j, shootThroughPixel(i, j));
             }
         }
         return result;
@@ -141,7 +140,7 @@ public class DefaultRenderer implements Renderer {
      * @return the scene
      */
     public Scene getScene() {
-        return this.scene;
+        return scene;
     }
 
     /**

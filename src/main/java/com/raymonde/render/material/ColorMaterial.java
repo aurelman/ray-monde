@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import com.raymonde.scene.Scene;
  * 
  * @author aurelman
  */
-public class ColorMaterial extends AbstractMaterial {
+public class ColorMaterial extends AbstractMaterial implements Material {
 
     /**
      * The color of the material.

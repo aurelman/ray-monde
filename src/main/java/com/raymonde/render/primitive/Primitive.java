@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Manoury Aurélien
+ * Copyright (C) 2013 Manoury Aurélien
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import com.raymonde.core.Vector;
 import com.raymonde.render.Element;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.AbstractMaterial;
+import com.raymonde.render.material.Material;
 
 /**
  * <code>Primitive</code> objects are the <em>solids</em> elements of a scene.
@@ -34,7 +35,7 @@ public abstract class Primitive extends Element {
     /**
      * The root material of the pripmitive.
      */
-    private AbstractMaterial material;
+    private Material material;
     
     /**
      * Constructs a <code>Primitive</code> object with the specified name.
@@ -69,14 +70,14 @@ public abstract class Primitive extends Element {
      * 
      * @return The root material.
      */
-    public AbstractMaterial getMaterial() {
-        return this.material;
+    public Material getMaterial() {
+        return material;
     }
 
     /**
      * @param material The material to set.
      */
-    public void setMaterial(final AbstractMaterial material) {
+    public void setMaterial(final Material material) {
         this.material = material;
     }
 }
