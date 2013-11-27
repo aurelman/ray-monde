@@ -84,9 +84,9 @@ scene:
           type: omnidirectional
           position: {x: 150., y: 30., z: -200.}
           attenuation: 0.000005
-          color: {r: 0.3, g: 0.3, b: 0.3}
+          color: {r: 0.8, g: 0.8, b: 0.8}
         - name: light2
           type: omnidirectional
           position: {x: -10., y: 160., z: -10.}
           attenuation: 0.000005
-          color: {r: 0.3, g: 0.3, b: 0.3}
+          color: {r: 0.8, g: 0.8, b: 0.8}
