@@ -18,9 +18,9 @@
 
 package com.raymonde.core;
 
-import java.util.Arrays;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.Arrays;
 
 /**
  * <code>Color</code> objects are 3 component representation of color.
@@ -39,22 +39,16 @@ import javax.annotation.concurrent.ThreadSafe;
 @Immutable
 public final class Color {
 
-    private int hashCode = -1;
-    
     /**
-     * An instance of the white color.
+     * hash code is lazy computed by the hashCode method.
+     * ThreadSafety is kept.
      */
-    private static final Color WHITE = new Color(1., 1., 1.);
+    private int hashCode = -1;
 
     /**
      * An instance of the black color.
      */
     private static final Color BLACK = new Color(0., 0., 0.);
-
-    /**
-     * An instance of the gray color.
-     */
-    private static final Color GRAY = new Color(0.5, 0.5, 0.5);
 
     /**
      * Message to give to exceptions when any of a component value
@@ -397,7 +391,7 @@ public final class Color {
      * @throws IllegalArgumentException If any of the red, green or blue 
      * component is out of the ]0,1[ range.
      */
-    private void checkValidity( final double red, final double green, final double blue) {
+    private static void checkValidity( final double red, final double green, final double blue) {
         if (red < 0. || red > 1. || green < 0. || green > 1. || blue < 0. || blue > 1.) {
             throw new IllegalArgumentException(Color.COMPONENTS_OUT_OF_RANGE_MESSAGE);
         }
