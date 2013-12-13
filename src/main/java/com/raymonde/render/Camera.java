@@ -20,12 +20,11 @@ package com.raymonde.render;
 import com.raymonde.core.Vector;
 
 /**
- * <code>Camera</code> objects represents potential point of view of
- * a scene.
+ * <code>Camera</code> objects represents a point of view in a Scene
  * 
  * @author aurelman
  */
-public class Camera extends Element {
+public class Camera {
 
     /**
      * The position of the camera.
@@ -57,7 +56,6 @@ public class Camera extends Element {
      * @param name The name of the camera.
      */
     public Camera(final String name) {
-        super(name);
     }
 
     /**
@@ -67,7 +65,6 @@ public class Camera extends Element {
      * @param dir The direction of the camera.
      */
     public Camera(final String name, final Vector pos, final Vector dir) {
-        super(name);
         this.position = pos;
         this.direction = dir;
     }

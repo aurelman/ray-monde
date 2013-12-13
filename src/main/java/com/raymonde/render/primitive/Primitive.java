@@ -19,9 +19,7 @@
 package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
-import com.raymonde.render.Element;
 import com.raymonde.render.Ray;
-import com.raymonde.render.material.AbstractMaterial;
 import com.raymonde.render.material.Material;
 
 /**
@@ -30,7 +28,7 @@ import com.raymonde.render.material.Material;
  * 
  * @author aurelman
  */
-public abstract class Primitive extends Element {
+public abstract class Primitive {
 
     /**
      * The root material of the pripmitive.
@@ -43,7 +41,6 @@ public abstract class Primitive extends Element {
      * @param name The name of the primitive.
      */
     public Primitive(final String name) {
-        super(name);
     }
 
     /**

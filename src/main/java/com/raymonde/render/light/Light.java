@@ -20,14 +20,13 @@ package com.raymonde.render.light;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
-import com.raymonde.render.Element;
 
 /**
  * <p>Base class for a light in a scene.</p>
  * 
  * @author aurelman
  */
-public abstract class Light extends Element {
+public abstract class Light {
     
     /**
      * The element position.
@@ -35,20 +34,11 @@ public abstract class Light extends Element {
     private Vector position;
 
     /**
-     * 
-     * @param name The name of the light.
-     */
-    public Light(final String name) {
-        super(name);
-    }
-
-    /**
      *
      * @param name The name of the light.
      * @param position The position of the light.
      */
     public Light(final String name, final Vector position) {
-        super(name);
         this.position = position;
     }
 
