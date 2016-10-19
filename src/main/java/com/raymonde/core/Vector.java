@@ -369,7 +369,7 @@ public final class Vector {
      * 
      * @return The x value of the vector.
      */
-    public double getX() {
+    public double x() {
         return vec[X];
     }
 
@@ -378,7 +378,7 @@ public final class Vector {
      *
      * @return The y value of the vector.
      */
-    public double getY() {
+    public double y() {
         return vec[Y];
     }
 
@@ -388,7 +388,7 @@ public final class Vector {
      *
      * @return The z value of the vector.
      */
-    public double getZ() {
+    public double z() {
         return vec[Z];
     }
 

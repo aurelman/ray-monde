@@ -58,6 +58,9 @@ public class Camera {
     public Camera(final String name) {
     }
 
+    public String getName() {
+        return "";
+    }
     /**
      *
      * @param name The name of the camera.

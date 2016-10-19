@@ -30,7 +30,7 @@ import java.util.Arrays;
  * The 0.0 value is for absence of intensity of this component,
  * whereas 1.0 is for maximum intensity of the component.
  *
- * This class is Thread safe : every method that return a Color object actually returns a newly created
+ * This class is Thread safe : every method that return a Color object actually returns a newly created, or a shared immutable object.
  * object.
  *
  * @author aurelman
@@ -102,7 +102,7 @@ public final class Color {
      * @return The black color.
      */
     public static Color black() {
-        return new Color(Color.BLACK);
+        return Color.BLACK;
     }
     
     /**
@@ -234,7 +234,7 @@ public final class Color {
      *
      * @return The red component of the color.
      */
-    public double getRed() {
+    public double r() {
         return getRedBasic() / 255.;
     }
 
@@ -243,7 +243,7 @@ public final class Color {
      *
      * @return The green component of the color.
      */
-    public double getGreen() {
+    public double g() {
         return getGreenBasic() / 255.;
     }
 
@@ -252,7 +252,7 @@ public final class Color {
      * 
      * @return The blue component of the color.
      */
-    public double getBlue() {
+    public double b() {
         return getBlueBasic() / 255.;
     }
 
@@ -267,9 +267,9 @@ public final class Color {
      */
     public double[] get() {
         double[] res = new double[3];
-        res[0] = getRed();
-        res[1] = getGreen();
-        res[2] = getBlue();
+        res[0] = r();
+        res[1] = g();
+        res[2] = b();
         return res;
     }
 
@@ -281,7 +281,7 @@ public final class Color {
      *
      * @return The RGB value as an integer value.
      */
-    public int getRGB() {
+    public int rgb() {
         return rgb;
     }
 

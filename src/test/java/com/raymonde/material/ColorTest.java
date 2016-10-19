@@ -20,12 +20,10 @@
 package com.raymonde.material;
 
 import com.raymonde.core.Color;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 /**
  *
@@ -33,131 +31,55 @@ import org.junit.Test;
  */
 public class ColorTest {
 
-    /**
-     *
-     */
-    public ColorTest() {
-    }
+    private final static double DELTA = 0.001;
 
-    /**
-     * 
-     * @throws java.lang.Exception
-     */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws java.lang.Exception
-     */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of getRGB method, of class Color.
-     */
     @Test
-    public void testGetRGB() {
-        System.out.println("getRGB");
-        Color instance = new Color(1.0, 1.0, 1.0);
-        int expResult = 0xFFFFFFFF;
-        int result = instance.getRGB();
-        assertEquals(expResult, result);
+    public void shouldReturnRGBComponentAsAnInteger() {
+        // Given
+        Color color = new Color(1.0, 1.0, 1.0);
+
+        // Expect
+        assertThat(color.rgb()).isEqualTo(0xffffffff);
     }
 
-    /**
-     * Test of getRed method, of class Color.
-     */
     @Test
-    public void testGetRed() {
-        System.out.println("getRed");
-        Color instance = new Color(1.0, 1.0, 1.0);
-        double expResult = 1.;
-        double result = instance.getRed();
-        assertEquals(expResult, result, 0.000000000);
+    public void shouldReturnRedComponent() {
+        // Given
+        Color color = new Color(1.0, 1.0, 1.0);
 
-        instance = new Color(0., 1., 1.);
-        expResult = 0.;
-        result = instance.getRed();
-        assertEquals(expResult, result, 0.000000000);
+        // Expect
+        assertThat(color.r()).isCloseTo(1.0, offset(DELTA));
     }
 
-    /**
-     * Test of getGreen method, of class Color.
-     */
     @Test
-    public void testGetGreen() {
-        System.out.println("getGreen");
-        Color instance = new Color(1.0, 1.0, 1.0);
-        double expResult = 1.;
-        double result = instance.getGreen();
-        assertEquals(expResult, result, 0.000000000);
+    public void shouldReturnGreenComponent() {
+        // Given
+        Color color = new Color(1.0, 1.0, 1.0);
 
-
-        instance = new Color(1.0, 0., 1.);
-        expResult = 0.;
-        result = instance.getGreen();
-        assertEquals(expResult, result, 0.000000000);
+        // Expect
+        assertThat(color.g()).isCloseTo(1.0, offset(DELTA));
     }
 
-    /**
-     * Test of getBlue method, of class Color.
-     */
     @Test
-    public void testGetBlue() {
-        System.out.println("getBlue");
-        Color instance = new Color(1.0, 1.0, 1.0);
-        double expResult = 1.;
-        double result = instance.getBlue();
-        assertEquals(expResult, result, 0.000000000);
+    public void shouldReturnBlueComponent() {
+        // Given
+        Color color = new Color(1.0, 1.0, 1.0);
 
-        instance = new Color(1., 1., 0.);
-        expResult = 0.;
-        result = instance.getBlue();
-        assertEquals(expResult, result, 0.000000000);
+        // Expect
+        assertThat(color.b()).isCloseTo(1.0, offset(DELTA));
     }
 
-    /**
-     * Test pf add method, of class Color.
-     */
     @Test
-    public void testAdd() {
-        System.out.println("add");
+    public void shouldComputeAdditionOfTwoColors() {
+        // Given
         Color c1 = new Color(0.5, 0.5, 0.5);
-        double expectedBlue = 1.;
-        double expectedRed = 1.;
-        double expectedGreen = 1.;
 
+        // When
         Color c2 = c1.add(c1);
-        assertEquals(expectedRed, c2.getRed(), 0.);
-        assertEquals(expectedGreen, c2.getGreen(), 0.);
-        assertEquals(expectedBlue, c2.getBlue(), 0.);
 
-        Color c3 = new Color(0.6, 0.6, 0.6);
-        c2 = c1.add(c3);
-
-        expectedRed = 1.;
-        expectedGreen = 1.;
-        expectedBlue = 1.;
-
-        assertEquals(expectedRed, c2.getRed(), 0.);
-        assertEquals(expectedGreen, c2.getGreen(), 0.);
-        assertEquals(expectedBlue, c2.getBlue(), 0.);
+        // Then
+        assertThat(c2.r()).isCloseTo(1., offset(DELTA));
+        assertThat(c2.g()).isCloseTo(1., offset(DELTA));
+        assertThat(c2.b()).isCloseTo(1., offset(DELTA));
     }
 }

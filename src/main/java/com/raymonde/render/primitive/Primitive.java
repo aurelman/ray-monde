@@ -44,6 +44,15 @@ public abstract class Primitive {
     }
 
     /**
+     * Not really implemented method
+     *
+     * @return
+     */
+    public String getName() {
+        return "";
+    }
+
+    /**
      * Compute the normal vector to the primitive surface for the specified
      * point. Suppose the specified point is on the surface.
      * 

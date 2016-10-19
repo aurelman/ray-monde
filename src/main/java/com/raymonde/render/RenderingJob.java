@@ -135,9 +135,9 @@ public class RenderingJob implements Runnable {
                 scene.getSurface().getPosition();
 
         Vector cameraPosition = scene.getDefaultCamera().getPosition();
-        double endZ = surfacePosition.getZ();
-        double endY = surfacePosition.getY() - y;
-        double endX = x + surfacePosition.getX();
+        double endZ = surfacePosition.z();
+        double endY = surfacePosition.y() - y;
+        double endX = x + surfacePosition.x();
 
         return Ray.joining(cameraPosition, new Vector(endX, endY, endZ));
     }

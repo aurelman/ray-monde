@@ -19,10 +19,10 @@
 package com.raymonde.math;
 
 import com.raymonde.core.Vector;
-import org.junit.After;
-import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.Offset.offset;
 
 /**
  *
@@ -30,230 +30,134 @@ import org.junit.Test;
  */
 public class VectorTest {
 
-    /**
-     * 
-     */
-    private static final double DELTA = 0.00000001;
-
-    /**
-     *
-     */
-    public VectorTest() {
-    }
-
-    /**
-     *
-     */
-    @Before
-    public void setUp() {
-    }
-
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
-    }
+    private static final double DELTA = 0.001;
 
     /**
      * Test of length method, of class Vector.
      */
     @Test
-    public void testLength() {
+    public void shouldComputeLengthOfVectors() {
+        // Given
+        Vector vector1 = new Vector(2, 4, 6);
+        Vector vector2 = new Vector(1.0, 1.0, 1.0);
+        Vector vector3 = Vector.zero();
 
-        double expResult;
-        double result;
-        Vector vector1;
-
-        vector1 = new Vector(2, 4, 6);
-        expResult = 7.48331477;
-        result = vector1.length();
-
-        assertEquals(expResult, result, VectorTest.DELTA);
-
-        vector1 = new Vector(1.0, 1.0, 1.0);
-        expResult = 1.73205080;
-        result = vector1.length();
-        
-        assertEquals(expResult, result, VectorTest.DELTA);
-
-        vector1 = Vector.zero();
-        expResult = 0.0;
-        result = vector1.length();
-
-        assertEquals(expResult, result, VectorTest.DELTA);
+        // Expect
+        assertThat(vector1.length()).isCloseTo(7.483, offset(DELTA));
+        assertThat(vector2.length()).isCloseTo(1.732, offset(DELTA));
+        assertThat(vector3.length()).isCloseTo(0.0, offset(DELTA));
     }
 
-    /**
-     * Test of squaredLength method, of class Vector.
-     */
     @Test
-    public void testSquaredLength() {
+    public void shouldComputeSquaredLengthOfVector() {
+        // Given
+        Vector vector1 = new Vector(2, 4, 6);
+        Vector vector2 = new Vector(-1.0, 1.0, 1.0);
+        Vector vector3 = Vector.zero();
 
-        double expResult;
-        double result;
-        Vector vector1;
-
-        vector1 = new Vector(2, 4, 6);
-        expResult = 56.0;
-        result = vector1.squaredLength();
-
-        assertEquals(expResult, result, VectorTest.DELTA);
-
-        vector1 = new Vector(-1.0, 1.0, 1.0);
-        expResult = 3.0;
-        result = vector1.squaredLength();
-
-        assertEquals(expResult, result, VectorTest.DELTA);
-
-        vector1 = Vector.zero();
-        expResult = 0.0;
-        result = vector1.squaredLength();
-
-        assertEquals(expResult, result, VectorTest.DELTA);
+        // Expect
+        assertThat(vector1.squaredLength()).isCloseTo(56.0, offset(DELTA));
+        assertThat(vector2.squaredLength()).isCloseTo(3.0, offset(DELTA));
+        assertThat(vector3.squaredLength()).isCloseTo(0.0, offset(DELTA));
     }
 
-    /**
-     * Test of distanceTo method, of class Vector.
-     */
     @Test
-    public void testDistanceTo() {
+    public void shouldComputeTheDistanceToAVector() {
+        // Given
+        Vector vector1 = new Vector(2., 3., 4.);
+        Vector vector2 = new Vector(2., 3., 4.);
 
-        Vector vector1;
-        Vector vector2;
+        // When
+        double result = vector1.distanceTo(vector2);
 
-        vector1 = new Vector(2., 3., 4.);
-        vector2 = new Vector(2., 3., 4.);
-
-        double result;
-        double expectedResult = 0.0;
-
-        result = vector1.distanceTo(vector2);
-
-        assertEquals(expectedResult, result, VectorTest.DELTA);
+        // Then
+        assertThat(result).isCloseTo(0.0, offset(DELTA));
     }
 
-    /**
-     * Test of cross method, of class Vector.
-     */
     @Test
-    public void testCross() {
+    public void shouldComputeCrossProduct() {
+        // Given
+        Vector vector1 = new Vector(1., 0., 0.);
+        Vector vector2 = new Vector(0., 1., 0.);
 
-        Vector vector1;
-        Vector vector2;
+        // When
+        Vector result = vector1.cross(vector2);
 
-        vector1 = new Vector(1., 0., 0.);
-        vector2 = new Vector(0., 1., 0.);
-
-        Vector result;
-        Vector expectedResult = new Vector(0., 0., 1.);
-
-        result = vector1.cross(vector2);
-
-        assertEquals(expectedResult, result);
+        // Then
+        assertThat(result.x()).isCloseTo(0., offset(DELTA));
+        assertThat(result.y()).isCloseTo(0., offset(DELTA));
+        assertThat(result.z()).isCloseTo(1., offset(DELTA));
     }
 
-    /**
-     * Test of distance method, of class Vector.
-     */
     @Test
-    public void testDistance() {
+    public void shouldComputeDistanceBetweenTwoVectors() {
+        // Given
+        Vector vector1 = new Vector(2., 3., 4.);
+        Vector vector2 = new Vector(2., 3., 4.);
 
-        Vector vector1;
-        Vector vector2;
-
-        vector1 = new Vector(2., 3., 4.);
-        vector2 = new Vector(2., 3., 4.);
-
-        double result;
-        double expectedResult = 0.0;
-
-        result = Vector.distance(vector1, vector2);
-
-        assertEquals(expectedResult, result, VectorTest.DELTA);
+        // Expect
+        assertThat(Vector.distance(vector1, vector2)).isCloseTo(0.0, offset(DELTA));
     }
 
-    /**
-     * Test of add method, of class Vector.
-     */
     @Test
-    public void testAdd() {
+    public void shouldComputeAdditionOfTwoVector() {
+        // Given
+        Vector vector1 = new Vector(1.0, 2.0, -3.0);
+        Vector vector2 = new Vector(2.0, -1.0, -9.0);
 
-        Vector vector1;
-        Vector vector2;
-        Vector expResult;
-
-        vector1 = new Vector(1.0, 2.0, -3.0);
-        vector2 = new Vector(2.0, -1.0, -9.0);
-        expResult = new Vector(3.0, 1.0, -12.0);
-        
+        // When
         Vector result = vector1.add(vector2);
 
-        assertEquals(expResult, result);
+        // Then
+        assertThat(result.x()).isCloseTo(3.0, offset(DELTA));
+        assertThat(result.y()).isCloseTo(1.0, offset(DELTA));
+        assertThat(result.z()).isCloseTo(-12.0, offset(DELTA));
     }
 
-    /**
-     * Test of substract method, of class Vector.
-     */
     @Test
-    public void testSubstract() {
+    public void shouldComputeSubstractionOfTwoVectors() {
+        // Given
+        Vector vector1 = new Vector(1.0, 2.0, -3.0);
+        Vector vector2 = new Vector(2.0, -1.0, -9.0);
 
-        Vector vector1;
-        Vector vector2;
-        Vector expResult;
-
-        vector1 = new Vector(1.0, 2.0, -3.0);
-        vector2 = new Vector(2.0, -1.0, -9.0);
-        expResult = new Vector(-1.0, 3.0, 6.0);
-
+        // When
         Vector result = vector1.substract(vector2);
 
-        assertEquals(expResult, result);
+        // Then
+        assertThat(result.x()).isCloseTo(-1.0, offset(DELTA));
+        assertThat(result.y()).isCloseTo(3.0, offset(DELTA));
+        assertThat(result.z()).isCloseTo(6.0, offset(DELTA));
     }
 
-    /**
-     *
-     */
     @Test
-    public void testMultiply() {
+    public void shouldComputeMultiplicationOfVectorByAScalar() {
+        // Given
+        Vector vector1 = new Vector(1.0, 2.0, -3.0);
 
-        Vector vector1;
-        double scalar;
-        Vector expResult;
+        // When
+        Vector result = vector1.multiply(-6.0);
 
-        vector1 = new Vector(1.0, 2.0, -3.0);
-        scalar = -6.0;
-        expResult = new Vector(-6.0, -12.0, 18.0);
-
-        Vector result = vector1.multiply(scalar);
-
-        assertEquals(expResult, result);
-
-        scalar = 6.0;
-        expResult = new Vector(6.0, 12.0, -18.0);
-        result = vector1.multiply(scalar);
-
-        assertEquals(expResult, result);
+        // Then
+        assertThat(result.x()).isCloseTo(-6.0, offset(DELTA));
+        assertThat(result.y()).isCloseTo(-12.0, offset(DELTA));
+        assertThat(result.z()).isCloseTo(18.0, offset(DELTA));
     }
 
-    /**
-     * Test of normalized method, of class Vector.
-     */
     @Test
-    public void testNormalized() {
-        
+    public void shouldNormalizeAVector() {
+        // Given
         Vector instance = new Vector(6.0, -5.0, 4.0);
+
+        // When
         Vector result = instance.normalized();
 
-        double expLength = 1.0;
-        double length = result.length();
-        
-        assertEquals(expLength, length, VectorTest.DELTA);
+        // Then
+        assertThat(result.length()).isCloseTo(1.0, offset(DELTA));
+        assertThat(result.x()).isCloseTo(0.684, offset(DELTA));
+        assertThat(result.y()).isCloseTo(-0.569, offset(DELTA));
+        assertThat(result.z()).isCloseTo(0.455, offset(DELTA));
     }
 
-    /**
-     * Test of normalizeInPlace method, of class Vector.
-     */
     @Test
     public void testReflected() {
 
@@ -263,66 +167,61 @@ public class VectorTest {
         Vector expected = new Vector(6.0, 5.0, 0.0);
 
         Vector actual = v1.reflected(normal);
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
-    
-    /**
-     * Test of dot method, of class Vector.
-     */
+
     @Test
-    public void testDot() {
-        
+    public void shouldComputeDotProduct() {
+        // Given
         Vector vector1 = new Vector(6.0, -5.0, -4.0);
         Vector vector2 = new Vector(3.0, 2.0, -1.0);
 
-        double expResult = 12.0;
+        // When
         double result = vector1.dot(vector2);
-        
-        assertEquals(expResult, result, VectorTest.DELTA);
+
+        // Then
+        assertThat(result).isCloseTo(12.0, offset(DELTA));
     }
 
-
-    /**
-     *
-     */
     @Test
-    public void testEquals() {
-        System.out.println("equals");
-
+    public void shouldCorrectlyCompareTwoVectors() {
+        // Given
         Vector vector1 = new Vector(6.0, -5.0, -4.0);
         Vector vector2 = new Vector(6.0, -5.0, -4.0);
 
-        assertTrue(vector1.equals(vector2));
-
-        vector2 = null;
-        assertFalse(vector1.equals(vector2));
+        // Expect
+        assertThat(vector1.equals(vector2)).isTrue();
     }
 
-    /**
-     * 
-     */
     @Test
-    public void testOpposite() {
+    public void nullVectorShouldNotEqualAnyOtherVector() {
+        // Given
+        Vector vector = new Vector(6.0, -5.0, -4.0);
 
-        Vector vector;
-        Vector result;
-        Vector expected;
-
-        vector = new Vector(6.0, 0.0, -12.0);
-        result = vector.opposite();
-        expected = new Vector(-6.0, -0.0, 12.0);
-
-        assertEquals(expected, result);
+        // Expect
+        assertThat(vector.equals(null)).isFalse();
     }
-    
-    /**
-     * 
-     */
-    @Test
-    public void testToString() {
 
+    @Test
+    public void shouldComputeTheOppositeVector() {
+        // Given
+        Vector vector = new Vector(6.0, 0.0, -12.0);
+
+        // When
+        Vector result = vector.opposite();
+
+        // Then
+        assertThat(result.x()).isEqualTo(-6.0);
+        assertThat(result.y()).isEqualTo(-0.0);
+        assertThat(result.z()).isEqualTo(12.0);
+    }
+
+    @Test
+    public void toStringShouldBeCorrect() {
+        // Given
         Vector vector = new Vector(1.0, 1.0, 1.0);
-        String expected =  "[Vector : x = 1.0, y = 1.0, z = 1.0]";
-        assertEquals(expected, vector.toString());
+
+        // Expect
+        assertThat(vector.toString()).isEqualTo("[Vector : x = 1.0, y = 1.0, z = 1.0]");
     }
 }

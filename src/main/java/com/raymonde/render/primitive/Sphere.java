@@ -49,6 +49,15 @@ public class Sphere extends Primitive {
         super(name);
     }
 
+
+    /**
+     * Not really implemented method
+     * @return
+     */
+    public String getName() {
+        return "";
+    }
+
     /**
      * Constructs a <code>Sphere</code> object with the specified name.
      *

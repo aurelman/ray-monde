@@ -58,7 +58,7 @@ public class OmnidirectionalLight extends Light {
     @Override
     public Color colorAt(final Vector point) {
         double dist = point.distanceTo(getPosition());
-        double attCoeff = 1./(getAttenuation().getX()*dist*dist);
+        double attCoeff = 1./(getAttenuation().x()*dist*dist);
         return getColor().multiply(attCoeff);
     }
 
