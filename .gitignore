@@ -1,0 +1,12 @@
+# IntelliJ IDEA files
+*.iml
+.idea/
+
+# Java project files
+target/
+
+# common files
+*.jar
+
+# common directories
+log/
