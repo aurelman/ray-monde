@@ -87,14 +87,14 @@ public class QuadraticEquationResult {
     }
 
     /**
-     * @return the count
+     * @return the rootNumber
      */
     public int getCount() {
         return count;
     }
 
     /**
-     * @param count the count to set
+     * @param count the rootNumber to set
      */
     public void setCount(final int count) {
         this.count = count;

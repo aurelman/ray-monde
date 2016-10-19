@@ -17,9 +17,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.raymonde.material;
+package com.raymonde.core;
 
-import com.raymonde.core.Color;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,5 +80,38 @@ public class ColorTest {
         assertThat(c2.r()).isCloseTo(1., offset(DELTA));
         assertThat(c2.g()).isCloseTo(1., offset(DELTA));
         assertThat(c2.b()).isCloseTo(1., offset(DELTA));
+    }
+
+    @Test
+    public void shouldAddTwoColorWithComponentOverflow() {
+        // Given
+        Color c1 = new Color(0.5, 0.5, 0.5);
+        Color c2 = new Color(0.6, 0.6, 0.6);
+
+        // When
+        Color c3 = c1.add(c2);
+
+        // Then
+        assertThat(c3.r()).isCloseTo(1., offset(DELTA));
+        assertThat(c3.g()).isCloseTo(1., offset(DELTA));
+        assertThat(c3.b()).isCloseTo(1., offset(DELTA));
+    }
+
+    @Test
+    public void shouldBeEqualOtherColorWithSameComponents() {
+        // Given
+        Color color = new Color(0.2, 0.3, 0.4);
+        Color colorOther = new Color(0.2, 0.3, 0.4);
+
+        // Expect
+        assertThat(color).isEqualTo(colorOther);
+    }
+
+    /**
+     * Verify illegal argument
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionWhenColorComponentOverflow() {
+        new Color(2.0, 0.0, -5.0);
     }
 }

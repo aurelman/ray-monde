@@ -16,9 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.raymonde.math;
+package com.raymonde.core;
 
-import com.raymonde.core.Vector;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -159,15 +158,18 @@ public class VectorTest {
     }
 
     @Test
-    public void testReflected() {
-
-        Vector v1 = new Vector(6.0, -5.0, 0.0);
+    public void shouldComputeReflectedVector() {
+        // Given
+        Vector vector = new Vector(6.0, -5.0, 0.0);
         Vector normal = new Vector(0.0, 1.0, 0.0);
 
-        Vector expected = new Vector(6.0, 5.0, 0.0);
+        // When
+        Vector reflected = vector.reflected(normal);
 
-        Vector actual = v1.reflected(normal);
-        assertThat(actual).isEqualTo(expected);
+        // Then
+        assertThat(reflected.x()).isCloseTo(6.0, offset(DELTA));
+        assertThat(reflected.y()).isCloseTo(5.0, offset(DELTA));
+        assertThat(reflected.z()).isCloseTo(0.0, offset(DELTA));
     }
 
     @Test
@@ -222,6 +224,6 @@ public class VectorTest {
         Vector vector = new Vector(1.0, 1.0, 1.0);
 
         // Expect
-        assertThat(vector.toString()).isEqualTo("[Vector : x = 1.0, y = 1.0, z = 1.0]");
+        assertThat(vector.toString()).isEqualTo("Vector{x=1.0, y=1.0, z=1.0}");
     }
 }

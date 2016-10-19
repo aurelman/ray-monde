@@ -17,9 +17,12 @@
  */
 package com.raymonde.core;
 
-import java.util.Arrays;
+import com.google.common.base.MoreObjects;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * {@code Vector} objects are triplet scalars.
@@ -191,7 +194,7 @@ public final class Vector {
 
         // TODO: If optimization is needed we could cache the length value.
         
-        // Avoid making inutile multiplication
+        // Avoid making useless multiplication
         if (isZero()) {
             return 0.0;
         }
@@ -209,7 +212,7 @@ public final class Vector {
      */
     public double squaredLength() {
         
-        // Avoid making inutile multiplication
+        // Avoid making useless multiplication
         if (isZero()) {
             return 0.0;
         }
@@ -332,9 +335,6 @@ public final class Vector {
 
         if (length != 0.0 && length != 1.0) {
             double invLength = 1.0/length;
-//            x = vec[X] * invLength;
-//            y = vec[Y] * invLength;
-//            z = vec[Z] * invLength;
             x *= invLength;
             y *= invLength;
             z *= invLength;
@@ -414,23 +414,20 @@ public final class Vector {
      */
     @Override
     public int hashCode() {
-        int hash = 3;
-        // vec is always != null (initialized at construction)
-        hash = 67 * hash + (Arrays.hashCode(vec));
-        return hash;
+        return Objects.hash(vec);
     }
 
     /**
-     * Returns a <code>String</code> representation of the current object.
+     * Returns a {@link String} representation of the current object.
      * 
-     * @return A <code>String</code> representation of the current object.
+     * @return A {@link String} representation of the current object.
      */
     @Override
     public String toString() {
-        StringBuilder sb = (new StringBuilder("[Vector : x = "))
-          .append(vec[X])
-          .append(", y = ").append(vec[Y])
-          .append(", z = ").append(vec[Z]).append("]");
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+                .add("x", vec[X])
+                .add("y", vec[Y])
+                .add("z", vec[Z])
+                .toString();
     }
 }

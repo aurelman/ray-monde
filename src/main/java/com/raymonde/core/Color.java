@@ -18,9 +18,14 @@
 
 package com.raymonde.core;
 
+import com.google.common.collect.Range;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Arrays;
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * <code>Color</code> objects are 3 component representation of color.
@@ -38,7 +43,6 @@ import java.util.Arrays;
 @ThreadSafe
 @Immutable
 public final class Color {
-
     /**
      * hash code is lazy computed by the hashCode method.
      * ThreadSafety is kept.
@@ -54,8 +58,7 @@ public final class Color {
      * Message to give to exceptions when any of a component value
      * is out of the rage.
      */
-    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE =
-            "Color components should be between 0.0 and 1.0";
+    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE = "Color components %s should be between 0.0 and 1.0, but is %s";
 
     /**
      * Internal storage of the color is an int value where
@@ -72,10 +75,9 @@ public final class Color {
     }
 
      /**
-     * Constructs a <code>Color</code> object by copying the specified
-     * <code>Color</code> object.
+     * Constructs a {@link Color} object by copying the given {@link Color} object.
      *
-     * @param other The <code>Color<code> object to copy.
+     * @param other The {@link Color} object to copy.
      */
     private Color(final Color other) {
         rgb = other.rgb;
@@ -84,16 +86,16 @@ public final class Color {
     /**
      * Constructs the color object with the given components.
      *
-     * @param red The red component intensity.
-     * @param green The green component intensity.
-     * @param blue The blue component intensity.
+     * @param r The red component intensity.
+     * @param g The green component intensity.
+     * @param b The blue component intensity.
      */
-    public Color(final double red, final double green, final double blue) {
-        checkValidity(red, green, blue);
-        int r = (int) ((red * 255.) + 0.5);
-        int g = (int) ((green * 255.) + 0.5);
-        int b = (int) ((blue * 255.) + 0.5);
-        setBasic(r, g, b);
+    public Color(final double r, final double g, final double b) {
+        checkArgument(isValidComponent(r), COMPONENTS_OUT_OF_RANGE_MESSAGE, "red", r);
+        checkArgument(isValidComponent(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);
+        checkArgument(isValidComponent(b), COMPONENTS_OUT_OF_RANGE_MESSAGE, "blue", b);
+
+        setBasic(normalizeValue(r), normalizeValue(g), normalizeValue(b));
     }
 
     /**
@@ -296,18 +298,12 @@ public final class Color {
         }
 
         final Color colOther = (Color)other;
-        return rgb == colOther.rgb;
+        return Objects.equals(colOther.rgb, rgb);
     }
 
     @Override
     public int hashCode() {
-        // Lazy computation of hashCode
-        if (hashCode == -1) {
-            int hash = 3;
-            hash = 59 * hash + rgb;
-            hashCode = hash;
-        }
-        return hashCode;
+        return Objects.hash(rgb);
     }
     
     /**
@@ -380,23 +376,14 @@ public final class Color {
     }
 
     /**
-     * Checks wether the 3 specified components are all
-     * in the range from 0.0 to 1.0 and throws a <code>IllegalArgumentException</code> 
-     * if not.
      *
-     * @param red The red components to check.
-     * @param green The green components to check.
-     * @param blue The blue components to check.
-     * 
-     * @throws IllegalArgumentException If any of the red, green or blue 
-     * component is out of the ]0,1[ range.
+     * @param value
+     * @return
      */
-    private static void checkValidity( final double red, final double green, final double blue) {
-        if (red < 0. || red > 1. || green < 0. || green > 1. || blue < 0. || blue > 1.) {
-            throw new IllegalArgumentException(Color.COMPONENTS_OUT_OF_RANGE_MESSAGE);
-        }
+    private static boolean isValidComponent(double value) {
+        return Range.closed(0., 1.).contains(value);
     }
-    
+
     /**
      * Utility method
      *
@@ -407,4 +394,14 @@ public final class Color {
     private static int round(final double value) {
         return (int)(value + 0.5);
     }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    private static int normalizeValue(double value) {
+        return (int) ((value * 255.) + 0.5);
+    }
+
 }

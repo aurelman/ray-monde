@@ -21,6 +21,7 @@
         <snakeyaml.verion>1.13</snakeyaml.verion>
         <lombok.version>1.16.10</lombok.version>
         <assertj.version>3.5.2</assertj.version>
+        <guava.version>19.0</guava.version>
     </properties>
     <build>
         <plugins>
@@ -36,6 +37,11 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <artifactId>jsr305</artifactId>
             <groupId>com.google.code.findbugs</groupId>
