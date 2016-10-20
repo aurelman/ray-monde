@@ -18,58 +18,106 @@
 package com.raymonde.render;
 
 import com.raymonde.core.Vector;
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * <code>Camera</code> objects represents a point of view in a Scene
  * 
  * @author aurelman
  */
+@Immutable
+@ThreadSafe
 public class Camera {
+
+    private static class RenderingSurfaceSpec {
+        /**
+         * The width in pixels of the surface.
+         */
+        private final int pixelWidth;
+
+        /**
+         * The height in pixels of the surface.
+         */
+        private final int pixelHeight;
+
+        /**
+         * The width of the surface (in world coordinate system)
+         */
+        private final double width;
+
+        /**
+         * The height of the surface (in world coordinate system)
+         */
+        private final double height;
+
+        private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight) {
+            this.width = width;
+            this.height = height;
+            this.pixelWidth = pixelWidth;
+            this.pixelHeight = pixelHeight;
+        }
+
+        public int getPixelWidth() {
+            return pixelWidth;
+        }
+
+        public int getPixelHeight() {
+            return pixelHeight;
+        }
+
+        public double getWidth() {
+            return width;
+        }
+
+        public double getHeight() {
+            return height;
+        }
+    }
 
     /**
      * The position of the camera.
      */
-    private Vector position;
+    private final Vector position;
 
     /**
      * The look at position.
      */
-    private Vector direction;
+    private final Vector direction;
 
     /**
-     * The width in pixels of the surface.
+     * The up {@link Vector}
      */
-    private int pixelWidth;
-
-    /**
-     * The height in pixels of the surface.
-     */
-    private int pixelHeight;
+    private final Vector up;
 
     /**
      * The distance from the camera origin to the surface.
      */
-    private double distance;
+    private final double distance;
 
-    /**
-     * 
-     * @param name The name of the camera.
-     */
-    public Camera(final String name) {
-    }
+    private final RenderingSurfaceSpec renderingSurfaceSpec;
+
 
     public String getName() {
         return "";
     }
+
     /**
      *
-     * @param name The name of the camera.
-     * @param pos The position of the camera.
-     * @param dir The direction of the camera.
+     * @param name
+     * @param pos
+     * @param dir
+     * @param up
+     * @param distance
+     * @param surfaceSpec
      */
-    public Camera(final String name, final Vector pos, final Vector dir) {
+    public Camera(final String name, final Vector pos, final Vector dir, final Vector up, final double distance, RenderingSurfaceSpec surfaceSpec) {
         this.position = pos;
-        this.direction = dir;
+        this.direction = dir.normalized();
+        this.up = up.normalized();
+        this.distance = distance;
+        this.renderingSurfaceSpec = surfaceSpec;
     }
 
     /**
@@ -80,13 +128,6 @@ public class Camera {
     }
 
     /**
-     * @param position the position to set
-     */
-    public void setPosition(final Vector position) {
-        this.position = position;
-    }
-
-    /**
      * @return the direction
      */
     public Vector getDirection() {
@@ -94,38 +135,17 @@ public class Camera {
     }
 
     /**
-     * @param direction the direction to set
-     */
-    public void setDirection(final Vector direction) {
-        this.direction = direction;
-    }
-
-    /**
      * @return the pixelWidth
      */
     public int getPixelWidth() {
-        return this.pixelWidth;
-    }
-
-    /**
-     * @param pixelWidth the pixelWidth to set
-     */
-    public void setPixelWidth(final int pixelWidth) {
-        this.pixelWidth = pixelWidth;
+        return renderingSurfaceSpec.getPixelWidth();
     }
 
     /**
      * @return the pixelHeight
      */
     public int getPixelHeight() {
-        return this.pixelHeight;
-    }
-
-    /**
-     * @param pixelHeight the pixelHeight to set
-     */
-    public void setPixelHeight(final int pixelHeight) {
-        this.pixelHeight = pixelHeight;
+        return renderingSurfaceSpec.getPixelHeight();
     }
 
     /**
@@ -135,18 +155,9 @@ public class Camera {
         return this.distance;
     }
 
-    /**
-     * @param distance the distance to set
-     */
-    public void setDistance(final double distance) {
-        this.distance = distance;
-    }
-    
     public RenderingSurface createRenderingSurface() {
-
-        return new RenderingSurface(pixelWidth, pixelHeight);
+        return new RenderingSurface(renderingSurfaceSpec.getPixelWidth(), renderingSurfaceSpec.getPixelWidth());
     }
-
 
     /**
      * Returns a {@link Ray} that goes from the camera origin to the specified pixel.
@@ -160,6 +171,9 @@ public class Camera {
     public Ray rayThroughPixel(final Pixel pixel) {
 
         Vector surfaceCenter = position.add(direction.normalized().multiply(distance));
+        Vector surfUnitY = up.normalized();
+        Vector surfUnitX = direction.normalized().cross(up);
+
         double endZ = surfaceCenter.z();
         double endY = 0.0;
         double endX = 0.0;

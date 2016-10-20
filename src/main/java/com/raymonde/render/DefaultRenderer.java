@@ -92,9 +92,6 @@ public class DefaultRenderer implements Renderer {
 
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
-
-
-
         });
 
         return rendered;

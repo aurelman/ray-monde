@@ -18,8 +18,6 @@
 package com.raymonde.core;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Verify;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -180,7 +178,6 @@ public final class Vector {
      */
     public boolean isZero() {
         // return vec[X] == 0.0 && vec[Y] == 0.0 && vec[Z] == 0.0;
-        
         return equals(ZERO);
     }
     
@@ -196,7 +193,6 @@ public final class Vector {
        
        final Vector otherVector = (Vector)other;
        return Arrays.equals(vec, otherVector.vec);
-       
     }
     
     /**
@@ -207,7 +203,6 @@ public final class Vector {
     public double length() {
 
         // TODO: If optimization is needed we could cache the length value.
-        
         // Avoid making useless multiplication
         if (isZero()) {
             return 0.0;
