@@ -93,7 +93,7 @@ public class RenderingJob implements Runnable {
         Ray mainRay = rayThroughPixel(x, y);
         
         Color color = computeColor(mainRay, ctx);
-        scene.getSurface().setColor(x, y, color);
+        scene.getRenderingSurface().setColor(x, y, color);
     }
 
     /**
@@ -132,7 +132,7 @@ public class RenderingJob implements Runnable {
     public Ray rayThroughPixel(final int x, final int y) {
 
         Vector surfacePosition =
-                scene.getSurface().getPosition();
+                scene.getRenderingSurface().getPosition();
 
         Vector cameraPosition = scene.getDefaultCamera().getPosition();
         double endZ = surfacePosition.z();

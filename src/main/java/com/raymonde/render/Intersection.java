@@ -74,7 +74,6 @@ public final class Intersection {
         this.incomingRay = ray;
     }
 
-
     /**
      * @return the distance
      */

@@ -22,48 +22,31 @@ import com.raymonde.scene.Scene;
 
 /**
  * Base interface that any renderer should implements.
- * @author aurelman
  */
 public interface Renderer {
 
-    /**
-     * The max depth in the rendering algorithm.
-     */
-    //private int maxDepth;
-
-    
     /**
      * Renders the specified scene.
      * 
      * @param scene The scene to render.
      *
-     * @throws RenderException When an unexpectable error occurs during 
-     * rendering. Message exception, or cause exception should give more detail
+     * @throws RenderingException When an unrecoverable error occurs during
+     * rendering process. Message exception, or cause exception should give more detail
      */
-    public Surface render(final Scene scene)
-            throws RenderException;
+    RenderingSurface render(final Scene scene)
+            throws RenderingException;
 
     /**
-     * 
-     * @param ray
-     * @param level
-     * @param ctx
-     * @return
+     * Renders the specified {@link Scene} through the specified {@link Camera}
+     *
+     * @param scene The {@link Scene} object to render
+     * @param camera The point of view from which to render the scene
+     *
+     * @return return the resulting {@link RenderingSurface}
+     *
+     * @throws RenderingException if an unrecoverable error raises during rendering process.
+     *
+     * @see Camera
      */
-//    public abstract Color computeColor(final Ray ray,
-//            final RenderingContext ctx);
-
-    /**
-     * @return the maxDepth
-     */
-//    public int getMaxDepth() {
-//        return this.maxDepth;
-//    }
-
-    /**
-     * @param maxDepth the depth to set
-     */
-//    public void setMaxDepth(final int maxDepth) {
-//        this.maxDepth = maxDepth;
-//    }
+    RenderingSurface renderSceneThroughCamera(Scene scene, Camera camera) throws RenderingException;
 }

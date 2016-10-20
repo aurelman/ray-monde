@@ -44,12 +44,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 @Immutable
 public final class Color {
     /**
-     * hash code is lazy computed by the hashCode method.
-     * ThreadSafety is kept.
-     */
-    private int hashCode = -1;
-
-    /**
      * An instance of the black color.
      */
     private static final Color BLACK = new Color(0., 0., 0.);
@@ -95,7 +89,7 @@ public final class Color {
         checkArgument(isValidComponent(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);
         checkArgument(isValidComponent(b), COMPONENTS_OUT_OF_RANGE_MESSAGE, "blue", b);
 
-        setBasic(normalizeValue(r), normalizeValue(g), normalizeValue(b));
+        setBasic(f2i(r), f2i(g), f2i(b));
     }
 
     /**
@@ -376,9 +370,11 @@ public final class Color {
     }
 
     /**
+     * Checks whether a color component is valid (within 0. and 1.)
      *
-     * @param value
-     * @return
+     * @param value the value to check.
+     *
+     * @return {@code true} or {@code false} whether the value is valid.
      */
     private static boolean isValidComponent(double value) {
         return Range.closed(0., 1.).contains(value);
@@ -397,10 +393,11 @@ public final class Color {
 
     /**
      *
-     * @param value
-     * @return
+     * @param value the value to normalize
+     *
+     * @return the normalized value
      */
-    private static int normalizeValue(double value) {
+    private static int f2i(double value) {
         return (int) ((value * 255.) + 0.5);
     }
 

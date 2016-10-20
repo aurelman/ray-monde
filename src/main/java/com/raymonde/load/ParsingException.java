@@ -24,7 +24,7 @@ import com.raymonde.exception.RayMondeException;
  *
  * @author aurelman
  */
-public class ParsingException extends RayMondeException {
+public class ParsingException extends Exception {
     
     /**
      * Constructs a default <code>ParsingException</code>.

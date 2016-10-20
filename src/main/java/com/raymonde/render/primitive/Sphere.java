@@ -18,6 +18,7 @@
 
 package com.raymonde.render.primitive;
 
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 
@@ -104,9 +105,8 @@ public class Sphere extends Primitive {
 
     @Override
     public Vector normalAt(final Vector point) {
-
-        Vector normal = Vector.joining(getPosition(), point);
-        return normal.normalized();
+        return Vector.joining(position, point)
+                .normalized();
     }
     
     /**
@@ -115,7 +115,7 @@ public class Sphere extends Primitive {
      * @return The radius of the sphere.
      */
     public double getRadius() {
-        return this.radius;
+        return radius;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Sphere extends Primitive {
      * @return the position
      */
     public Vector getPosition() {
-        return this.position;
+        return position;
     }
 
     /**
@@ -141,11 +141,9 @@ public class Sphere extends Primitive {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[Sphere : name = ");
-        sb.append(getName()).
-                append(", radius = ").append(getRadius()).
-                append(", position = ").append(getPosition());
-        sb.append(']');
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+                .add("position", position)
+                .add("radius", radius)
+                .toString();
     }
 }

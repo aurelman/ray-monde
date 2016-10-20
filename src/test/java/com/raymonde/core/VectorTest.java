@@ -39,7 +39,7 @@ public class VectorTest {
         // Given
         Vector vector1 = new Vector(2, 4, 6);
         Vector vector2 = new Vector(1.0, 1.0, 1.0);
-        Vector vector3 = Vector.zero();
+        Vector vector3 = new Vector();
 
         // Expect
         assertThat(vector1.length()).isCloseTo(7.483, offset(DELTA));
@@ -52,7 +52,7 @@ public class VectorTest {
         // Given
         Vector vector1 = new Vector(2, 4, 6);
         Vector vector2 = new Vector(-1.0, 1.0, 1.0);
-        Vector vector3 = Vector.zero();
+        Vector vector3 = new Vector();
 
         // Expect
         assertThat(vector1.squaredLength()).isCloseTo(56.0, offset(DELTA));
@@ -129,6 +129,21 @@ public class VectorTest {
     }
 
     @Test
+    public void shouldConstructAVectorJoiningTwoPoint() {
+        // Given
+        Vector vector1 = new Vector(2.0, -1.0, -9.0);
+        Vector vector2 = new Vector(1.0, 2.0, -3.0);
+
+        // When
+        Vector result = Vector.joining(vector1, vector2);
+
+        // Then
+        assertThat(result.x()).isCloseTo(-1.0, offset(DELTA));
+        assertThat(result.y()).isCloseTo(3.0, offset(DELTA));
+        assertThat(result.z()).isCloseTo(6.0, offset(DELTA));
+    }
+
+    @Test
     public void shouldComputeMultiplicationOfVectorByAScalar() {
         // Given
         Vector vector1 = new Vector(1.0, 2.0, -3.0);
@@ -149,6 +164,25 @@ public class VectorTest {
 
         // When
         Vector result = instance.normalized();
+
+        // Then
+        assertThat(result.length()).isCloseTo(1.0, offset(DELTA));
+        assertThat(result.x()).isCloseTo(0.684, offset(DELTA));
+        assertThat(result.y()).isCloseTo(-0.569, offset(DELTA));
+        assertThat(result.z()).isCloseTo(0.455, offset(DELTA));
+    }
+
+    /**
+     * This unit test has been written to ensure that no regression has been
+     * introduced when has been developed the normalized optimization.
+     */
+    @Test
+    public void shouldNormalizeAVectorWithTwoSubsequentCalls() {
+        // Given
+        Vector instance = new Vector(6.0, -5.0, 4.0);
+
+        // When
+        Vector result = instance.normalized().normalized();
 
         // Then
         assertThat(result.length()).isCloseTo(1.0, offset(DELTA));
@@ -224,6 +258,6 @@ public class VectorTest {
         Vector vector = new Vector(1.0, 1.0, 1.0);
 
         // Expect
-        assertThat(vector.toString()).isEqualTo("Vector{x=1.0, y=1.0, z=1.0}");
+        assertThat(vector.toString()).isEqualTo("Vector{x=1.0, y=1.0, z=1.0, normalized=false}");
     }
 }

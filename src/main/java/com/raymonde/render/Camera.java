@@ -37,14 +37,14 @@ public class Camera {
     private Vector direction;
 
     /**
-     * The width of the surface.
+     * The width in pixels of the surface.
      */
-    private int width;
+    private int pixelWidth;
 
     /**
-     * The height of the surface.
+     * The height in pixels of the surface.
      */
-    private int height;
+    private int pixelHeight;
 
     /**
      * The distance from the camera origin to the surface.
@@ -101,31 +101,31 @@ public class Camera {
     }
 
     /**
-     * @return the width
+     * @return the pixelWidth
      */
-    public int getWidth() {
-        return this.width;
+    public int getPixelWidth() {
+        return this.pixelWidth;
     }
 
     /**
-     * @param width the width to set
+     * @param pixelWidth the pixelWidth to set
      */
-    public void setWidth(final int width) {
-        this.width = width;
+    public void setPixelWidth(final int pixelWidth) {
+        this.pixelWidth = pixelWidth;
     }
 
     /**
-     * @return the height
+     * @return the pixelHeight
      */
-    public int getHeight() {
-        return this.height;
+    public int getPixelHeight() {
+        return this.pixelHeight;
     }
 
     /**
-     * @param height the height to set
+     * @param pixelHeight the pixelHeight to set
      */
-    public void setHeight(final int height) {
-        this.height = height;
+    public void setPixelHeight(final int pixelHeight) {
+        this.pixelHeight = pixelHeight;
     }
 
     /**
@@ -142,7 +142,28 @@ public class Camera {
         this.distance = distance;
     }
     
-    public Surface createSurface() {
-        return null;
+    public RenderingSurface createRenderingSurface() {
+
+        return new RenderingSurface(pixelWidth, pixelHeight);
+    }
+
+
+    /**
+     * Returns a {@link Ray} that goes from the camera origin to the specified pixel.
+     * Basically it computes the coordinates of the specified pixel in the absolute coordinate system and constructs
+     * a Ray that starts at the {@link Camera} origin and pass through this computed {@link Vector point}.
+     *
+     * @param pixel the {@link Pixel} the resulting ray should pass through
+     *
+     * @return the resulting {@link Ray}
+     */
+    public Ray rayThroughPixel(final Pixel pixel) {
+
+        Vector surfaceCenter = position.add(direction.normalized().multiply(distance));
+        double endZ = surfaceCenter.z();
+        double endY = 0.0;
+        double endX = 0.0;
+
+        return Ray.joining(position, new Vector(endX, endY, endZ));
     }
 }

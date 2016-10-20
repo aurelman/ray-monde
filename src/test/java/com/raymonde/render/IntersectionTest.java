@@ -32,36 +32,18 @@ import org.junit.Test;
  * @author Aurel
  */
 public class IntersectionTest {
-    
-    public IntersectionTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
-    /**
-     * Test of getReflectedRay method, of class Intersection.
-     */
     @Test
-    public void testGetReflectedRay() {
+    public void shouldComputeReflectedRay() {
+        // Given
         Vector spherePosition = new Vector(0, 0, 0);
         Ray incomingRay = new Ray(new Vector(4, 0, 0), new Vector(-1, 0, 0));
         Intersection instance = new Intersection(new Sphere("toto", spherePosition, 1), incomingRay, 3);
         Ray expResult = new Ray(new Vector(1, 0, 0), new Vector(1, 0, 0));
+        // When
         Ray result = instance.getReflectedRay();
+
+        // Then
         assertEquals(expResult, result);
     }
 

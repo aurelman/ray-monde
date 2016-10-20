@@ -21,7 +21,7 @@ import com.raymonde.core.Color;
 import com.raymonde.render.Camera;
 import com.raymonde.render.Intersection;
 import com.raymonde.render.Ray;
-import com.raymonde.render.Surface;
+import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
 import java.util.Collection;
@@ -46,7 +46,7 @@ public class Scene {
     /**
      * The surface where the scene will be rendered.
      */
-    private Surface renderingSurface;
+    private RenderingSurface renderingSurface;
     
     /**
      * List of primitives
@@ -234,7 +234,7 @@ public class Scene {
     /**
      * @return The rendering surface.
      */
-    public Surface getSurface() {
+    public RenderingSurface getRenderingSurface() {
         return renderingSurface;
     }
 
@@ -250,7 +250,7 @@ public class Scene {
     /**
      * @param renderingSurface The rendering surface to set.
      */
-    public void setSurface(final Surface renderingSurface) {
+    public void setSurface(final RenderingSurface renderingSurface) {
         this.renderingSurface = renderingSurface;
     }
     

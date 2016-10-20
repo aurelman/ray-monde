@@ -23,7 +23,7 @@ import com.raymonde.exception.RayMondeException;
  *
  * @author aurelman
  */
-public class SaveException extends RayMondeException{
+public class SaveException extends Exception{
 
     /**
      * Constructs a default <code>SaveException</code>.

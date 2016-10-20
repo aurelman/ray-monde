@@ -21,7 +21,7 @@ package com.raymonde;
 import com.raymonde.load.ParsingException;
 import com.raymonde.load.SceneParser;
 import com.raymonde.load.yml.YamlSceneParser;
-import com.raymonde.render.RenderException;
+import com.raymonde.render.RenderingException;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
 import com.raymonde.scene.Scene;
@@ -57,14 +57,14 @@ public class RayMonde {
      * @throws SaveException
      * @throws IOException
      * @throws ParsingException
-     * @throws RenderException
+     * @throws RenderingException
      * 
      * @param args An array of argument.
      */
     public static void main(final String [] args)
         throws SaveException,
             IOException,
-            RenderException,
+            RenderingException,
             ParsingException {
         logger.info("starting ray-monde");
 

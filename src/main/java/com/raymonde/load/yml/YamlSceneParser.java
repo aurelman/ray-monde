@@ -23,7 +23,7 @@ import com.raymonde.core.Vector;
 import com.raymonde.load.ParsingException;
 import com.raymonde.load.SceneParser;
 import com.raymonde.render.Camera;
-import com.raymonde.render.Surface;
+import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.light.OmnidirectionalLight;
 import com.raymonde.render.material.*;
@@ -77,7 +77,7 @@ public class YamlSceneParser implements SceneParser {
         Camera camera = parseCamera(cameraConfig);
         scene.addCamera(camera);
 
-        Surface surface = parseSurface((Map<String, Object>)sceneConfig.get("surface"));
+        RenderingSurface surface = parseSurface((Map<String, Object>)sceneConfig.get("surface"));
         scene.setSurface(surface);
 
         Collection<Map> primitivesConfig = (Collection<Map>)sceneConfig.get("primitives");
@@ -93,10 +93,10 @@ public class YamlSceneParser implements SceneParser {
         return scene;
     }
 
-    private Surface parseSurface(final Map<String, Object> surfaceConfig) {
+    private RenderingSurface parseSurface(final Map<String, Object> surfaceConfig) {
         Map<String, Integer> dimension = (Map<String, Integer>)surfaceConfig.get("dimension");
         Vector position = parseVector((Map<String, Double>)surfaceConfig.get("position"));
-        return new Surface(position, dimension.get("width"), dimension.get("height"));
+        return new RenderingSurface(position, dimension.get("width"), dimension.get("height"));
     }
 
     private Light parseLight(final Map<String, Object> lightConfig) {
