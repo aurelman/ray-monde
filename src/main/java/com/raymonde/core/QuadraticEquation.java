@@ -152,8 +152,8 @@ public final class QuadraticEquation {
         if (a == 0.0) {
             count = 1;
             firstRoot = (-c/b);
+            secondRoot = firstRoot;
         } else {
-
             double delta = b*b - 4*a*c;
 
             if (delta < 0.0) {
@@ -161,6 +161,7 @@ public final class QuadraticEquation {
             } else if (delta == 0.0) {
                 count = 1;
                 firstRoot = ((-b)/(2*a));
+                secondRoot = firstRoot;
             } else {
                 double rootSquaredDelta = Math.sqrt(delta);
                 double denominator = 2*a;

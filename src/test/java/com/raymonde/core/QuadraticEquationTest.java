@@ -24,21 +24,16 @@ import static com.raymonde.core.QuadraticEquation.Result;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 
-/**
- *
- * @author aurelman
- */
 public class QuadraticEquationTest {
 
     private final static double DELTA = 0.000000001;
 
-    /**
-     * Test of solve method, of class QuadraticEquation.
-     */
     @Test
     public void shouldReturnTheCorrectRootsStatic() {
+        // When
         Result result = QuadraticEquation.solve(2.0, 5.0, 2.0);
 
+        // Expect
         assertThat(result.rootNumber()).isEqualTo(2);
         assertThat(result.firstRoot()).isEqualTo(-2.0, offset(DELTA));
         assertThat(result.secondRoot()).isEqualTo(-0.5, offset(DELTA));
@@ -49,52 +44,89 @@ public class QuadraticEquationTest {
      */
     @Test
     public void shouldReturnTheCorrectRootStatic() {
+        // When
         Result result = QuadraticEquation.solve(0.0, 5.0, 2.0);
 
+        // Expect
         assertThat(result.rootNumber()).isEqualTo(1);
         assertThat(result.firstRoot()).isEqualTo(-2.0/5.0, offset(DELTA));
+        assertThat(result.secondRoot()).isEqualTo(-2.0/5.0, offset(DELTA));
     }
 
 
     @Test
     public void shouldReturnZeroRootsStatic() {
+        // When
         Result result = QuadraticEquation.solve(2.0, -1.0, 2.0);
 
+        // Expect
         assertThat(result.rootNumber()).isEqualTo(0);
     }
 
-    /**
-     * Test of solve method, of class QuadraticEquation.
-     */
     @Test
     public void shouldReturnTheCorrectRoots() {
+        // Given
         QuadraticEquation instance = new QuadraticEquation(2.0, 5.0, 2.0);
+
+        // When
         Result result = instance.solve();
 
+        // Then
         assertThat(result.rootNumber()).isEqualTo(2);
         assertThat(result.firstRoot()).isEqualTo(-2.0, offset(DELTA));
         assertThat(result.secondRoot()).isEqualTo(-0.5, offset(DELTA));
     }
 
-    /**
-     * Test of solve method, of class QuadraticEquation.
-     */
     @Test
     public void shouldReturnTheCorrectRoot() {
-
+        // Given
         QuadraticEquation instance = new QuadraticEquation(0.0, 5.0, 2.0);
+
+        // When
         Result result = instance.solve();
 
+        // Then
         assertThat(result.rootNumber()).isEqualTo(1);
         assertThat(result.firstRoot()).isEqualTo(-2.0/5.0, offset(DELTA));
+        assertThat(result.secondRoot()).isEqualTo(-2.0/5.0, offset(DELTA));
     }
 
     @Test
     public void shouldReturnZeroRoots() {
-
+        // Given
         QuadraticEquation instance = new QuadraticEquation(2.0, -1.0, 2.0);
+
+        // When
         Result result = instance.solve();
 
+        // THen
         assertThat(result.rootNumber()).isEqualTo(0);
+    }
+
+
+    @Test
+    public void shouldReturnTheCorrectRootIfDiscriminantIsZero() {
+        // Given
+        QuadraticEquation instance = new QuadraticEquation(1.0, 2.0, 1.0);
+
+        // When
+        Result result = instance.solve();
+
+        // Then
+        assertThat(result.rootNumber()).isEqualTo(1);
+        assertThat(result.firstRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
+        assertThat(result.secondRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
+    }
+
+    @Test
+    public void shouldReturnTheCorrectRootIfDiscriminantIsZeroStatic() {
+
+        // When
+        Result result = QuadraticEquation.solve(1.0, 2.0, 1.0);
+
+        // Expect
+        assertThat(result.rootNumber()).isEqualTo(1);
+        assertThat(result.firstRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
+        assertThat(result.secondRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
     }
 }
