@@ -31,6 +31,7 @@ import com.raymonde.render.primitive.Plane;
 import com.raymonde.render.primitive.Primitive;
 import com.raymonde.render.primitive.Sphere;
 import com.raymonde.scene.Scene;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -43,20 +44,14 @@ import java.util.Map;
 /**
  * This {@link SceneParser} reads a {@link Scene} object from a Yaml file.
  *
- *
- *
- * @author aurelman
  */
 public class YamlSceneParser implements SceneParser {
 
-    /**
-     * Available logger.
-     */
     private static final Logger logger = LoggerFactory.getLogger(YamlSceneParser.class);
 
     @Override
     public Scene parseFile(final String filename) throws ParsingException {
-        Yaml yaml = new Yaml();
+        val yaml = new Yaml();
         Scene scene = null;
         try (FileInputStream fis = new FileInputStream(filename)) {
             Map<String, Object> config = (Map<String, Object>) yaml.load(fis);
@@ -71,7 +66,7 @@ public class YamlSceneParser implements SceneParser {
     }
 
     private Scene parseScene(final Map<String, Object> sceneConfig) {
-        Scene scene = new Scene();
+        val scene = new Scene();
         scene.setAmbientColor(parseColor((Map<String, Double>)sceneConfig.get("ambient")));
 
         Map<String, Object> cameraConfig = (Map<String, Object>)sceneConfig.get("camera");
