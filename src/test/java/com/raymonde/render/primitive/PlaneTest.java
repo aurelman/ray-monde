@@ -52,7 +52,7 @@ public class PlaneTest {
      */
     public Plane getPlane1() {
         if (this.plane1 == null) {
-            this.plane1 = new Plane("sphere1", new Vector(0., 0., -1.), 100.0);
+            this.plane1 = new Plane(new Vector(0., 0., -1.), 100.0);
         }
 
         return this.plane1;

@@ -52,24 +52,14 @@ public class PhongMaterial extends AbstractMaterial implements Material {
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public PhongMaterial(final String name) {
-        super(name);
-    }
-
-    /**
      * Constructs a <code>PhongMaterial</code> with the specified diffuse and
      * specular.
      *
-     * @param name The name of the material.
      * @param diffuse The diffuse factor.
      * @param specular The specular factor.
      */
-    public PhongMaterial(final String name, 
+    public PhongMaterial(
             final double diffuse, final double specular) {
-        super(name);
         this.diffuseFactor = diffuse;
         this.specularFactor = specular;
     }

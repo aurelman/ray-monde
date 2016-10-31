@@ -34,26 +34,12 @@ import com.raymonde.scene.Scene;
 public abstract class AbstractMaterial implements Material {
 
     /**
-     * The name of the material.
-     */
-    private String name;
-
-    /**
      * The sub-material.
      */
     private Material material;
 
     public AbstractMaterial() {
         
-    }
-    
-    /**
-     * Constructs a Material with the specified name.
-     * 
-     * @param name The name of the material.
-     */
-    public AbstractMaterial(final String name) {
-        this.name = name;
     }
 
     /**
@@ -82,13 +68,5 @@ public abstract class AbstractMaterial implements Material {
      */
     public void setMaterial(final Material material) {
         this.material = material;
-    }
-
-    /**
-     * Returns the name of the material.
-     * @return The name of the material.
-     */
-    public String getName() {
-        return name;
     }
 }

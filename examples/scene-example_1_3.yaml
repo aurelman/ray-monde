@@ -3,9 +3,9 @@ scene:
     camera:
         position: {x: 0., y: 0., z: 0.}
         direction: {x: 0., y: 0., z: -1.}
-    surface:
-        dimension: {width: 400, height: 300}
-        position: {x: -200., y: 150., z: -300.}
+        surface:
+            dimension: {width: 400, height: 300}
+            position: {x: -200., y: 150., z: -300.}
     primitives:
         - name: plane1
           type: plane

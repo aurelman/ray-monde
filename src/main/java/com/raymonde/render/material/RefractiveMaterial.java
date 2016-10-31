@@ -49,22 +49,12 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public RefractiveMaterial(final String name) {
-        super(name);
-    }
-
-    /**
      * Constructs a <code>RefractiveMaterial</code> with the specified
      * refraction index.
      *
-     * @param name The name of the material.
      * @param refraction The refraction index.
      */
-    public RefractiveMaterial(final String name, final double refraction) {
-        super(name);
+    public RefractiveMaterial(final double refraction) {
         this.refraction = refraction;
     }
     

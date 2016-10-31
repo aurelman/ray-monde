@@ -44,30 +44,10 @@ public class Sphere extends Primitive {
     /**
      * Constructs a <code>Sphere</code> object with the specified name.
      *
-     * @param name The name of the sphere entity.
-     */
-    public Sphere(final String name) {
-        super(name);
-    }
-
-
-    /**
-     * Not really implemented method
-     * @return
-     */
-    public String getName() {
-        return "";
-    }
-
-    /**
-     * Constructs a <code>Sphere</code> object with the specified name.
-     *
-     * @param name The name of the sphere entity.
      * @param pos The sphere center position.
      * @param radius The radius of the sphere.
      */
-    public Sphere(final String name, final Vector pos, final double radius) {
-        super(name);
+    public Sphere(final Vector pos, final double radius) {
         this.position = pos;
         this.radius = radius;
     }

@@ -19,6 +19,7 @@ package com.raymonde.render;
 
 import com.raymonde.core.Vector;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import lombok.Builder;
 
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -98,21 +99,33 @@ public class Camera {
 
     private final RenderingSurfaceSpec renderingSurfaceSpec;
 
-
-    public String getName() {
-        return "";
+    /**
+     *
+     * @param position
+     * @param direction
+     * @param up
+     * @param distance
+     * @param width
+     */
+    @Builder
+    protected Camera(final Vector position, final Vector direction, final Vector up, final double distance, final double width, final double height, final int pixelWidth, final int pixelHeight) {
+        this.position = position;
+        this.direction = direction.normalized();
+        this.up = up.normalized();
+        this.distance = distance;
+        this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight);
     }
+
 
     /**
      *
-     * @param name
      * @param pos
      * @param dir
      * @param up
      * @param distance
      * @param surfaceSpec
      */
-    public Camera(final String name, final Vector pos, final Vector dir, final Vector up, final double distance, RenderingSurfaceSpec surfaceSpec) {
+    public Camera(final Vector pos, final Vector dir, final Vector up, final double distance, final RenderingSurfaceSpec surfaceSpec) {
         this.position = pos;
         this.direction = dir.normalized();
         this.up = up.normalized();

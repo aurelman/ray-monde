@@ -22,19 +22,10 @@ import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 
 /**
- * A <code>Plane</code> object is defined by a normal vector and a distance from
- * the origine.
- * 
- * @author aurelman
+ * A {@code Plane} object is defined by a normal vector and a distance from
+ * the origin.
  */
 public class VerticalPlane extends Primitive {
-
-    /**
-     * 
-     */
-    public VerticalPlane() {
-        super("plane");
-    }
 
     @Override
     public Vector normalAt(final Vector point) {

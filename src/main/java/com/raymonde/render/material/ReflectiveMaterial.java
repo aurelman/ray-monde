@@ -48,22 +48,12 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public ReflectiveMaterial(final String name) {
-        super(name);
-    }
-
-    /**
      * Constructs a <code>ReflectiveMaterial</code> with the specified
      * reflectivity.
      *
-     * @param name The name of the material.
      * @param reflectivity The reflection factor.
      */
-    public ReflectiveMaterial(final String name, final double reflectivity) {
-        super(name);
+    public ReflectiveMaterial(final double reflectivity) {
         this.reflectivity = reflectivity;
     }
     

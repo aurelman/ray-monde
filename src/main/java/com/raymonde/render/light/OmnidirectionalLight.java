@@ -42,14 +42,13 @@ public class OmnidirectionalLight extends Light {
 
     /**
      *
-     * @param name The name of the light.
      * @param position The position of the light.
      * @param color The color of the light.
      * @param attenuation The attenuation of the light.
      */
-    public OmnidirectionalLight(final String name, final Vector position,
+    public OmnidirectionalLight(final Vector position,
             final Color color, final Vector attenuation) {
-        super(name, position);
+        super(position);
         this.color = color;
         this.attenuation = attenuation;
     }

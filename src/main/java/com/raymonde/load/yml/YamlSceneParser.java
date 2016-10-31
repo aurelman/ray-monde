@@ -73,26 +73,31 @@ public class YamlSceneParser implements SceneParser {
     private Scene parseScene(final Map<String, Object> sceneConfig) {
         Scene scene = new Scene();
         scene.setAmbientColor(parseColor((Map<String, Double>)sceneConfig.get("ambient")));
-        Map<String, Map> cameraConfig = (Map<String, Map>)sceneConfig.get("camera");
-        Camera camera = parseCamera(cameraConfig);
-        scene.addCamera(camera);
 
+        Map<String, Object> cameraConfig = (Map<String, Object>)sceneConfig.get("camera");
+        Camera camera = parseCamera(cameraConfig);
+        scene.addCamera((String)cameraConfig.get("name"), camera);
+
+        /*
         RenderingSurface surface = parseSurface((Map<String, Object>)sceneConfig.get("surface"));
         scene.setSurface(surface);
+        */
 
         Collection<Map> primitivesConfig = (Collection<Map>)sceneConfig.get("primitives");
         for (Map<String, Object> primitive : primitivesConfig) {
-            scene.addPrimitive(parsePrimitive(primitive));
+            scene.addPrimitive((String)primitive.get("name"), parsePrimitive(primitive));
         }
 
         Collection<Map> lightsConfig = (Collection<Map>)sceneConfig.get("lights");
         for (Map<String, Object> light : lightsConfig) {
-            scene.addLight(parseLight(light));
+            scene.addLight((String)light.get("name"), parseLight(light));
         }
 
         return scene;
     }
 
+    // TODO: should be delegated to the camera parsing
+    @Deprecated
     private RenderingSurface parseSurface(final Map<String, Object> surfaceConfig) {
         Map<String, Integer> dimension = (Map<String, Integer>)surfaceConfig.get("dimension");
         Vector position = parseVector((Map<String, Double>)surfaceConfig.get("position"));
@@ -115,11 +120,10 @@ public class YamlSceneParser implements SceneParser {
     }
 
     private Light parseOmnidirectionalLight(Map<String, Object> lightConfig) {
-        String name = (String)lightConfig.get("name");
         Double attenuation = (Double)lightConfig.get("attenuation");
         Vector position = parseVector((Map<String, Double>)lightConfig.get("position"));
         Color color = parseColor((Map<String, Double>) lightConfig.get("color"));
-        return new OmnidirectionalLight(name, position, color, new Vector(attenuation, 0., 0.));
+        return new OmnidirectionalLight(position, color, new Vector(attenuation, 0., 0.));
     }
 
     private Primitive parsePrimitive(Map<String, Object> primitiveConfig) {
@@ -142,23 +146,28 @@ public class YamlSceneParser implements SceneParser {
     }
 
     private Primitive parsePlane(final Map<String,Object> primitiveConfig) {
-        Double distance = (Double)primitiveConfig.get("distance");
-        Vector normal = parseVector((Map<String, Double>)primitiveConfig.get("normal"));
-        return new Plane((String)primitiveConfig.get("name"), normal, distance);
+        return new Plane(parseVector((Map<String, Double>)primitiveConfig.get("normal")), (Double)primitiveConfig.get("distance"));
     }
 
     private Primitive parseSphere(final Map<String, Object> primitiveConfig) {
-        Sphere sphere = new Sphere((String)primitiveConfig.get("name"));
-        sphere.setPosition(parseVector((Map<String, Double>)primitiveConfig.get("position")));
-        sphere.setRadius((Double)primitiveConfig.get("radius"));
-        return sphere;
+        return new Sphere(
+                parseVector((Map<String, Double>)primitiveConfig.get("position")),
+                (Double)primitiveConfig.get("radius"));
     }
 
 
-    private Camera parseCamera(final Map<String, Map> cameraConfig) {
-        Camera camera = new Camera("");
-        camera.setPosition(parseVector(cameraConfig.get("position")));
-        camera.setDirection(parseVector(cameraConfig.get("direction")));
+    private Camera parseCamera(final Map<String, Object> cameraConfig) {
+
+        Camera camera = Camera.builder()
+            .direction(parseVector((Map)cameraConfig.get("direction")))
+            .position(parseVector((Map)cameraConfig.get("position")))
+            .distance(1.0)
+            .width(4.0)
+            .height(3.0)
+            .pixelWidth(1900)
+            .pixelHeight(1080)
+            .build();
+
         return camera;
     }
 
@@ -194,22 +203,22 @@ public class YamlSceneParser implements SceneParser {
         //specular: 12.
         Double diffuse = (Double)materialConfig.get("diffuse");
         Double specular = (Double)materialConfig.get("specular");
-        return new PhongMaterial("", diffuse, specular);
+        return new PhongMaterial(diffuse, specular);
     }
 
     private Material parseRefractiveMaterial(Map<String, Object> materialConfig) {
         Double refraction = (Double)materialConfig.get("refraction");
-        return new RefractiveMaterial("", refraction);
+        return new RefractiveMaterial(refraction);
     }
 
     private Material parseReflectiveMaterial(Map<String, Object> materialConfig) {
         Double reflectivity = (Double)materialConfig.get("reflectivity");
-        return new ReflectiveMaterial("", reflectivity);
+        return new ReflectiveMaterial(reflectivity);
     }
 
     private Material parseColorMaterial(Map<String, Object> materialConfig) {
         Color color = parseColor((Map<String, Double>)materialConfig.get("color"));
-        return new ColorMaterial("", color);
+        return new ColorMaterial(color);
     }
 
     private Color parseColor(final Map<String, Double> colorConfig) {

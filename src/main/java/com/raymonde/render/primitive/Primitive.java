@@ -34,23 +34,6 @@ public abstract class Primitive {
      * The root material of the pripmitive.
      */
     private Material material;
-    
-    /**
-     * Constructs a <code>Primitive</code> object with the specified name.
-     * 
-     * @param name The name of the primitive.
-     */
-    public Primitive(final String name) {
-    }
-
-    /**
-     * Not really implemented method
-     *
-     * @return
-     */
-    public String getName() {
-        return "";
-    }
 
     /**
      * Compute the normal vector to the primitive surface for the specified

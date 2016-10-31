@@ -81,33 +81,10 @@ public class Scene {
      * @param lights The list of the lights in the scene.
      * @param cameras The list of the cameras in the scene.
      */
-    public Scene(final Collection<Primitive> primitives,
+    @Deprecated
+    private Scene(final Collection<Primitive> primitives,
             final Collection<Light> lights,
             final Collection<Camera> cameras) {
-
-        // Initialize entities
-        if (primitives == null || primitives.isEmpty()) {
-            this.primitives = new HashMap<>();
-        } else {
-            this.primitives = new HashMap<>(primitives.size());
-            addPrimitives(primitives);
-        }
-
-        // Initialize lights
-        if (lights == null || lights.isEmpty()) {
-            this.lights = new HashMap<>();
-        } else {
-            this.lights = new HashMap<>(lights.size());
-            addLights(lights);
-        }
-
-        // Initialize cameras
-        if (cameras == null || cameras.isEmpty()) {
-            this.cameras = new HashMap<>();
-        } else {
-            this.cameras = new HashMap<>(cameras.size());
-            addCameras(cameras);
-        }
     }
 
     /**
@@ -171,19 +148,21 @@ public class Scene {
     /**
      * Adds the specified primitive to the scene.
      *
+     * @param name
      * @param primitive The primitive to add to the scene.
      */
-    public void addPrimitive(final Primitive primitive) {
-        primitives.put(primitive.getName(), primitive);
+    public void addPrimitive(final String name, final Primitive primitive) {
+        primitives.put(name, primitive);
     }
 
     /**
      * Adds the specified light to the scene.
      *
+     * @param name
      * @param light The light to add.
      */
-    public void addLight(final Light light) {
-        lights.put(light.getName(), light);
+    public void addLight(final String name, final Light light) {
+        lights.put(name, light);
     }
 
     /**
@@ -191,44 +170,8 @@ public class Scene {
      *
      * @param camera The camera to add.
      */
-    public void addCamera(final Camera camera) {
-        cameras.put(camera.getName(), camera);
-    }
-
-    /**
-     * Adds each of the primitive the specified collection contains
-     * to the scene.
-     * 
-     * @param primitives The primitives to add.
-     */
-    public void addPrimitives(final Collection<Primitive> primitives) {
-        for(Primitive primitive : primitives) {
-            addPrimitive(primitive);
-        }
-    }
-
-    /**
-     * Adds each of the light the specified collection contains
-     * to the scene.
-     *
-     * @param lights The lights to add.
-     */
-    public void addLights(final Collection<Light> lights) {
-        for (Light light : lights) {
-           addLight(light);
-        }
-    }
-
-    /**
-     * Adds each of the camera the specified collection contains
-     * to the scene.
-     *
-     * @param cameras The cameras to add.
-     */
-    public void addCameras(final Collection<Camera> cameras) {
-        for(Camera camera : cameras) {
-            addCamera(camera);
-        }
+    public void addCamera(final String cameraName, final Camera camera) {
+        cameras.put(cameraName, camera);
     }
 
     /**

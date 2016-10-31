@@ -31,7 +31,7 @@ import com.raymonde.render.Ray;
 public class Plane extends Primitive {
 
     /**
-     * The distance from the origine.
+     * The distance from the origin.
      */
     private double distance;
 
@@ -40,25 +40,13 @@ public class Plane extends Primitive {
      */
     private Vector normal;
 
-
     /**
      * Constructs the plane with the specified name.
      *
-     * @param name The name of the plane.
-     */
-    public Plane(final String name) {
-        super(name);
-    }
-
-    /**
-     * Constructs the plane with the specified name.
-     *
-     * @param name The name of the plane.
      * @param normal The normal of the plane.
      * @param dist The distance from origin to the plane.
      */
-    public Plane(final String name, final Vector normal, final double dist) {
-        super(name);
+    public Plane(final Vector normal, final double dist) {
         this.normal = normal.normalized();
         this.distance = dist;
 

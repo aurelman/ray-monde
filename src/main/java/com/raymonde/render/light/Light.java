@@ -34,19 +34,10 @@ public abstract class Light {
     private Vector position;
 
     /**
-     * Not really implemented
-     * @return
-     */
-    public String getName() {
-        return "";
-    }
-
-    /**
      *
-     * @param name The name of the light.
      * @param position The position of the light.
      */
-    public Light(final String name, final Vector position) {
+    public Light(final Vector position) {
         this.position = position;
     }
 
