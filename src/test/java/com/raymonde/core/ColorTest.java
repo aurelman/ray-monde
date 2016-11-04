@@ -24,10 +24,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 
-/**
- *
- * @author aurelman
- */
 public class ColorTest {
 
     private final static double DELTA = 0.001;
@@ -107,9 +103,6 @@ public class ColorTest {
         assertThat(color).isEqualTo(colorOther);
     }
 
-    /**
-     * Verify illegal argument
-     */
     @Test(expected = IllegalArgumentException.class)
     public void shouldRaiseExceptionWhenColorComponentOverflow() {
         new Color(2.0, 0.0, -5.0);

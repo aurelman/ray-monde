@@ -20,7 +20,6 @@ package com.raymonde.scene;
 
 /**
  *
- * @author aurelman
  */
 public class DefaultSpatialPartitionFactory implements SpatialPartitionFactory {
     

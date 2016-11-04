@@ -18,49 +18,45 @@
 
 package com.raymonde.load;
 
-import com.raymonde.exception.RayMondeException;
-
 /**
- *
- * @author aurelman
  */
-public class ParsingException extends Exception {
+public class SceneBuildingException extends Exception {
     
     /**
-     * Constructs a default <code>ParsingException</code>.
+     * Constructs a default {@code SceneBuildingException}.
      */
-    public ParsingException() {
+    public SceneBuildingException() {
         super();
     }
 
     /**
-     * Constructs a <code>ParsingException</code> with the specified
+     * Constructs a {@code SceneBuildingException} with the specified
      * message.
      *
-     * @param message The message.
+     * @param message the message.
      */
-    public ParsingException(final String message) {
+    public SceneBuildingException(final String message) {
         super(message);
     }
 
     /**
-     * Constructs a <code>ParsingException</code> with the specified
+     * Constructs a {@code SceneBuildingException} with the specified
      * message and cause.
      *
-     * @param message The message.
-     * @param cause The cause.
+     * @param message the message.
+     * @param cause the cause.
      */
-    public ParsingException(final String message, final Throwable cause ) {
+    public SceneBuildingException(final String message, final Throwable cause ) {
         super(message, cause);
     }
 
     /**
-     * Constructs a <code>ParsingException</code> with the specified
+     * Constructs a {@code SceneBuildingException} with the specified
      * cause.
      *
-     * @param cause The cause.
+     * @param cause the cause.
      */
-    public ParsingException(final Throwable cause ) {
+    public SceneBuildingException(final Throwable cause) {
         super(cause);
     }
 }

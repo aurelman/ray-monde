@@ -22,19 +22,25 @@ import com.raymonde.scene.Scene;
 
 /**
  *
- * @author aurelman
  */
-public interface SceneParser {
+public interface SceneBuilder {
 
     /**
-     * Parses the specified filename.
+     * Returns a name that allow to identify a given {@code SceneBuilder} implementation
      *
-     * @param filename The path to the file to parse.
-     * @return The resulting scene.
-     * @throws ParsingException When an error occurs.
+     * @return the name identifying the {@code SceneBuilder}.
      */
-    public Scene parseFile(final String filename)
-            throws ParsingException;
+    String getName();
+
+    /**
+     * Build a {@link Scene} object according
+     *
+     * @return The resulting {@link Scene scene}.
+     *
+     * @throws SceneBuildingException When an error occurs.
+     */
+    Scene build()
+            throws SceneBuildingException;
 
     
 }

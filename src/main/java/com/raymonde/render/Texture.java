@@ -20,7 +20,6 @@ package com.raymonde.render;
 
 /**
  *
- * @author aurelman
  */
 public class Texture {
 

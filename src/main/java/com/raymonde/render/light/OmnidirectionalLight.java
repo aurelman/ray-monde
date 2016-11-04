@@ -19,12 +19,11 @@ package com.raymonde.render.light;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- *
- * @author aurelman
  */
 @ThreadSafe
 @Immutable

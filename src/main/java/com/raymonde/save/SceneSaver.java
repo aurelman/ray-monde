@@ -18,19 +18,18 @@
 
 package com.raymonde.save;
 
-import com.raymonde.scene.Scene;
 import com.raymonde.render.RenderingSurface;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import com.raymonde.scene.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
- * <p><code>SceneSaver</code> allows saving a rendered scene in image files.</p>
- * 
- * @author aurelman
+ * {@code SceneSaver} allows saving a rendered scene in image files.
  */
 public class SceneSaver {
 

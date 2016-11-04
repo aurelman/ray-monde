@@ -23,11 +23,9 @@ import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 
 /**
- * <code>Sphere</code> represents spherical object in a scene.
+ * {@code Sphere} represents spherical object in a scene.
  * The center of the sphere is represented by his position.
  * The radius is a double value.
- * 
- * @author aurelman
  */
 public class Sphere extends Primitive {
 
@@ -42,7 +40,7 @@ public class Sphere extends Primitive {
     private double radius;
 
     /**
-     * Constructs a <code>Sphere</code> object with the specified name.
+     * Constructs a {@code Sphere} object with the specified name.
      *
      * @param pos The sphere center position.
      * @param radius The radius of the sphere.

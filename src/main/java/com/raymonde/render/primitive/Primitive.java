@@ -23,10 +23,8 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 
 /**
- * <code>Primitive</code> objects are the <em>solids</em> elements of a scene.
+ * {@code Primitive} objects are the <em>solids</em> elements of a scene.
  * They might be intersected by rays.
- * 
- * @author aurelman
  */
 public abstract class Primitive {
 

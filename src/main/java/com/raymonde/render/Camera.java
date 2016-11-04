@@ -24,79 +24,28 @@ import lombok.Builder;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- * <code>Camera</code> objects represents a point of view in a Scene
- * 
- * @author aurelman
+ * {@code Camera} objects represents a point of view in a Scene
  */
 @Immutable
 @ThreadSafe
 public class Camera {
 
-    private static class RenderingSurfaceSpec {
-        /**
-         * The width in pixels of the surface.
-         */
-        private final int pixelWidth;
-
-        /**
-         * The height in pixels of the surface.
-         */
-        private final int pixelHeight;
-
-        /**
-         * The width of the surface (in world coordinate system)
-         */
-        private final double width;
-
-        /**
-         * The height of the surface (in world coordinate system)
-         */
-        private final double height;
-
-        private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight) {
-            this.width = width;
-            this.height = height;
-            this.pixelWidth = pixelWidth;
-            this.pixelHeight = pixelHeight;
-        }
-
-        public int getPixelWidth() {
-            return pixelWidth;
-        }
-
-        public int getPixelHeight() {
-            return pixelHeight;
-        }
-
-        public double getWidth() {
-            return width;
-        }
-
-        public double getHeight() {
-            return height;
-        }
-    }
-
     /**
      * The position of the camera.
      */
     private final Vector position;
-
     /**
      * The look at position.
      */
     private final Vector direction;
-
     /**
      * The up {@link Vector}
      */
     private final Vector up;
-
     /**
      * The distance from the camera origin to the surface.
      */
     private final double distance;
-
     private final RenderingSurfaceSpec renderingSurfaceSpec;
 
     /**
@@ -115,7 +64,6 @@ public class Camera {
         this.distance = distance;
         this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight);
     }
-
 
     /**
      *
@@ -192,5 +140,50 @@ public class Camera {
         double endX = 0.0;
 
         return Ray.joining(position, new Vector(endX, endY, endZ));
+    }
+
+    private static class RenderingSurfaceSpec {
+        /**
+         * The width in pixels of the surface.
+         */
+        private final int pixelWidth;
+
+        /**
+         * The height in pixels of the surface.
+         */
+        private final int pixelHeight;
+
+        /**
+         * The width of the surface (in world coordinate system)
+         */
+        private final double width;
+
+        /**
+         * The height of the surface (in world coordinate system)
+         */
+        private final double height;
+
+        private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight) {
+            this.width = width;
+            this.height = height;
+            this.pixelWidth = pixelWidth;
+            this.pixelHeight = pixelHeight;
+        }
+
+        public int getPixelWidth() {
+            return pixelWidth;
+        }
+
+        public int getPixelHeight() {
+            return pixelHeight;
+        }
+
+        public double getWidth() {
+            return width;
+        }
+
+        public double getHeight() {
+            return height;
+        }
     }
 }

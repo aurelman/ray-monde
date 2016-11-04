@@ -20,26 +20,16 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-/**
- *
- * @author aurelman
- */
+import static org.junit.Assert.assertEquals;
+
 public class PlaneTest {
 
-    /**
-     * An instance of plane.
-     */
     private Plane plane1;
 
-    /**
-     * Test of intersect method, of class Plane.
-     */
     @Test
     public void testIntersect() {
-        System.out.println("intersect");
         Ray ray = new Ray(new Vector(0., 0., 1.), new Vector(0., 0., 1.));
         Plane instance = getPlane1();
         double expResult = 99.;
@@ -47,9 +37,6 @@ public class PlaneTest {
         assertEquals(expResult, result, 0.0000000001);
     }
 
-    /**
-     * @return the sphere1
-     */
     public Plane getPlane1() {
         if (this.plane1 == null) {
             this.plane1 = new Plane(new Vector(0., 0., -1.), 100.0);

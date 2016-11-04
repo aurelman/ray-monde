@@ -27,8 +27,6 @@ import com.raymonde.scene.Scene;
 /**
  * This is a simple material.
  *
- * 
- * @author aurelman
  */
 public class ColorMaterial extends AbstractMaterial implements Material {
 
@@ -38,7 +36,7 @@ public class ColorMaterial extends AbstractMaterial implements Material {
     private Color color;
     
     /**
-     * Constructs a new <code>ColorMaterial</code> with the specified color.
+     * Constructs a new {@link ColorMaterial} with the specified color.
      *
      * @param color The color of the material.
      */

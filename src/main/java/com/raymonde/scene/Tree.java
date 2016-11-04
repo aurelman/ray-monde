@@ -20,8 +20,6 @@ package com.raymonde.scene;
 /**
  * Spatial partionning.
  * Should be computed once the scene is build.
- * 
- * @author aurelman
  */
 public class Tree {
     

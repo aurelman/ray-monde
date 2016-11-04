@@ -24,25 +24,22 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
+
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <code>Scene</code> object are responsible of representing the description 
+ * {@code Scene} object are responsible of representing the description
  * of what would be rendered.
- * 
- * @author aurelman
  */
 public class Scene {
-    
-    private final SpatialPartitionFactory spatialPartitionFactory = new DefaultSpatialPartitionFactory();
     
     /**
      * The minimum distance a ray must have run to valid collision.
      */
     private static double DELTA_COLLISION_DETECTION = 0.000000001;
 
+    private final SpatialPartitionFactory spatialPartitionFactory = new DefaultSpatialPartitionFactory();
     /**
      * The surface where the scene will be rendered.
      */

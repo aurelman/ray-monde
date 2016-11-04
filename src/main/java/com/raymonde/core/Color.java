@@ -28,8 +28,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * <code>Color</code> objects are 3 component representation of color.
- * Components are : red, green and blue.
+ * {@code Color} objects are a RGB (Red, Green, Blue) representation of real color.
  * Each of the component is a double value which represents the intensity of the
  * component in the range from 0.0 to 1.0.
  * The 0.0 value is for absence of intensity of this component,
@@ -37,8 +36,6 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * This class is Thread safe : every method that return a Color object actually returns a newly created, or a shared immutable object.
  * object.
- *
- * @author aurelman
  */
 @ThreadSafe
 @Immutable
@@ -93,18 +90,9 @@ public final class Color {
     }
 
     /**
-     * The black color.
      *
-     * @return The black color.
-     */
-    public static Color black() {
-        return Color.BLACK;
-    }
-    
-    /**
-     * 
      * @param other The color to add to the current.
-     * 
+     *
      * @return The resulting <code>Color</code> object.
      */
     public Color add(final Color other) {
@@ -129,21 +117,21 @@ public final class Color {
         res.setBasic(components[0], components[1], components[2]);
         return res;
     }
-
+    
     /**
      * Adds the specified color color to the current one and returns the result
      * as a new instance of <code>Color</code>.
-     * 
+     *
      * @param colors The colors to add.
      *
      * @return The new resulting color.
      */
     public Color add(final Color...colors) {
         int [] components = getBasic();
-        
+
         if (colors.length != 0) {
             int [] currentComponents;
-        
+
             for (Color color : colors) {
                 currentComponents = color.getBasic();
                 components[0] += currentComponents[0];
@@ -169,9 +157,9 @@ public final class Color {
     /**
      * Multiply the current color with the specified one. The returns the
      * new resulting color.
-     * 
+     *
      * @param other The color to multiply the current with.
-     * 
+     *
      * @return The resulting color.
      */
     public Color multiply(final Color other) {
@@ -198,14 +186,14 @@ public final class Color {
 
     /**
      * Multiply each component of the current object by the specified factor.
-     * 
+     *
      * @param factor The factor to multiply each component by.
-     * 
+     *
      * @return The resulting <code>Color<code> object.
      */
     public Color multiply(final double factor) {
         int[] components = getBasic();
-        
+
         components[0] = round((double)components[0] * factor);
         components[1] = round((double)components[1] * factor);
         components[2] = round((double)components[2] * factor);
@@ -245,7 +233,7 @@ public final class Color {
 
     /**
      * Returns the blue component of the color.
-     * 
+     *
      * @return The blue component of the color.
      */
     public double b() {
@@ -268,7 +256,6 @@ public final class Color {
         res[2] = b();
         return res;
     }
-
 
     /**
      * Returns an <code>Integer</code> representation of the current color.
@@ -299,7 +286,7 @@ public final class Color {
     public int hashCode() {
         return Objects.hash(rgb);
     }
-    
+
     /**
      * Returns a <code>String</code> representation of the current color.
      *
@@ -309,12 +296,12 @@ public final class Color {
     public String toString() {
         return "Color : " + Arrays.toString(get());
     }
-
+    
     /**
      * Sets the color components with the specified values.
      * This method doesn't do any verification on the incoming values. This the
      * caller's responsibility.
-     * 
+     *
      * @param red The red component.
      * @param green The green component.
      * @param blue The blue component.
@@ -342,7 +329,7 @@ public final class Color {
 
     /**
      * Returns the basic integer value of the red component.
-     * 
+     *
      * @return The basic integer value of the red component.
      */
     private int getRedBasic() {
@@ -358,8 +345,6 @@ public final class Color {
         return (rgb >> 8) & 0xFF;
     }
 
-    
-
     /**
      * Returns the basic integer value of the blue component.
      *
@@ -367,6 +352,15 @@ public final class Color {
      */
     private int getBlueBasic() {
         return rgb & 0xFF;
+    }
+
+    /**
+     * The black color.
+     *
+     * @return The black color.
+     */
+    public static Color black() {
+        return Color.BLACK;
     }
 
     /**

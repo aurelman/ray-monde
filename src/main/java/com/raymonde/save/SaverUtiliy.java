@@ -22,7 +22,6 @@ import com.raymonde.core.Color;
 
 /**
  *
- * @author aurelman
  */
 public class SaverUtiliy {
 

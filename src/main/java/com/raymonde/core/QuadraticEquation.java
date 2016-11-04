@@ -22,11 +22,9 @@ import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- * <p> {@code QuadraticEquation} objects are responsible of handling
- * 2nd degree polynomial (following the pattern : {@code ax² + bx + c}).
- * It also allows find the roots of such an equation.</p>
- *
- * @author aurelman
+ * <p> {@code QuadraticEquation} represents 2nd degree polynomial equations
+ * (i.e. following the pattern : {@code ax² + bx + c}) and provides way to solve them
+ * and find their solutions if any.
  */
 @ThreadSafe
 @Immutable
@@ -34,33 +32,32 @@ public final class QuadraticEquation {
 
     /**
      * Used to represent the solution(s) of a quadratic equation.
-     * @author aurelman
      */
     @ThreadSafe
     @Immutable
     static final class Result {
 
         /**
-         *
+         * The first solution
          */
         private final double firstRoot;
 
         /**
-         *
+         * The second solution
          */
         private final double secondRoot;
 
         /**
-         *
+         * The number of solutions that are differents (can be 0, 1 or 2)
          */
         private final int rootNumber;
 
         /**
-         * Constructs a <code>result</code> object.
+         * Constructs a {@code Result} with the specified elements.
          *
          * @param rootNumber The number of root
-         * @param firstRoot contains the first root, if <code>rootNumber == 2</code>, or the only root if <code>rootNumber == 1</code>
-         * @param secondRoot contains the second root (only available when <code>rootNumber == 2</code>)
+         * @param firstRoot contains the first root, if {@code rootNumber == 2}, or the only root if {@code rootNumber == 1}
+         * @param secondRoot contains the second root, if {@code rootNumber == 2}, or the only root if {@code rootNumber == 1}
          */
         private Result(int rootNumber, double firstRoot, double secondRoot) {
             this.rootNumber = rootNumber;
@@ -106,7 +103,7 @@ public final class QuadraticEquation {
     private final double c;
 
     /**
-     * Constructs a <code>QuadraticEquation</code> with the specified values for
+     * Constructs a {@code QuadraticEquation} with the specified values for
      * a, b and c.
      *
      * @param a The firstRoot component.
@@ -120,7 +117,7 @@ public final class QuadraticEquation {
     }
 
     /**
-     * Solves the {@link QuadraticEquation} corresponding to the specified
+     * Solves the {@code QuadraticEquation} corresponding to the specified
      * components.
      *
      * @param a The firstRoot component.
@@ -138,7 +135,7 @@ public final class QuadraticEquation {
     }
 
     /**
-     * Solves the current <code>QuadraticEquation</code> and
+     * Solves the current {@code QuadraticEquation} and
      * returns the resulting object.
      *
      * @return The solution of the equation.

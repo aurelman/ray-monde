@@ -28,8 +28,7 @@ import com.raymonde.scene.Scene;
  * {@code Material}s represents physical properties of the object on which
  * they are applied. The alter the way objects are rendered (color, reflection,
  * transparency/refraction).
- * 
- * @author aurelman
+ *
  */
 public abstract class AbstractMaterial implements Material {
 

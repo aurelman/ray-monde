@@ -23,7 +23,6 @@ import com.raymonde.render.Ray;
 
 /**
  *
- * @author aurelman
  */
 public class Box extends Primitive {
 

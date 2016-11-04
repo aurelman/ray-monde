@@ -18,32 +18,30 @@
 
 package com.raymonde;
 
-import com.raymonde.load.ParsingException;
-import com.raymonde.load.SceneParser;
-import com.raymonde.load.yml.YamlSceneParser;
-import com.raymonde.render.RenderingException;
+import com.raymonde.load.SceneBuildingException;
+import com.raymonde.load.yml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
-import com.raymonde.scene.Scene;
+import com.raymonde.render.RenderingException;
 import com.raymonde.save.SaveException;
 import com.raymonde.save.SceneSaver;
-import java.io.IOException;
+import com.raymonde.scene.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 
 /**
- * <code>RayMonde</code> is the class which owns the main method.
+ * {@code RayMonde} is the launching class of ray-monde.
  *
- * @author aurelman
  */
 public class RayMonde {
 
     /**
-     * Available logger for the <code>RayMonde</code> class.
+     * logger for the {@code RayMonde} class.
      */
-    private static final Logger logger =
-            LoggerFactory.getLogger(RayMonde.class);
+    private static final Logger logger = LoggerFactory.getLogger(RayMonde.class);
     
     /**
      * Default constructor protected.
@@ -56,7 +54,7 @@ public class RayMonde {
      *
      * @throws SaveException
      * @throws IOException
-     * @throws ParsingException
+     * @throws SceneBuildingException
      * @throws RenderingException
      * 
      * @param args An array of argument.
@@ -65,33 +63,30 @@ public class RayMonde {
         throws SaveException,
             IOException,
             RenderingException,
-            ParsingException {
+            SceneBuildingException {
         logger.info("starting ray-monde");
 
         OptionParsing opt = new OptionParsing(args);
         final Renderer renderer = RendererFactory.forType(opt.getRenderer());
-       
-        
-        
+
         String filename = opt.getSceneFilename();
         
-        logger.info("Loading scene : {}", filename);
-        Scene scene = getSceneParser().parseFile(filename);
-        logger.info("Loaded scene : {}", filename);
+        logger.info("start loading scene from {}", filename);
+
+        Scene scene = new YamlSceneBuilder()
+                .setFile(filename)
+                .build();
+
+        logger.info("scene is now loaded", filename);
         
         
-        logger.info("Rendering scene : {}", filename);
+        logger.info("start rendering scene");
         renderer.render(scene);
-        logger.info("Rendered scene : {}", filename);
+        logger.info("scene rendered");
         
         SceneSaver ss = new SceneSaver();
         ss.save(scene, opt.getOutputFilename());
         
         logger.info("finishing ray-monde");
     }
-    
-    private static SceneParser getSceneParser() {
-        return new YamlSceneParser();
-    }
-
 }

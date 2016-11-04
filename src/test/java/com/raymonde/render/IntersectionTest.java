@@ -20,17 +20,10 @@ package com.raymonde.render;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.primitive.Sphere;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author Aurel
- */
+import static org.junit.Assert.assertEquals;
+
 public class IntersectionTest {
 
     @Test

@@ -23,8 +23,7 @@ import com.raymonde.core.Vector;
 
 /**
  * <p>Base class for a light in a scene.</p>
- * 
- * @author aurelman
+
  */
 public abstract class Light {
     
@@ -43,8 +42,7 @@ public abstract class Light {
 
     /**
      * Returns the perceived color at the specified position.
-     * 
-     * 
+     *
      * @param point The point the light color will be computed for.
      * 
      * @return The color the point has received.

@@ -38,8 +38,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <li>dot-product,</li>
  * <li>cross product,</li>
  * <li>normalization...</li>
- *
- * @author aurelman
  */
 @ThreadSafe
 @Immutable
@@ -132,46 +130,6 @@ public final class Vector {
     }
 
     /**
-     * Returns a zero initialized vector.
-     *
-     * @return A zero initialized vector.
-     */
-    public static Vector zero() {
-        return ZERO;
-    }
-
-    /**
-     * Factory method to create a new {@code Vector} object
-     * joining the two specified points.
-     *
-     * @param source The starting point.
-     * @param destination The destination point.
-     *
-     * @return The newly created {@code Vector}.
-     */
-    public static Vector joining(final Vector source, final Vector destination) {
-        checkNotNull(source, "source vector cannot be null");
-        checkNotNull(destination, "destination vector cannot be null");
-        return destination.substract(source);
-    }
-
-    /**
-     * Computes the distance between the two specified {@code Vector}s.
-     * 
-     * @param v1 The first vector.
-     * @param v2 The second vector.
-     *
-     * @return The distance between the two {@code Vector}s.
-     */
-    public static double distance(final Vector v1, final Vector v2) {
-        double x = v2.vec[X] - v1.vec[X];
-        double y = v2.vec[Y] - v1.vec[Y];
-        double z = v2.vec[Z] - v1.vec[Z];
-
-        return Math.sqrt(x*x + y*y + z*z);
-    }
-
-    /**
      * Returns true if the current vector is the 0 vector, false otherwise.
      *
      * @return true or false whether the current vector is the 0 vector.
@@ -180,24 +138,24 @@ public final class Vector {
         // return vec[X] == 0.0 && vec[Y] == 0.0 && vec[Z] == 0.0;
         return equals(ZERO);
     }
-    
+
     @Override
     public boolean equals(final Object other) {
        if (this == other) {
            return true;
        }
-       
+
        if (!(other instanceof Vector)) {
            return false;
        }
-       
+
        final Vector otherVector = (Vector)other;
        return Arrays.equals(vec, otherVector.vec);
     }
-    
+
     /**
      * Returns the length (magnitude) of the vector.
-     * 
+     *
      * @return The length of the vector.
      */
     public double length() {
@@ -220,17 +178,17 @@ public final class Vector {
      * @return The squared length of the vector.
      */
     public double squaredLength() {
-        
+
         // Avoid making useless multiplication
         if (isZero()) {
             return 0.0;
         }
-        
+
         return vec[X] * vec[X]
-             + vec[Y] * vec[Y] 
+             + vec[Y] * vec[Y]
              + vec[Z] * vec[Z];
     }
-
+    
     /**
      * Computes the distance to the specified vector.
      *
@@ -245,17 +203,17 @@ public final class Vector {
 
         return Math.sqrt(x*x + y*y + z*z);
     }
-
+    
     /**
      * Compute the dot product between the current object
      * and the specified vector.
-     * 
+     *
      * @param other The vector to compute with.
      *
      * @return The dot product computed.
      */
     public double dot(final Vector other) {
-        return vec[X] * other.vec[X] 
+        return vec[X] * other.vec[X]
              + vec[Y] * other.vec[Y]
              + vec[Z] * other.vec[Z];
     }
@@ -263,23 +221,23 @@ public final class Vector {
     /**
      * Returns the cross product between the current {@code Vector} and the one
      * specified in parameter.
-     * 
+     *
      * @param other The vector to compute the cross-product with.
-     * 
+     *
      * @return The resulting vector.
      */
     public Vector cross(final Vector other) {
         double x = vec[Y] * other.vec[Z] - vec[Z] * other.vec[Y];
         double y = vec[Z] * other.vec[X] - vec[X] * other.vec[Z];
         double z = vec[X] * other.vec[Y] - vec[Y] * other.vec[X];
-        
+
         return new Vector(x, y, z);
     }
 
     /**
      * Adds the specified vector to the current
      * and returns the resulting vector.
-     * 
+     *
      * @param vector The vector to add.
      * @return the new resulting vector.
      */
@@ -306,7 +264,7 @@ public final class Vector {
 
     /**
      * Multiply the vector multiply by the given value.
-     * 
+     *
      * @param scalar The value to multiply the vector by.
      *
      * @return A new vector corresponding to the current
@@ -318,7 +276,7 @@ public final class Vector {
 
     /**
      * Translates the current vector.
-     * 
+     *
      * @param other The vector to translate the current with.
      *
      * @return The new resulting vector.
@@ -363,7 +321,7 @@ public final class Vector {
     /**
      * Returns the opposite vector of the current vector.
      * The opposite vector of an (x, y, z) vector is : (-x, -y, -z).
-     * 
+     *
      * @return The opposite vector of the current vector.
      */
     public Vector opposite() {
@@ -372,7 +330,7 @@ public final class Vector {
 
     /**
      * Computes the reflected vector.
-     * 
+     *
      * @param normalVector The reference.
      * @return The reflected vector.
      */
@@ -384,7 +342,7 @@ public final class Vector {
 
     /**
      * Getter for the x value of the vector.
-     * 
+     *
      * @return The x value of the vector.
      */
     public double x() {
@@ -399,7 +357,6 @@ public final class Vector {
     public double y() {
         return vec[Y];
     }
-
 
     /**
      * Getter for the z value of the vector.
@@ -422,7 +379,7 @@ public final class Vector {
 
     /**
      * Returns a {@link String} representation of the current object.
-     * 
+     *
      * @return A {@link String} representation of the current object.
      */
     @Override
@@ -433,5 +390,45 @@ public final class Vector {
                 .add("z", vec[Z])
                 .add("normalized", normalized)
                 .toString();
+    }
+
+    /**
+     * Returns a zero initialized vector.
+     *
+     * @return A zero initialized vector.
+     */
+    public static Vector zero() {
+        return ZERO;
+    }
+
+    /**
+     * Factory method to create a new {@code Vector} object
+     * joining the two specified points.
+     *
+     * @param source The starting point.
+     * @param destination The destination point.
+     *
+     * @return The newly created {@code Vector}.
+     */
+    public static Vector joining(final Vector source, final Vector destination) {
+        checkNotNull(source, "source vector cannot be null");
+        checkNotNull(destination, "destination vector cannot be null");
+        return destination.substract(source);
+    }
+
+    /**
+     * Computes the distance between the two specified {@code Vector}s.
+     *
+     * @param v1 The first vector.
+     * @param v2 The second vector.
+     *
+     * @return The distance between the two {@code Vector}s.
+     */
+    public static double distance(final Vector v1, final Vector v2) {
+        double x = v2.vec[X] - v1.vec[X];
+        double y = v2.vec[Y] - v1.vec[Y];
+        double z = v2.vec[Z] - v1.vec[Z];
+
+        return Math.sqrt(x*x + y*y + z*z);
     }
 }

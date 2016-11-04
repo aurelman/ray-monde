@@ -25,7 +25,6 @@ import com.raymonde.scene.Scene;
 
 /**
  *
- * @author aurelman
  */
 public interface Material {
     

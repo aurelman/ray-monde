@@ -23,17 +23,10 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.Offset.offset;
 
-/**
- *
- * @author aurelman
- */
 public class VectorTest {
 
     private static final double DELTA = 0.001;
 
-    /**
-     * Test of length method, of class Vector.
-     */
     @Test
     public void shouldComputeLengthOfVectors() {
         // Given

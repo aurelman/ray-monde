@@ -19,12 +19,12 @@
 package com.raymonde.render;
 
 import com.raymonde.scene.Scene;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  *
- * @author aurelman
  */
 public class MultithreadedRenderer implements Renderer {
     

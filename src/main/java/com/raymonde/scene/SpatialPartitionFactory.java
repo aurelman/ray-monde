@@ -18,8 +18,6 @@
 package com.raymonde.scene;
 
 /**
- *
- * @author aurelman
  */
 public interface SpatialPartitionFactory {
     

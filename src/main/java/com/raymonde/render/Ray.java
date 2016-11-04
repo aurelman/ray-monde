@@ -20,9 +20,10 @@ package com.raymonde.render;
 
 import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
-import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.Objects;
 
 /**
  * A {@code Ray} instance is made of two {@link Vector} components.
@@ -34,8 +35,6 @@ import javax.annotation.concurrent.ThreadSafe;
  * {@code Ray} instances are immutable.
  * 
  * @see Vector
- * 
- * @author aurelman
  */
 @Immutable
 @ThreadSafe
@@ -82,19 +81,6 @@ public final class Ray {
     }
 
     /**
-     * Returns an instance of {@code Ray} that goes from {@code startPoint} and pass through {@code endPoint}.
-     *
-     * @param startPoint The starting position of the resulting ray
-     * @param passThroughPoint A point the ray should pass through
-     *
-     * @return The resulting {@code Ray} instance.
-     */
-    public static Ray joining(final Vector startPoint, final Vector passThroughPoint) {
-        Vector direction = Vector.joining(startPoint, passThroughPoint);
-        return new Ray(startPoint, direction);
-    }
-
-    /**
      * Returns a <code>String</code> representation of the current object.
      * @return a <code>String</code> representation of the current object.
      */
@@ -105,23 +91,36 @@ public final class Ray {
                 .add("direction", direction)
                 .toString();
     }
-    
+
     @Override
     public boolean equals(final Object other) {
        if (this == other) {
            return true;
        }
-       
+
        if (!(other instanceof Ray)) {
            return false;
        }
-       
+
        final Ray otherRay = (Ray)other;
        return Objects.equals(direction, otherRay.direction) && Objects.equals(origin, otherRay.origin);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(origin, direction);
+    }
+
+    /**
+     * Returns an instance of {@code Ray} that goes from {@code startPoint} and pass through {@code endPoint}.
+     *
+     * @param startPoint The starting position of the resulting ray
+     * @param passThroughPoint A point the ray should pass through
+     *
+     * @return The resulting {@code Ray} instance.
+     */
+    public static Ray joining(final Vector startPoint, final Vector passThroughPoint) {
+        Vector direction = Vector.joining(startPoint, passThroughPoint);
+        return new Ray(startPoint, direction);
     }
 }

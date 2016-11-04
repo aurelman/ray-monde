@@ -19,11 +19,8 @@
 package com.raymonde.render;
 
 /**
- * <code>RenderingContext</code> objects describes some values
- * (such as refraction factor, or depth) which are
+ * {@code RenderingContext} objects stores key elements (such as refraction factor, or depth) that are
  * specific to the current rendering step.
- * 
- * @author aurelman
  */
 public class RenderingContext {
 
@@ -39,14 +36,10 @@ public class RenderingContext {
 
     private boolean out;
 
-    public static RenderingContext incremented(final RenderingContext ctx) {
-        return new RenderingContext(ctx.getDepth()+1, ctx.getRefraction());
+    public RenderingContext() {
+
     }
     
-    public RenderingContext() {
-        
-    }
-
     public RenderingContext(final int depth, final double refraction) {
         this.depth = depth;
         this.refraction = refraction;
@@ -92,5 +85,9 @@ public class RenderingContext {
      */
     public void setOut(final boolean out) {
         this.out = out;
+    }
+
+    public static RenderingContext incremented(final RenderingContext ctx) {
+        return new RenderingContext(ctx.getDepth()+1, ctx.getRefraction());
     }
 }

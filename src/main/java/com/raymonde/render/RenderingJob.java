@@ -24,7 +24,6 @@ import com.raymonde.core.Vector;
 
 /**
  *
- * @author aurelman
  */
 public class RenderingJob implements Runnable {
     
@@ -84,20 +83,6 @@ public class RenderingJob implements Runnable {
     
     /**
      *
-     * @param x The x position.
-     * @param y The y position.
-     */
-    protected void shootThroughPixel(final int x, final int y) {
-        RenderingContext ctx = new RenderingContext(0, 1.);
-        ctx.setRefraction(1.0);
-        Ray mainRay = rayThroughPixel(x, y);
-        
-        Color color = computeColor(mainRay, ctx);
-        scene.getRenderingSurface().setColor(x, y, color);
-    }
-
-    /**
-     *
      * @param ray The ray.
      * @param ctx The current context.
      *
@@ -140,6 +125,20 @@ public class RenderingJob implements Runnable {
         double endX = x + surfacePosition.x();
 
         return Ray.joining(cameraPosition, new Vector(endX, endY, endZ));
+    }
+
+    /**
+     *
+     * @param x The x position.
+     * @param y The y position.
+     */
+    protected void shootThroughPixel(final int x, final int y) {
+        RenderingContext ctx = new RenderingContext(0, 1.);
+        ctx.setRefraction(1.0);
+        Ray mainRay = rayThroughPixel(x, y);
+
+        Color color = computeColor(mainRay, ctx);
+        scene.getRenderingSurface().setColor(x, y, color);
     }
 
 
