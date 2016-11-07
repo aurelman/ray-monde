@@ -113,7 +113,7 @@ public class VectorTest {
         Vector vector2 = new Vector(2.0, -1.0, -9.0);
 
         // When
-        Vector result = vector1.substract(vector2);
+        Vector result = vector1.subtract(vector2);
 
         // Then
         assertThat(result.x()).isCloseTo(-1.0, offset(DELTA));

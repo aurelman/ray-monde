@@ -249,13 +249,13 @@ public final class Vector {
     }
 
     /**
-     * Substracts the specified vector to the current
+     * Subtracts the specified vector to the current
      * and returns the resulting vector.
      *
-     * @param vector The vector to substract.
+     * @param vector The vector to subtract.
      * @return the new resulting vector.
      */
-    public Vector substract(final Vector vector) {
+    public Vector subtract(final Vector vector) {
         return new Vector(
                 vec[X] - vector.vec[X],
                 vec[Y] - vector.vec[Y],
@@ -336,7 +336,7 @@ public final class Vector {
      */
     public Vector reflected(final Vector normalVector) {
         // VR = V - ( 2 * ( V . N )) * N
-        return substract(normalVector
+        return subtract(normalVector
                 .multiply(2. * dot(normalVector)));
     }
 
@@ -413,7 +413,7 @@ public final class Vector {
     public static Vector joining(final Vector source, final Vector destination) {
         checkNotNull(source, "source vector cannot be null");
         checkNotNull(destination, "destination vector cannot be null");
-        return destination.substract(source);
+        return destination.subtract(source);
     }
 
     /**

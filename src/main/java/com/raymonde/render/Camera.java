@@ -130,16 +130,29 @@ public class Camera {
      * @return the resulting {@link Ray}
      */
     public Ray rayThroughPixel(final Pixel pixel) {
+        return Ray.joining(position, absolutePositionOfPixel(pixel));
+    }
 
-        Vector surfaceCenter = position.add(direction.normalized().multiply(distance));
-        Vector surfUnitY = up.normalized();
-        Vector surfUnitX = direction.normalized().cross(up);
+    /**
+     * Computes the absolute position of the specified pixel on the screen.
+     *
+     * @param pixel
+     * @return a {@code Vector} representing the absolute position of the specified pixel on the rendering screen.
+     */
+    private Vector absolutePositionOfPixel(final Pixel pixel) {
 
-        double endZ = surfaceCenter.z();
-        double endY = 0.0;
-        double endX = 0.0;
+        Vector dirVector = direction.normalized().multiply(distance);
+        Vector yVector = up.normalized();
+        Vector xVector = direction.normalized().cross(up.normalized()).normalized();
 
-        return Ray.joining(position, new Vector(endX, endY, endZ));
+        // Need to be computed accordingly
+        double somethingDependingOnX = pixel.x() * 1.0;
+        double somethingDependingOnY = pixel.y() * 1.0;
+
+        return position
+                .add(dirVector.multiply(distance))
+                .add(xVector.multiply(somethingDependingOnX))
+                .add(yVector.multiply(somethingDependingOnY));
     }
 
     private static class RenderingSurfaceSpec {

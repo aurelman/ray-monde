@@ -116,7 +116,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
         Vector term1 = ray.getDirection().multiply(n);
         Vector term2 = normal.multiply(cosr - n*cosi);
 
-        Vector direction = term1.substract(term2);
+        Vector direction = term1.subtract(term2);
          
         return new Ray(inter.getIntersectionPosition(), direction);
     }
