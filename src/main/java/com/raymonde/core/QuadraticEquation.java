@@ -48,21 +48,40 @@ public final class QuadraticEquation {
         private final double secondRoot;
 
         /**
-         * The number of solutions that are differents (can be 0, 1 or 2)
+         * The number of solutions that are different (can be 0, 1 or 2)
          */
         private final int rootNumber;
 
         /**
          * Constructs a {@code Result} with the specified elements.
          *
-         * @param rootNumber The number of root
-         * @param firstRoot contains the first root, if {@code rootNumber == 2}, or the only root if {@code rootNumber == 1}
-         * @param secondRoot contains the second root, if {@code rootNumber == 2}, or the only root if {@code rootNumber == 1}
+         * @param firstRoot contains the first root
+         * @param secondRoot contains the second root
          */
-        private Result(int rootNumber, double firstRoot, double secondRoot) {
-            this.rootNumber = rootNumber;
+        private Result(final double firstRoot, final double secondRoot) {
+            this.rootNumber = 2;
             this.firstRoot = firstRoot;
             this.secondRoot = secondRoot;
+        }
+
+        /**
+         * Constructs a {@code Result} with the specified elements.
+
+         * @param onlyRoot the only root
+         */
+        private Result(final double onlyRoot) {
+            this.rootNumber = 1;
+            this.firstRoot = onlyRoot;
+            this.secondRoot = onlyRoot;
+        }
+
+        /**
+         * Constructs a {@code Result} with no real root.
+         */
+        private Result() {
+            this.rootNumber = 0;
+            this.firstRoot = Double.NaN;
+            this.secondRoot = Double.NaN;
         }
 
         /**
@@ -126,12 +145,8 @@ public final class QuadraticEquation {
      *
      * @return The solution of the equation.
      */
-    public static Result solve(
-            final double a,
-            final double b,
-            final double c) {
-        QuadraticEquation eq = new QuadraticEquation(a, b, c);
-        return eq.solve();
+    public static Result solve(final double a, final double b, final double c) {
+        return new QuadraticEquation(a, b, c).solve();
     }
 
     /**
@@ -142,40 +157,40 @@ public final class QuadraticEquation {
      */
     public Result solve() {
 
-        double firstRoot = 0;
-        double secondRoot = 0;
-        int count;
-
         if (a == 0.0) {
-            count = 1;
-            firstRoot = (-c/b);
-            secondRoot = firstRoot;
-        } else {
-            double delta = b*b - 4*a*c;
-
-            if (delta < 0.0) {
-                count = 0;
-            } else if (delta == 0.0) {
-                count = 1;
-                firstRoot = ((-b)/(2*a));
-                secondRoot = firstRoot;
-            } else {
-                double rootSquaredDelta = Math.sqrt(delta);
-                double denominator = 2*a;
-                count = 2;
-                double root1 = (-b - rootSquaredDelta)/denominator;
-                double root2 = (-b + rootSquaredDelta)/denominator;
-
-                if (root1 < root2) {
-                    firstRoot = root1;
-                    secondRoot = root2;
-                } else {
-                    firstRoot = root2;
-                    secondRoot = root1;
-                }
-            }
+            return new Result(-c/b);
         }
 
-        return new Result(count, firstRoot, secondRoot);
+        double discriminant = b*b - 4*a*c;
+
+        if (discriminant < 0.0) {
+            return new Result();
+        }
+
+        if (discriminant == 0.0) {
+            return new Result((-b)/(2*a));
+        }
+
+        double rootSquaredDelta = Math.sqrt(discriminant);
+
+        /*
+         *  The numerically computed solution would be  :
+         *   double root1 = (-b - rootSquaredDelta)/denominator;
+         *   double root2 = (-b + rootSquaredDelta)/denominator;
+         *
+         *  But to void cancellation issue in case b*b is a lot greater that 4*a*c
+         *  We compute roots in an other way.
+         *
+         *  For more details about cancellation see : https://en.wikipedia.org/wiki/Loss_of_significance
+         */
+
+        double root1 = (-b - Math.signum(b) * rootSquaredDelta) / (2 * a);
+        double root2 = c / (a * root1);
+
+        if (root1 < root2) {
+            return new Result(root1, root2);
+        }
+
+        return new Result(root2, root1);
     }
 }

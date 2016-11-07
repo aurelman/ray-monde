@@ -129,4 +129,16 @@ public class QuadraticEquationTest {
         assertThat(result.firstRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
         assertThat(result.secondRoot()).isEqualTo(-2.0/2.0, offset(DELTA));
     }
+
+    @Test
+    public void shouldAvoidCancellationProblemsWhenComputingRoots() {
+
+        // When
+        Result result = QuadraticEquation.solve(1.0, 200.0, -0.000015);
+
+        // Expect
+        assertThat(result.rootNumber()).isEqualTo(2);
+        assertThat(result.firstRoot()).isEqualTo(-200.000000075, offset(0.000000000001));
+        assertThat(result.secondRoot()).isEqualTo(0.000000075, offset(0.000000000001));
+    }
 }
