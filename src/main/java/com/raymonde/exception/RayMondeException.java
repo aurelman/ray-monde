@@ -19,10 +19,8 @@
 package com.raymonde.exception;
 
 /**
- * <code>RayMondeException</code> is the base class for any exceptions
+ * {@code RayMondeException} is the base class for any exceptions
  * which should be thrown in the Ray-Monde context.
- *
- * @author aurelman
  */
 public class RayMondeException extends Exception {
 
@@ -35,7 +33,7 @@ public class RayMondeException extends Exception {
     }
 
     /**
-     * Constructs a <code>RayMondeException</code> with the specified message.
+     * Constructs a {@code RayMondeException} with the specified message.
      *
      * @param message The message.
      */
@@ -44,7 +42,7 @@ public class RayMondeException extends Exception {
     }
 
     /**
-     * Construcs a <code>RayMondeException</code> with the specified message
+     * Construcs a {@code RayMondeException} with the specified message
      * and cause.
      *
      * @param message The message.
@@ -55,7 +53,7 @@ public class RayMondeException extends Exception {
     }
 
     /**
-     * Construcs a <code>RayMondeException</code> with the specified cause.
+     * Construcs a {@code RayMondeException} with the specified cause.
      *
      * @param cause The cause.
      */

@@ -19,12 +19,12 @@
 package com.raymonde.render;
 
 import com.raymonde.scene.Scene;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  *
- * @author aurelman
  */
 public class MultithreadedRenderer implements Renderer {
     
@@ -34,7 +34,12 @@ public class MultithreadedRenderer implements Renderer {
     private ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
-    public Surface render(Scene scene) throws RenderException {
+    public RenderingSurface render(Scene scene) throws RenderingException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public RenderingSurface renderSceneThroughCamera(Scene scene, Camera camera) throws RenderingException {
+        return null;
     }
 }

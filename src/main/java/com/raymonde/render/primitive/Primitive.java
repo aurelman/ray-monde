@@ -23,10 +23,8 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 
 /**
- * <code>Primitive</code> objects are the <em>solids</em> elements of a scene.
+ * {@code Primitive} objects are the <em>solids</em> elements of a scene.
  * They might be intersected by rays.
- * 
- * @author aurelman
  */
 public abstract class Primitive {
 
@@ -34,14 +32,6 @@ public abstract class Primitive {
      * The root material of the pripmitive.
      */
     private Material material;
-    
-    /**
-     * Constructs a <code>Primitive</code> object with the specified name.
-     * 
-     * @param name The name of the primitive.
-     */
-    public Primitive(final String name) {
-    }
 
     /**
      * Compute the normal vector to the primitive surface for the specified

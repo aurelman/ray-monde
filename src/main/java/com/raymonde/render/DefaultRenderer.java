@@ -25,9 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <code>DefaultRenderer</code> class is the default renderer for Ray-Monde.
- *
- * @author aurelman
+ * The default renderer. The initial renderer developed for ray-monde.
  */
 public class DefaultRenderer implements Renderer {
 
@@ -39,8 +37,7 @@ public class DefaultRenderer implements Renderer {
     /**
      * The available logger for the <code>DefaultRenderer</code> class.
      */
-    private static final Logger logger =
-            LoggerFactory.getLogger(DefaultRenderer.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultRenderer.class);
     
     /**
      * The scene to shootThroughPixel.
@@ -67,15 +64,37 @@ public class DefaultRenderer implements Renderer {
      * @param scene The scene to shootThroughPixel.
      */
     @Override
-    public Surface render(final Scene scene) {
+    public RenderingSurface render(final Scene scene) {
         setScene(scene);
-        final Surface result = scene.getSurface();
-        for (int i = 0; i < result.getWidth(); i++) {
-            for (int j = 0; j < result.getHeight(); j++) {
+        final RenderingSurface result = scene.getRenderingSurface();
+        for (int i = 0; i < result.getPixelWidth(); i++) {
+            for (int j = 0; j < result.getPixelHeight(); j++) {
                 result.setColor(i, j, shootThroughPixel(i, j));
             }
         }
         return result;
+    }
+
+    /**
+     * Renders the specified {@link Scene} through the specified {@link Camera}
+     *
+     * @param scene
+     * @param camera
+     *
+     * @return
+     */
+    public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) {
+        RenderingSurface rendered = camera.createRenderingSurface();
+        // For every pixel of the rendering surface
+            // Ask the camera to compute a ray that goes through the pixel.
+            // shoot this ray in the scene and compute the resulting color
+            // update the pixel of the rendering surface with the computed color.
+
+        rendered.eachPixel(pixel -> {
+            Ray ray = camera.rayThroughPixel(pixel);
+        });
+
+        return rendered;
     }
 
     /**
@@ -126,12 +145,12 @@ public class DefaultRenderer implements Renderer {
     public Ray rayThroughPixel(final int x, final int y) {
 
         Vector surfacePosition =
-                getScene().getSurface().getPosition();
+                getScene().getRenderingSurface().getPosition();
 
         Vector cameraPosition = getScene().getDefaultCamera().getPosition();
-        double endZ = surfacePosition.getZ();
-        double endY = surfacePosition.getY() - y;
-        double endX = x + surfacePosition.getX();
+        double endZ = surfacePosition.z();
+        double endY = surfacePosition.y() - y;
+        double endX = x + surfacePosition.x();
 
         return Ray.joining(cameraPosition, new Vector(endX, endY, endZ));
     }

@@ -22,7 +22,6 @@ import com.raymonde.core.Color;
 
 /**
  *
- * @author aurelman
  */
 public class SaverUtiliy {
 
@@ -43,7 +42,7 @@ public class SaverUtiliy {
         int [] arr = new int[colors.length];
 
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = colors[i].getRGB();
+            arr[i] = colors[i].rgb();
         }
 
         return arr;

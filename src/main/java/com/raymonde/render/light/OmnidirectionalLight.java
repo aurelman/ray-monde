@@ -19,12 +19,11 @@ package com.raymonde.render.light;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- *
- * @author aurelman
  */
 @ThreadSafe
 @Immutable
@@ -42,14 +41,13 @@ public class OmnidirectionalLight extends Light {
 
     /**
      *
-     * @param name The name of the light.
      * @param position The position of the light.
      * @param color The color of the light.
      * @param attenuation The attenuation of the light.
      */
-    public OmnidirectionalLight(final String name, final Vector position,
+    public OmnidirectionalLight(final Vector position,
             final Color color, final Vector attenuation) {
-        super(name, position);
+        super(position);
         this.color = color;
         this.attenuation = attenuation;
     }
@@ -58,7 +56,7 @@ public class OmnidirectionalLight extends Light {
     @Override
     public Color colorAt(final Vector point) {
         double dist = point.distanceTo(getPosition());
-        double attCoeff = 1./(getAttenuation().getX()*dist*dist);
+        double attCoeff = 1./(getAttenuation().x()*dist*dist);
         return getColor().multiply(attCoeff);
     }
 

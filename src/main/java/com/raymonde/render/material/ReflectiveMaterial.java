@@ -27,11 +27,9 @@ import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
 
 /**
- * <code>ReflectiveMaterial</code> adds refflectivity properties to
+ * {@code ReflectiveMaterial} adds reflectivity properties to
  * primitive. Reflectivity factor tells which quantity of the incoming light
  * is reflected.
- * 
- * @author aurelman
  */
 public class ReflectiveMaterial extends AbstractMaterial implements Material {
 
@@ -41,29 +39,19 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
     private double reflectivity;
 
     /**
-     * Constructs an empty <code>ReflectiveMaterial</code>.
+     * Constructs an empty {@code ReflectiveMaterial}.
      */
     public ReflectiveMaterial() {
         super();
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public ReflectiveMaterial(final String name) {
-        super(name);
-    }
-
-    /**
-     * Constructs a <code>ReflectiveMaterial</code> with the specified
+     * Constructs a {@code ReflectiveMaterial} with the specified
      * reflectivity.
      *
-     * @param name The name of the material.
      * @param reflectivity The reflection factor.
      */
-    public ReflectiveMaterial(final String name, final double reflectivity) {
-        super(name);
+    public ReflectiveMaterial(final double reflectivity) {
         this.reflectivity = reflectivity;
     }
     

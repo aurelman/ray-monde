@@ -28,15 +28,9 @@ import com.raymonde.scene.Scene;
  * {@code Material}s represents physical properties of the object on which
  * they are applied. The alter the way objects are rendered (color, reflection,
  * transparency/refraction).
- * 
- * @author aurelman
+ *
  */
 public abstract class AbstractMaterial implements Material {
-
-    /**
-     * The name of the material.
-     */
-    private String name;
 
     /**
      * The sub-material.
@@ -45,15 +39,6 @@ public abstract class AbstractMaterial implements Material {
 
     public AbstractMaterial() {
         
-    }
-    
-    /**
-     * Constructs a Material with the specified name.
-     * 
-     * @param name The name of the material.
-     */
-    public AbstractMaterial(final String name) {
-        this.name = name;
     }
 
     /**
@@ -82,13 +67,5 @@ public abstract class AbstractMaterial implements Material {
      */
     public void setMaterial(final Material material) {
         this.material = material;
-    }
-
-    /**
-     * Returns the name of the material.
-     * @return The name of the material.
-     */
-    public String getName() {
-        return name;
     }
 }

@@ -24,15 +24,12 @@ import com.raymonde.render.Intersection;
 import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
-import com.raymonde.scene.Scene;
 import com.raymonde.render.primitive.Primitive;
+import com.raymonde.scene.Scene;
 
 /**
- * <code>ReflectiveMaterial</code> adds refflectivity properties to
- * primitive. Reflectivity factor tells which quantity of the incoming light
- * is reflected.
- * 
- * @author aurelman
+ * {@code RefractiveMaterial} adds refractivity properties to
+ * primitive. Reflectivity factor tells how an incoming ray will go through the surface.
  */
 public class RefractiveMaterial extends AbstractMaterial implements Material {
 
@@ -42,29 +39,19 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     private double refraction;
 
     /**
-     * Constructs an empty <code>RefractiveMaterial</code>.
+     * Constructs an empty {@code RefractiveMaterial}.
      */
     public RefractiveMaterial() {
 
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public RefractiveMaterial(final String name) {
-        super(name);
-    }
-
-    /**
-     * Constructs a <code>RefractiveMaterial</code> with the specified
+     * Constructs a {@code RefractiveMaterial} with the specified
      * refraction index.
      *
-     * @param name The name of the material.
      * @param refraction The refraction index.
      */
-    public RefractiveMaterial(final String name, final double refraction) {
-        super(name);
+    public RefractiveMaterial(final double refraction) {
         this.refraction = refraction;
     }
     

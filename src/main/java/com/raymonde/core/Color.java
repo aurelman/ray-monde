@@ -18,33 +18,28 @@
 
 package com.raymonde.core;
 
+import com.google.common.collect.Range;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.Arrays;
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * <code>Color</code> objects are 3 component representation of color.
- * Components are : red, green and blue.
+ * {@code Color} objects are a RGB (Red, Green, Blue) representation of real color.
  * Each of the component is a double value which represents the intensity of the
  * component in the range from 0.0 to 1.0.
  * The 0.0 value is for absence of intensity of this component,
  * whereas 1.0 is for maximum intensity of the component.
  *
- * This class is Thread safe : every method that return a Color object actually returns a newly created
+ * This class is Thread safe : every method that return a Color object actually returns a newly created, or a shared immutable object.
  * object.
- *
- * @author aurelman
  */
 @ThreadSafe
 @Immutable
 public final class Color {
-
-    /**
-     * hash code is lazy computed by the hashCode method.
-     * ThreadSafety is kept.
-     */
-    private int hashCode = -1;
-
     /**
      * An instance of the black color.
      */
@@ -54,8 +49,7 @@ public final class Color {
      * Message to give to exceptions when any of a component value
      * is out of the rage.
      */
-    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE =
-            "Color components should be between 0.0 and 1.0";
+    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE = "Color components %s should be between 0.0 and 1.0, but is %s";
 
     /**
      * Internal storage of the color is an int value where
@@ -72,10 +66,9 @@ public final class Color {
     }
 
      /**
-     * Constructs a <code>Color</code> object by copying the specified
-     * <code>Color</code> object.
+     * Constructs a {@link Color} object by copying the given {@link Color} object.
      *
-     * @param other The <code>Color<code> object to copy.
+     * @param other The {@link Color} object to copy.
      */
     private Color(final Color other) {
         rgb = other.rgb;
@@ -84,31 +77,22 @@ public final class Color {
     /**
      * Constructs the color object with the given components.
      *
-     * @param red The red component intensity.
-     * @param green The green component intensity.
-     * @param blue The blue component intensity.
+     * @param r The red component intensity.
+     * @param g The green component intensity.
+     * @param b The blue component intensity.
      */
-    public Color(final double red, final double green, final double blue) {
-        checkValidity(red, green, blue);
-        int r = (int) ((red * 255.) + 0.5);
-        int g = (int) ((green * 255.) + 0.5);
-        int b = (int) ((blue * 255.) + 0.5);
-        setBasic(r, g, b);
+    public Color(final double r, final double g, final double b) {
+        checkArgument(isValidComponent(r), COMPONENTS_OUT_OF_RANGE_MESSAGE, "red", r);
+        checkArgument(isValidComponent(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);
+        checkArgument(isValidComponent(b), COMPONENTS_OUT_OF_RANGE_MESSAGE, "blue", b);
+
+        setBasic(f2i(r), f2i(g), f2i(b));
     }
 
     /**
-     * The black color.
      *
-     * @return The black color.
-     */
-    public static Color black() {
-        return new Color(Color.BLACK);
-    }
-    
-    /**
-     * 
      * @param other The color to add to the current.
-     * 
+     *
      * @return The resulting <code>Color</code> object.
      */
     public Color add(final Color other) {
@@ -133,21 +117,21 @@ public final class Color {
         res.setBasic(components[0], components[1], components[2]);
         return res;
     }
-
+    
     /**
      * Adds the specified color color to the current one and returns the result
      * as a new instance of <code>Color</code>.
-     * 
+     *
      * @param colors The colors to add.
      *
      * @return The new resulting color.
      */
     public Color add(final Color...colors) {
         int [] components = getBasic();
-        
+
         if (colors.length != 0) {
             int [] currentComponents;
-        
+
             for (Color color : colors) {
                 currentComponents = color.getBasic();
                 components[0] += currentComponents[0];
@@ -173,9 +157,9 @@ public final class Color {
     /**
      * Multiply the current color with the specified one. The returns the
      * new resulting color.
-     * 
+     *
      * @param other The color to multiply the current with.
-     * 
+     *
      * @return The resulting color.
      */
     public Color multiply(final Color other) {
@@ -202,14 +186,14 @@ public final class Color {
 
     /**
      * Multiply each component of the current object by the specified factor.
-     * 
+     *
      * @param factor The factor to multiply each component by.
-     * 
+     *
      * @return The resulting <code>Color<code> object.
      */
     public Color multiply(final double factor) {
         int[] components = getBasic();
-        
+
         components[0] = round((double)components[0] * factor);
         components[1] = round((double)components[1] * factor);
         components[2] = round((double)components[2] * factor);
@@ -234,7 +218,7 @@ public final class Color {
      *
      * @return The red component of the color.
      */
-    public double getRed() {
+    public double r() {
         return getRedBasic() / 255.;
     }
 
@@ -243,16 +227,16 @@ public final class Color {
      *
      * @return The green component of the color.
      */
-    public double getGreen() {
+    public double g() {
         return getGreenBasic() / 255.;
     }
 
     /**
      * Returns the blue component of the color.
-     * 
+     *
      * @return The blue component of the color.
      */
-    public double getBlue() {
+    public double b() {
         return getBlueBasic() / 255.;
     }
 
@@ -267,12 +251,11 @@ public final class Color {
      */
     public double[] get() {
         double[] res = new double[3];
-        res[0] = getRed();
-        res[1] = getGreen();
-        res[2] = getBlue();
+        res[0] = r();
+        res[1] = g();
+        res[2] = b();
         return res;
     }
-
 
     /**
      * Returns an <code>Integer</code> representation of the current color.
@@ -281,7 +264,7 @@ public final class Color {
      *
      * @return The RGB value as an integer value.
      */
-    public int getRGB() {
+    public int rgb() {
         return rgb;
     }
 
@@ -296,20 +279,14 @@ public final class Color {
         }
 
         final Color colOther = (Color)other;
-        return rgb == colOther.rgb;
+        return Objects.equals(colOther.rgb, rgb);
     }
 
     @Override
     public int hashCode() {
-        // Lazy computation of hashCode
-        if (hashCode == -1) {
-            int hash = 3;
-            hash = 59 * hash + rgb;
-            hashCode = hash;
-        }
-        return hashCode;
+        return Objects.hash(rgb);
     }
-    
+
     /**
      * Returns a <code>String</code> representation of the current color.
      *
@@ -319,12 +296,12 @@ public final class Color {
     public String toString() {
         return "Color : " + Arrays.toString(get());
     }
-
+    
     /**
      * Sets the color components with the specified values.
      * This method doesn't do any verification on the incoming values. This the
      * caller's responsibility.
-     * 
+     *
      * @param red The red component.
      * @param green The green component.
      * @param blue The blue component.
@@ -352,7 +329,7 @@ public final class Color {
 
     /**
      * Returns the basic integer value of the red component.
-     * 
+     *
      * @return The basic integer value of the red component.
      */
     private int getRedBasic() {
@@ -368,8 +345,6 @@ public final class Color {
         return (rgb >> 8) & 0xFF;
     }
 
-    
-
     /**
      * Returns the basic integer value of the blue component.
      *
@@ -380,23 +355,25 @@ public final class Color {
     }
 
     /**
-     * Checks wether the 3 specified components are all
-     * in the range from 0.0 to 1.0 and throws a <code>IllegalArgumentException</code> 
-     * if not.
+     * The black color.
      *
-     * @param red The red components to check.
-     * @param green The green components to check.
-     * @param blue The blue components to check.
-     * 
-     * @throws IllegalArgumentException If any of the red, green or blue 
-     * component is out of the ]0,1[ range.
+     * @return The black color.
      */
-    private static void checkValidity( final double red, final double green, final double blue) {
-        if (red < 0. || red > 1. || green < 0. || green > 1. || blue < 0. || blue > 1.) {
-            throw new IllegalArgumentException(Color.COMPONENTS_OUT_OF_RANGE_MESSAGE);
-        }
+    public static Color black() {
+        return Color.BLACK;
     }
-    
+
+    /**
+     * Checks whether a color component is valid (within 0. and 1.)
+     *
+     * @param value the value to check.
+     *
+     * @return {@code true} or {@code false} whether the value is valid.
+     */
+    private static boolean isValidComponent(double value) {
+        return Range.closed(0., 1.).contains(value);
+    }
+
     /**
      * Utility method
      *
@@ -407,4 +384,15 @@ public final class Color {
     private static int round(final double value) {
         return (int)(value + 0.5);
     }
+
+    /**
+     *
+     * @param value the value to normalize
+     *
+     * @return the normalized value
+     */
+    private static int f2i(double value) {
+        return (int) ((value * 255.) + 0.5);
+    }
+
 }

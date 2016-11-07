@@ -21,16 +21,14 @@ package com.raymonde.render.material;
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
 import com.raymonde.render.Intersection;
-import com.raymonde.render.light.Light;
 import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
-import com.raymonde.scene.Scene;
+import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
+import com.raymonde.scene.Scene;
 
 /**
- *
- * @author aurelman
  */
 public class PhongMaterial extends AbstractMaterial implements Material {
 
@@ -45,31 +43,21 @@ public class PhongMaterial extends AbstractMaterial implements Material {
     private double specularFactor;
 
     /**
-     * Constructs an empty <code>PhongMaterial</code>.
+     * Constructs an empty {@code PhongMaterial}.
      */
     public PhongMaterial() {
         super();
     }
 
     /**
-     *
-     * @param name The name of the material.
-     */
-    public PhongMaterial(final String name) {
-        super(name);
-    }
-
-    /**
-     * Constructs a <code>PhongMaterial</code> with the specified diffuse and
+     * Constructs a {@code PhongMaterial} with the specified diffuse and
      * specular.
      *
-     * @param name The name of the material.
      * @param diffuse The diffuse factor.
      * @param specular The specular factor.
      */
-    public PhongMaterial(final String name, 
+    public PhongMaterial(
             final double diffuse, final double specular) {
-        super(name);
         this.diffuseFactor = diffuse;
         this.specularFactor = specular;
     }

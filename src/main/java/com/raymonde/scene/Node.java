@@ -19,7 +19,6 @@ package com.raymonde.scene;
 
 /**
  *
- * @author aurelman
  */
 public class Node {
     

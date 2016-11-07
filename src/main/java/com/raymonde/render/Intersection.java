@@ -20,16 +20,14 @@ package com.raymonde.render;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.primitive.Primitive;
+
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- * <code>Intersection</code> encapsulates data about intersection
- * between ray and primitive.
+ * {@code Intersection} wraps data about intersection between a ray and a primitive.
  * It stores the intersecting ray, the intersected primitive and the distance
- * from the ray origin the intersection occured.
- * 
- * @author aurelman
+ * from the ray origin the intersection occurred.
  */
 @Immutable
 @ThreadSafe
@@ -73,7 +71,6 @@ public final class Intersection {
         this.distance = distance;
         this.incomingRay = ray;
     }
-
 
     /**
      * @return the distance

@@ -18,19 +18,18 @@
 
 package com.raymonde.save;
 
+import com.raymonde.render.RenderingSurface;
 import com.raymonde.scene.Scene;
-import com.raymonde.render.Surface;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
- * <p><code>SceneSaver</code> allows saving a rendered scene in image files.</p>
- * 
- * @author aurelman
+ * {@code SceneSaver} allows saving a rendered scene in image files.
  */
 public class SceneSaver {
 
@@ -60,13 +59,13 @@ public class SceneSaver {
      */
     public void save(final Scene scene, final File outputFilename)
             throws SaveException {
-        int width = scene.getSurface().getWidth();
-        int height = scene.getSurface().getHeight();
+        int width = scene.getRenderingSurface().getPixelWidth();
+        int height = scene.getRenderingSurface().getPixelHeight();
 
         BufferedImage bi =
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         int [] rgbColors = SaverUtiliy.colorArrayToIntegerArray(
-                scene.getSurface().getColors());
+                scene.getRenderingSurface().getColors());
 
         bi.setRGB(0, 0, width, height, rgbColors, 0, width);
         
@@ -84,10 +83,10 @@ public class SceneSaver {
      * @param outputFilename The filename where to save the scene.
      * @throws SaveException
      */
-    public void save(final Surface renderingSurface, final File outputFilename)
+    public void save(final RenderingSurface renderingSurface, final File outputFilename)
             throws SaveException {
-        int width = renderingSurface.getWidth();
-        int height = renderingSurface.getHeight();
+        int width = renderingSurface.getPixelWidth();
+        int height = renderingSurface.getPixelHeight();
 
         BufferedImage bi =
                 new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

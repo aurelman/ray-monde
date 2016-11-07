@@ -17,13 +17,11 @@
  */
 package com.raymonde.render;
 
-import com.raymonde.scene.Scene;
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
+import com.raymonde.scene.Scene;
 
 /**
- *
- * @author aurelman
  */
 public class RayRenderer {
     
@@ -36,20 +34,6 @@ public class RayRenderer {
         this.scene = scene;
     }
     
-    /**
-     *
-     * @param x The x position.
-     * @param y The y position.
-     */
-    protected void shootThroughPixel(final int x, final int y) {
-        RenderingContext ctx = new RenderingContext(0, 1.);
-        ctx.setRefraction(1.0);
-        Ray mainRay = rayThroughPixel(x, y);
-        
-        Color color = computeColor(mainRay, ctx);
-        scene.getSurface().setColor(x, y, color);
-    }
-
     /**
      *
      * @param ray The ray.
@@ -72,7 +56,7 @@ public class RayRenderer {
 
         //return intersection.getPrimitive().getMaterial()
         //        .computeColor(this, sc, intersection, ctx);
-    
+
         return null;
     }
 
@@ -87,14 +71,28 @@ public class RayRenderer {
     public Ray rayThroughPixel(final int x, final int y) {
 
         Vector surfacePosition =
-                scene.getSurface().getPosition();
+                scene.getRenderingSurface().getPosition();
 
         Vector cameraPosition = scene.getDefaultCamera().getPosition();
-        double endZ = surfacePosition.getZ();
-        double endY = surfacePosition.getY() - y;
-        double endX = x + surfacePosition.getX();
+        double endZ = surfacePosition.z();
+        double endY = surfacePosition.y() - y;
+        double endX = x + surfacePosition.x();
 
         return Ray.joining(cameraPosition, new Vector(endX, endY, endZ));
+    }
+
+    /**
+     *
+     * @param x The x position.
+     * @param y The y position.
+     */
+    protected void shootThroughPixel(final int x, final int y) {
+        RenderingContext ctx = new RenderingContext(0, 1.);
+        ctx.setRefraction(1.0);
+        Ray mainRay = rayThroughPixel(x, y);
+
+        Color color = computeColor(mainRay, ctx);
+        scene.getRenderingSurface().setColor(x, y, color);
     }
     
 }

@@ -17,23 +17,17 @@
  */
 package com.raymonde.save;
 
-import com.raymonde.exception.RayMondeException;
-
-/**
- *
- * @author aurelman
- */
-public class SaveException extends RayMondeException{
+public class SaveException extends Exception{
 
     /**
-     * Constructs a default <code>SaveException</code>.
+     * Constructs a default {@code SaveException}.
      */
     public SaveException() {
         super();
     }
 
     /**
-     * Constructs a <code>SaveException</code> with the specified message.
+     * Constructs a {@code SaveException} with the specified message.
      * 
      * @param message The message.
      */
@@ -42,7 +36,7 @@ public class SaveException extends RayMondeException{
     }
 
     /**
-     * Constructs a <code>SaveException</code> with the specified message and
+     * Constructs a {@code SaveException} with the specified message and
      * cause.
      * 
      * @param message The message.
@@ -53,7 +47,7 @@ public class SaveException extends RayMondeException{
     }
 
     /**
-     * Constructs a <code>SaveException</code> with specified cause.
+     * Constructs a {@code SaveException} with specified cause.
      *
      * @param cause The cause.
      */

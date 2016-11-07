@@ -23,11 +23,11 @@
 package com.raymonde.render;
 
 import com.raymonde.scene.Scene;
+
 import java.util.List;
 
 /**
  *
- * @author aurelman
  */
 public class RenderingTask implements Runnable {
 

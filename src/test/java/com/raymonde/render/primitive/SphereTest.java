@@ -20,38 +20,27 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-/**
- *
- * @author aurelman
- */
+import static org.junit.Assert.assertEquals;
+
+
 public class SphereTest {
 
     private Sphere sphere1;
 
-    /**
-     * Test of intersect method, of class Sphere.
-     */
     @Test
     public void testIntersect() {
-        System.out.println("intersect");
         Ray ray = new Ray(new Vector(0., 0., 1.), new Vector(0., 0., 1.));
         Sphere instance = getSphere1();
         double expResult = 84.;
         double result = instance.intersect(ray);
         assertEquals(expResult, result, 0.00000000001);
     }
-   
-    /**
-     * @return the sphere1
-     */
+
     public Sphere getSphere1() {
         if (this.sphere1 == null) {
-            this.sphere1 = new Sphere("sphere1");
-            this.sphere1.setPosition(new Vector(0., 0., 100.));
-            this.sphere1.setRadius(15.0);
+            this.sphere1 = new Sphere(new Vector(0., 0., 100.), 15.);
         }
         
         return this.sphere1;

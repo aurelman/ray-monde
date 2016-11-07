@@ -20,48 +20,23 @@ package com.raymonde.render;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.primitive.Sphere;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- *
- * @author Aurel
- */
-public class IntersectionTest {
-    
-    public IntersectionTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+import static org.junit.Assert.assertEquals;
 
-    /**
-     * Test of getReflectedRay method, of class Intersection.
-     */
+public class IntersectionTest {
+
     @Test
-    public void testGetReflectedRay() {
+    public void shouldComputeReflectedRay() {
+        // Given
         Vector spherePosition = new Vector(0, 0, 0);
         Ray incomingRay = new Ray(new Vector(4, 0, 0), new Vector(-1, 0, 0));
-        Intersection instance = new Intersection(new Sphere("toto", spherePosition, 1), incomingRay, 3);
+        Intersection instance = new Intersection(new Sphere(spherePosition, 1), incomingRay, 3);
         Ray expResult = new Ray(new Vector(1, 0, 0), new Vector(1, 0, 0));
+        // When
         Ray result = instance.getReflectedRay();
+
+        // Then
         assertEquals(expResult, result);
     }
 

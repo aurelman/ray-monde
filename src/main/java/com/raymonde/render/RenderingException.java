@@ -18,47 +18,44 @@
 
 package com.raymonde.render;
 
-import com.raymonde.exception.RayMondeException;
-
 /**
- * 
- * @author aurelman
+ * Exceptions that can be thrown during the rendering process by a {@link Renderer}.
  */
-public class RenderException extends RayMondeException{
+public class RenderingException extends Exception{
 
     /**
-     * Constructs a default <code>RenderException</code>.
+     * Constructs a default {@code RenderingException}.
      */
-    public RenderException() {
+    public RenderingException() {
         super();
     }
 
     /**
-     * Constructs a <code>RenderException</code> with the specified message.
+     * Constructs a {@code RenderingException} with the specified message.
      * 
      * @param message The message.
      */
-    public RenderException(final String message) {
+    public RenderingException(final String message) {
         super(message);
     }
 
     /**
-     * Constructs a <code>RenderException</code> with the specified message and
+     * Constructs a {@code RenderingException} with the specified message and
      * cause.
      * 
      * @param message The message.
      * @param cause The cause.
      */
-    public RenderException(final String message, final Throwable cause) {
+    public RenderingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a <code>RenderedException</code> with the specified cause.
+     * Constructs a {@code RenderingException} with the specified cause.
      * 
      * @param cause The cause.
      */
-    public RenderException(final Throwable cause) {
+    public RenderingException(final Throwable cause) {
         super(cause);
     }
  }

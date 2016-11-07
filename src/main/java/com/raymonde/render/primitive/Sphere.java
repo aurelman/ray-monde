@@ -18,15 +18,14 @@
 
 package com.raymonde.render.primitive;
 
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 
 /**
- * <code>Sphere</code> represents spherical object in a scene.
+ * {@code Sphere} represents spherical object in a scene.
  * The center of the sphere is represented by his position.
  * The radius is a double value.
- * 
- * @author aurelman
  */
 public class Sphere extends Primitive {
 
@@ -41,23 +40,12 @@ public class Sphere extends Primitive {
     private double radius;
 
     /**
-     * Constructs a <code>Sphere</code> object with the specified name.
+     * Constructs a {@code Sphere} object with the specified name.
      *
-     * @param name The name of the sphere entity.
-     */
-    public Sphere(final String name) {
-        super(name);
-    }
-
-    /**
-     * Constructs a <code>Sphere</code> object with the specified name.
-     *
-     * @param name The name of the sphere entity.
      * @param pos The sphere center position.
      * @param radius The radius of the sphere.
      */
-    public Sphere(final String name, final Vector pos, final double radius) {
-        super(name);
+    public Sphere(final Vector pos, final double radius) {
         this.position = pos;
         this.radius = radius;
     }
@@ -95,9 +83,8 @@ public class Sphere extends Primitive {
 
     @Override
     public Vector normalAt(final Vector point) {
-
-        Vector normal = Vector.joining(getPosition(), point);
-        return normal.normalized();
+        return Vector.joining(position, point)
+                .normalized();
     }
     
     /**
@@ -106,7 +93,7 @@ public class Sphere extends Primitive {
      * @return The radius of the sphere.
      */
     public double getRadius() {
-        return this.radius;
+        return radius;
     }
 
     /**
@@ -120,7 +107,7 @@ public class Sphere extends Primitive {
      * @return the position
      */
     public Vector getPosition() {
-        return this.position;
+        return position;
     }
 
     /**
@@ -132,11 +119,9 @@ public class Sphere extends Primitive {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[Sphere : name = ");
-        sb.append(getName()).
-                append(", radius = ").append(getRadius()).
-                append(", position = ").append(getPosition());
-        sb.append(']');
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+                .add("position", position)
+                .add("radius", radius)
+                .toString();
     }
 }

@@ -23,7 +23,6 @@ import com.raymonde.render.Ray;
 
 /**
  *
- * @author aurelman
  */
 public class Box extends Primitive {
 
@@ -31,15 +30,6 @@ public class Box extends Primitive {
      * 
      */
     private double size;
-
-    /**
-     *
-     * @param name The name of the box.
-     */
-    public Box(final String name) {
-        super(name);
-    }
-
 
     /**
      * @return the size

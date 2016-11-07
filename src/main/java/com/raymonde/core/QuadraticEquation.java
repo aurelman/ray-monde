@@ -18,44 +18,115 @@
 
 package com.raymonde.core;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
- * <p><code>QuadraticEquation</code> object are responsible of handling
- * 2nd degree polynomial (following the pattern : <code>ax² + bx + c</code>).
- * It also allows find the roots of such an equation.</p>
- * 
- * @author aurelman
+ * <p> {@code QuadraticEquation} represents 2nd degree polynomial equations
+ * (i.e. following the pattern : {@code ax² + bx + c}) and provides way to solve them
+ * and find their solutions if any.
  */
-public class QuadraticEquation {
+@ThreadSafe
+@Immutable
+public final class QuadraticEquation {
+
+    /**
+     * Used to represent the solution(s) of a quadratic equation.
+     */
+    @ThreadSafe
+    @Immutable
+    static final class Result {
+
+        /**
+         * The first solution
+         */
+        private final double firstRoot;
+
+        /**
+         * The second solution
+         */
+        private final double secondRoot;
+
+        /**
+         * The number of solutions that are different (can be 0, 1 or 2)
+         */
+        private final int rootNumber;
+
+        /**
+         * Constructs a {@code Result} with the specified elements.
+         *
+         * @param firstRoot contains the first root
+         * @param secondRoot contains the second root
+         */
+        private Result(final double firstRoot, final double secondRoot) {
+            this.rootNumber = 2;
+            this.firstRoot = firstRoot;
+            this.secondRoot = secondRoot;
+        }
+
+        /**
+         * Constructs a {@code Result} with the specified elements.
+
+         * @param onlyRoot the only root
+         */
+        private Result(final double onlyRoot) {
+            this.rootNumber = 1;
+            this.firstRoot = onlyRoot;
+            this.secondRoot = onlyRoot;
+        }
+
+        /**
+         * Constructs a {@code Result} with no real root.
+         */
+        private Result() {
+            this.rootNumber = 0;
+            this.firstRoot = Double.NaN;
+            this.secondRoot = Double.NaN;
+        }
+
+        /**
+         * @return the firstRoot
+         */
+        public double firstRoot() {
+            return firstRoot;
+        }
+
+        /**
+         * @return the secondRoot
+         */
+        public double secondRoot() {
+            return secondRoot;
+        }
+
+        /**
+         * @return the rootNumber
+         */
+        public int rootNumber() {
+            return rootNumber;
+        }
+    }
 
     /**
      * First component.
      */
-    private double a;
+    private final double a;
 
     /**
      * Second component.
      */
-    private double b;
+    private final double b;
 
     /**
      * Third component.
      */
-    private double c;
+    private final double c;
 
     /**
-     * Default constructor.
-     * a, b and c are initialized with 0.0.
-     */
-    public QuadraticEquation() {
-        this(0.0, 0.0, 0.0);
-    }
-
-    /**
-     * Constructs a <code>QuadraticEquation</code> with the specified values for
+     * Constructs a {@code QuadraticEquation} with the specified values for
      * a, b and c.
-     * 
-     * @param a The first component.
-     * @param b The second component.
+     *
+     * @param a The firstRoot component.
+     * @param b The secondRoot component.
      * @param c The third component.
      */
     public QuadraticEquation(final double a, final double b, final double c) {
@@ -65,112 +136,61 @@ public class QuadraticEquation {
     }
 
     /**
-     * Solves the <code>QuadraticEquation</code> corresponding on the specified
+     * Solves the {@code QuadraticEquation} corresponding to the specified
      * components.
-     * 
-     * @param a The first componenet.
-     * @param b The second component.
+     *
+     * @param a The firstRoot component.
+     * @param b The secondRoot component.
      * @param c The third component.
-     * 
+     *
      * @return The solution of the equation.
      */
-    public static QuadraticEquationResult solve(
-            final double a,
-            final double b,
-            final double c) {
-        QuadraticEquation eq = new QuadraticEquation(a, b, c);
-        return eq.solve();
+    public static Result solve(final double a, final double b, final double c) {
+        return new QuadraticEquation(a, b, c).solve();
     }
 
     /**
-     * Solves the current <code>QuadraticEquation</code> and
+     * Solves the current {@code QuadraticEquation} and
      * returns the resulting object.
      *
      * @return The solution of the equation.
      */
-    public QuadraticEquationResult solve() {
-        double pA = getA();
-        double pB = getB();
-        double pC = getC();
-        QuadraticEquationResult res = new QuadraticEquationResult();
+    public Result solve() {
 
-        if (pA == 0.0) {
-            res.setCount(1);
-            res.setFirst(-pC/pB);
-        } else {
-
-            double delta = pB*pB - 4*pA*pC;
-
-            if (delta < 0.0) {
-                res.setCount(0);
-            } else if (delta == 0.0) {
-                res.setCount(1);
-                res.setFirst((-pB)/(2*pA));
-            } else {
-                double rootSquaredDelta = Math.sqrt(delta);
-                double denominator = 2*pA;
-                res.setCount(2);
-                double root1 = (-pB - rootSquaredDelta)/denominator;
-                double root2 = (-pB + rootSquaredDelta)/denominator;
-
-                if (root1 < root2) {
-                    res.setFirst(root1);
-                    res.setSecond(root2);
-                } else {
-                    res.setFirst(root2);
-                    res.setSecond(root1);
-                }
-            }
+        if (a == 0.0) {
+            return new Result(-c/b);
         }
-        
-        return res;
-    }
-    
-    /**
-     * Returns the first component of the polynomial.
-     * 
-     * @return The first component.
-     */
-    public double getA() {
-        return a;
-    }
 
-    /**
-     * @param a The value to set to the first component.
-     */
-    public void setA(final double a) {
-        this.a = a;
-    }
+        double discriminant = b*b - 4*a*c;
 
-    /**
-     * Returns the second component of the polynomial.
-     *
-     * @return The second component
-     */
-    public double getB() {
-        return this.b;
-    }
+        if (discriminant < 0.0) {
+            return new Result();
+        }
 
-    /**
-     * @param b The value to set for the second component.
-     */
-    public void setB(final double b) {
-        this.b = b;
-    }
+        if (discriminant == 0.0) {
+            return new Result((-b)/(2*a));
+        }
 
-    /**
-     * Returns the third component of the polynomial.
-     * 
-     * @return The third component
-     */
-    public double getC() {
-        return this.c;
-    }
+        double rootSquaredDelta = Math.sqrt(discriminant);
 
-    /**
-     * @param c The value to set for the third component.
-     */
-    public void setC(final double c) {
-        this.c = c;
+        /*
+         *  The numerically computed solution would be  :
+         *   double root1 = (-b - rootSquaredDelta)/denominator;
+         *   double root2 = (-b + rootSquaredDelta)/denominator;
+         *
+         *  But to void cancellation issue in case b*b is a lot greater that 4*a*c
+         *  We compute roots in an other way.
+         *
+         *  For more details about cancellation see : https://en.wikipedia.org/wiki/Loss_of_significance
+         */
+
+        double root1 = (-b - Math.signum(b) * rootSquaredDelta) / (2 * a);
+        double root2 = c / (a * root1);
+
+        if (root1 < root2) {
+            return new Result(root1, root2);
+        }
+
+        return new Result(root2, root1);
     }
 }

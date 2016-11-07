@@ -27,8 +27,6 @@ import com.raymonde.scene.Scene;
 /**
  * This is a simple material.
  *
- * 
- * @author aurelman
  */
 public class ColorMaterial extends AbstractMaterial implements Material {
 
@@ -36,24 +34,13 @@ public class ColorMaterial extends AbstractMaterial implements Material {
      * The color of the material.
      */
     private Color color;
-
-
-    /**
-     *
-     * @param name The name of the material.
-     */
-    public ColorMaterial(final String name) {
-        super(name);
-    }
     
     /**
-     * Constructs a new <code>ColorMaterial</code> with the specified color.
+     * Constructs a new {@link ColorMaterial} with the specified color.
      *
-     * @param name The name of the material.
      * @param color The color of the material.
      */
-    public ColorMaterial(final String name, final Color color) {
-        super(name);
+    public ColorMaterial(final Color color) {
         this.color = color;
     }
 
