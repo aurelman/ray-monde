@@ -60,30 +60,13 @@ public class RenderingSurface {
     private ReadWriteLock rwLock = new ReentrantReadWriteLock();
     
     /**
-     * A <code>Color</code> array.
-     * The size of the array is : <code>(pixelWidth * pixelHeight)</code> and each point
-     * <code>(x, y)</code> on the surface is located at
-     * <code>colors[y * pixelWidth + x]</code>.
+     * An array of {@link Color} objects.
+     * The size of the array is : {@code pixelWidth * pixelHeight} and each point
+     * {@code (x, y)} on the surface is located at the position {@code [y * pixelWidth + x]} of the array.
      */
     @GuardedBy("rwLock")
     // Maybe Should rely on concurrentCollection for thread safety
     private Color [] colors;
-
-    /**
-     * Constructs a <code>RenderingSurface</code> object
-     * with the specified pixelWidth and pixelHeight (in pixel).
-     *
-     * @param pixelWidth The width in pixel of the surface.
-     * @param pixelHeight The height in pixel of the surface.
-     */
-    @Deprecated
-    public RenderingSurface(final Vector position,
-                            final int pixelWidth, final int pixelHeight) {
-        // this.position = position;
-        this.pixelWidth = pixelWidth;
-        this.pixelHeight = pixelHeight;
-        colors = new Color[pixelWidth * pixelHeight];
-    }
 
     /**
      * Constructs a {@link RenderingSurface} instance
@@ -95,6 +78,7 @@ public class RenderingSurface {
     public RenderingSurface(final int pixelWidth, final int pixelHeight) {
         this.pixelHeight = pixelHeight;
         this.pixelWidth = pixelWidth;
+        colors = new Color[pixelWidth * pixelHeight];
     }
 
     /**

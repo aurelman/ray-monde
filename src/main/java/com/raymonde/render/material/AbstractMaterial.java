@@ -33,12 +33,12 @@ import com.raymonde.scene.Scene;
 public abstract class AbstractMaterial implements Material {
 
     /**
-     * The sub-material.
+     * The sub-subMaterial.
      */
-    private Material material;
+    private final Material subMaterial;
 
-    public AbstractMaterial() {
-        
+    public AbstractMaterial(final Material subMaterial) {
+        this.subMaterial = subMaterial;
     }
 
     /**
@@ -56,16 +56,9 @@ public abstract class AbstractMaterial implements Material {
             final RenderingContext ctx);
 
     /**
-     * @return the material
+     * @return the subMaterial
      */
-    public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * @param material the material to set
-     */
-    public void setMaterial(final Material material) {
-        this.material = material;
+    public Material getSubMaterial() {
+        return subMaterial;
     }
 }

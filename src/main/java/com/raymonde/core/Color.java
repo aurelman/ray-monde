@@ -19,6 +19,7 @@
 package com.raymonde.core;
 
 import com.google.common.collect.Range;
+import lombok.Builder;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -81,6 +82,7 @@ public final class Color {
      * @param g The green component intensity.
      * @param b The blue component intensity.
      */
+    @Builder
     public Color(final double r, final double g, final double b) {
         checkArgument(isValidComponent(r), COMPONENTS_OUT_OF_RANGE_MESSAGE, "red", r);
         checkArgument(isValidComponent(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);

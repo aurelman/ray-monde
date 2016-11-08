@@ -25,6 +25,7 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
+import lombok.Builder;
 
 /**
  * {@code ReflectiveMaterial} adds reflectivity properties to
@@ -39,19 +40,15 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
     private double reflectivity;
 
     /**
-     * Constructs an empty {@code ReflectiveMaterial}.
-     */
-    public ReflectiveMaterial() {
-        super();
-    }
-
-    /**
      * Constructs a {@code ReflectiveMaterial} with the specified
      * reflectivity.
      *
-     * @param reflectivity The reflection factor.
+     * @param reflectivity the reflection factor.
+     * @param subMaterial the subMaterial
      */
-    public ReflectiveMaterial(final double reflectivity) {
+    @Builder
+    public ReflectiveMaterial(final double reflectivity, final Material subMaterial) {
+        super(subMaterial);
         this.reflectivity = reflectivity;
     }
     
@@ -62,7 +59,7 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
             final RenderingContext ctx) {
         Color reflectColor = Color.black();
         Color surfaceColor =
-                getMaterial().computeColor(renderer, scene, inter, ctx);
+                getSubMaterial().computeColor(renderer, scene, inter, ctx);
         
         // Ray reflected = reflectedRay(inter.getIncomingRay(), inter);
         Ray reflected = inter.getReflectedRay();
@@ -75,20 +72,11 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
         }
          */
 
-        double refl = getReflectivity();
+        double refl = reflectivity;
         return surfaceColor.multiply(1. - refl)
                 .add(reflectColor.multiply(refl));
     }
 
-    /**
-     * Returns the reflectivity factor of the material.
-     *
-     * @return The reflectivity factor.
-     */
-    public double getReflectivity() {
-        return reflectivity;
-    }
-    
     /**
      * Computes the reflected ray according the incoming one.
      * 

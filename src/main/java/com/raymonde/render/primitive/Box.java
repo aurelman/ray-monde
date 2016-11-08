@@ -20,16 +20,18 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
+import com.raymonde.render.material.Material;
 
 /**
  *
  */
-public class Box extends Primitive {
+public class Box extends AbstractPrimitive {
 
-    /**
-     * 
-     */
     private double size;
+
+    public Box(Material material) {
+        super(material);
+    }
 
     /**
      * @return the size

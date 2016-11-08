@@ -23,6 +23,7 @@ import com.raymonde.render.Intersection;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
+import lombok.Builder;
 
 /**
  * This is a simple material.
@@ -40,7 +41,9 @@ public class ColorMaterial extends AbstractMaterial implements Material {
      *
      * @param color The color of the material.
      */
-    public ColorMaterial(final Color color) {
+    @Builder
+    public ColorMaterial(final Color color, final Material subMaterial) {
+        super(subMaterial);
         this.color = color;
     }
 

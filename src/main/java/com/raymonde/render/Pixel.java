@@ -1,6 +1,5 @@
 package com.raymonde.render;
 
-import com.google.common.base.Preconditions;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -12,8 +11,8 @@ public class Pixel {
     private final int y;
 
     public Pixel(final int x, final int y) {
-        checkArgument(x <= 0, "x must be strictly positive");
-        checkArgument(y <= 0, "y must be strictly positive");
+        checkArgument(x >= 0, "x must be strictly positive");
+        checkArgument(y >= 0, "y must be strictly positive");
 
         this.x = x;
         this.y = y;

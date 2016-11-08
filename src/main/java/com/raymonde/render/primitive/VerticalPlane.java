@@ -20,12 +20,17 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
+import com.raymonde.render.material.Material;
 
 /**
  * A {@code Plane} object is defined by a normal vector and a distance from
  * the origin.
  */
-public class VerticalPlane extends Primitive {
+public class VerticalPlane extends AbstractPrimitive {
+
+    public VerticalPlane(Material material) {
+        super(material);
+    }
 
     @Override
     public Vector normalAt(final Vector point) {

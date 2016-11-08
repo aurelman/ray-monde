@@ -18,7 +18,6 @@
 
 package com.raymonde.load.yaml;
 
-import com.esotericsoftware.yamlbeans.YamlReader;
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
 import com.raymonde.load.SceneBuilder;
@@ -45,24 +44,16 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * This {@link SceneBuilder} reads a {@link Scene} object from a Yaml file.
+ * This {@link SceneBuilder} allows to read a {@link Scene scene} from a YAML file.
  */
 public class YamlSceneBuilder implements SceneBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(YamlSceneBuilder.class);
 
+    /**
+     * The file that describes the scene to render.
+     */
     private File file;
-
-    public YamlSceneBuilder(final String filename) {
-        file = new File(filename);
-    }
-
-    public YamlSceneBuilder(final File file) {
-        this.file = file;
-    }
-
-    public YamlSceneBuilder() {
-    }
 
     @Override
     public String getName() {
@@ -70,188 +61,255 @@ public class YamlSceneBuilder implements SceneBuilder {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Scene build() throws SceneBuildingException {
-        val yaml = new Yaml();
-        Scene scene = null;
 
         try (FileReader fis = new FileReader(file)) {
-            val yamlReader = new YamlReader(fis, );
-            Map<String, Object> config = (Map<String, Object>) yamlReader.read();
+            val yaml = new Yaml();
+            Map<String, Object> config = yaml.loadAs(fis, Map.class);
             Map<String, Object> sceneConfig = (Map<String, Object>) config.get("scene");
-            scene = parseScene(sceneConfig);
+
+            return parseScene(sceneConfig);
         } catch (FileNotFoundException ex) {
             logger.error("scene file {} cannot be found", file.getAbsolutePath(), ex);
+            throw new SceneBuildingException("scene file cannot be found", ex);
         } catch (IOException ex) {
-            logger.error("unable to read file {}", file.getAbsolutePath(), ex);
+            logger.error("scene file {} cannot be parsed", file.getAbsolutePath(), ex);
+            throw new SceneBuildingException("scene file cannot be parsed", ex);
         }
-        return scene;
     }
 
-    public YamlSceneBuilder setFile(final File file) {
+    /**
+     * Allow to specify the file that describes the scene to render.
+     *
+     * @param file the {@link File} object pointing to the file
+     * @return itself (allow to chain calls)
+     *
+     * @see #fromFile(File)
+     */
+    public YamlSceneBuilder fromFile(final File file) {
         this.file = file;
         return this;
     }
 
-    public YamlSceneBuilder setFile(final String filename) {
+    /**
+     * Allow to specify the file that describes the scene to render.
+     *
+     * @param filename the path to the file
+     * @return itself (allow to chain calls)
+     *
+     * @see #fromFile(File)
+     */
+    public YamlSceneBuilder fromFile(final String filename) {
         this.file = new File(filename);
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     private Scene parseScene(final Map<String, Object> sceneConfig) {
         val scene = new Scene();
-        scene.setAmbientColor(parseColor((Map<String, Double>) sceneConfig.get("ambient")));
+        scene.setAmbientColor(parseColor(sceneConfig.get("ambient")));
 
-        Map<String, Object> cameraConfig = (Map<String, Object>) sceneConfig.get("camera");
+        Map<String, Object> cameraConfig = castAs(sceneConfig.get("camera"), Map.class);
         Camera camera = parseCamera(cameraConfig);
-        scene.addCamera((String) cameraConfig.get("name"), camera);
+        scene.addCamera(cameraConfig.get("name").toString(), camera);
 
-        /*
-        RenderingSurface surface = parseSurface((Map<String, Object>)sceneConfig.get("surface"));
-        scene.setSurface(surface);
-        */
-
-        Collection<Map> primitivesConfig = (Collection<Map>) sceneConfig.get("primitives");
+        Collection<Map> primitivesConfig = castAs(sceneConfig.get("primitives"), Collection.class);
         for (Map<String, Object> primitive : primitivesConfig) {
-            scene.addPrimitive((String) primitive.get("name"), parsePrimitive(primitive));
+            scene.addPrimitive(primitive.get("name").toString(), parsePrimitive(primitive));
         }
 
-        Collection<Map> lightsConfig = (Collection<Map>) sceneConfig.get("lights");
+        Collection<Map> lightsConfig = castAs(sceneConfig.get("lights"), Collection.class);
         for (Map<String, Object> light : lightsConfig) {
-            scene.addLight((String) light.get("name"), parseLight(light));
+            scene.addLight(light.get("name").toString(), parseLight(light));
         }
 
         return scene;
     }
 
-    // TODO: should be delegated to the camera parsing
-    @Deprecated
-    private RenderingSurface parseSurface(final Map<String, Object> surfaceConfig) {
-        Map<String, Integer> dimension = (Map<String, Integer>) surfaceConfig.get("dimension");
-        Vector position = parseVector((Map<String, Double>) surfaceConfig.get("position"));
-        return new RenderingSurface(position, dimension.get("width"), dimension.get("height"));
+    private static final <T> T castAs(Object object, Class<T> targetClass) {
+        return targetClass.cast(object);
     }
 
     private Light parseLight(final Map<String, Object> lightConfig) {
         String type = (String) lightConfig.get("type");
 
-        Light light;
         switch (type) {
             case "omnidirectional":
-                light = parseOmnidirectionalLight(lightConfig);
-                break;
+                return parseOmnidirectionalLight(lightConfig);
             default:
-                light = parseOmnidirectionalLight(lightConfig);
+                return parseOmnidirectionalLight(lightConfig);
         }
-
-        return light;
     }
 
+    @SuppressWarnings("unchecked")
     private Light parseOmnidirectionalLight(Map<String, Object> lightConfig) {
-        Double attenuation = (Double) lightConfig.get("attenuation");
-        Vector position = parseVector((Map<String, Double>) lightConfig.get("position"));
-        Color color = parseColor((Map<String, Double>) lightConfig.get("color"));
-        return new OmnidirectionalLight(position, color, new Vector(attenuation, 0., 0.));
+        return OmnidirectionalLight.builder()
+                .position(parseVector(lightConfig.get("position")))
+                .color(parseColor(lightConfig.get("color")))
+                .attenuation(new Vector((double) lightConfig.get("attenuation"), 0., 0.))
+                .build();
     }
 
+    @SuppressWarnings("unchecked")
     private Primitive parsePrimitive(Map<String, Object> primitiveConfig) {
         String type = (String) primitiveConfig.get("type");
 
-        Primitive primitive;
         switch (type) {
             case "sphere":
-                primitive = parseSphere(primitiveConfig);
-                break;
+                return parseSphere(primitiveConfig);
             case "plane":
-                primitive = parsePlane(primitiveConfig);
-                break;
+                return parsePlane(primitiveConfig);
             default:
-                primitive = parseSphere(primitiveConfig);
+                return parseSphere(primitiveConfig);
         }
-
-        primitive.setMaterial(parseMaterial((Map<String, Object>) primitiveConfig.get("material")));
-        return primitive;
     }
 
     private Primitive parsePlane(final Map<String, Object> primitiveConfig) {
-        return new Plane(parseVector((Map<String, Double>) primitiveConfig.get("normal")), (Double) primitiveConfig.get("distance"));
+        return Plane.builder()
+                .normal(parseVector(primitiveConfig.get("normal")))
+                .distance((double) primitiveConfig.get("distance"))
+                .material(parseMaterial(primitiveConfig.get("material")))
+                .build();
     }
 
     private Primitive parseSphere(final Map<String, Object> primitiveConfig) {
-        return new Sphere(
-                parseVector((Map<String, Double>) primitiveConfig.get("position")),
-                (Double) primitiveConfig.get("radius"));
-    }
-
-    private Camera parseCamera(final Map<String, Object> cameraConfig) {
-
-        Camera camera = Camera.builder()
-                .direction(parseVector((Map) cameraConfig.get("direction")))
-                .position(parseVector((Map) cameraConfig.get("position")))
-                .distance(1.0)
-                .width(4.0)
-                .height(3.0)
-                .pixelWidth(1900)
-                .pixelHeight(1080)
+        return Sphere.builder()
+                .position(parseVector(primitiveConfig.get("position")))
+                .radius((double) primitiveConfig.get("radius"))
+                .material(parseMaterial(primitiveConfig.get("material")))
                 .build();
-
-        return camera;
     }
 
-    private Material parseMaterial(final Map<String, Object> materialConfig) {
-        String type = (String) materialConfig.get("type");
+
+    private Camera parseCamera(final Map<String, Object> config) {
+
+        @SuppressWarnings("unchecked") Map<String, Object> surfaceConfig = castAs(config.get("surface"), Map.class);
+        Dimensions<Double> surfaceDimensions = parseDimensions(surfaceConfig.get("dimensions"));
+        Dimensions<Integer> pixelDimensions = parseDimensions(surfaceConfig.get("pixels"));
+
+        return Camera.builder()
+                .direction(parseVector(config.get("direction")))
+                .position(parseVector(config.get("position")))
+                .up(parseVector(config.get("up")))
+                .distance((double)surfaceConfig.get("distance"))
+                .width(surfaceDimensions.getWidth())
+                .height(surfaceDimensions.getHeight())
+                .pixelWidth(pixelDimensions.getWidth())
+                .pixelHeight(pixelDimensions.getHeight())
+                .build();
+    }
+
+    private Material parseMaterial(Object materialConfig) {
+
+        @SuppressWarnings("unchecked") final Map<String, Object> config = (Map<String, Object>)materialConfig;
+
+        String type = (String) config.get("type");
         Material material;
         switch (type) {
             case "color":
-                material = parseColorMaterial(materialConfig);
+                material = parseColorMaterial(config);
                 break;
             case "phong":
-                material = parsePhongMaterial(materialConfig);
+                material = parsePhongMaterial(config);
                 break;
             case "refractive":
-                material = parseRefractiveMaterial(materialConfig);
+                material = parseRefractiveMaterial(config);
                 break;
             case "reflective":
-                material = parseReflectiveMaterial(materialConfig);
+                material = parseReflectiveMaterial(config);
                 break;
             default:
-                material = parseColorMaterial(materialConfig);
-        }
-
-        if (materialConfig.containsKey("material")) {
-            material.setMaterial(parseMaterial((Map<String, Object>) materialConfig.get("material")));
+                material = parseColorMaterial(config);
         }
 
         return material;
     }
 
+    private Material parseSubMaterialIfExists(Map<String, Object> rootMaterialConfig) {
+        if (rootMaterialConfig.containsKey("material")) {
+            return parseMaterial(rootMaterialConfig.get("material"));
+        }
+        return null;
+    }
+
     private Material parsePhongMaterial(Map<String, Object> materialConfig) {
         //diffuse: 0.8
         //specular: 12.
-        Double diffuse = (Double) materialConfig.get("diffuse");
-        Double specular = (Double) materialConfig.get("specular");
-        return new PhongMaterial(diffuse, specular);
+        Material subMaterial = parseSubMaterialIfExists(materialConfig);
+
+        return PhongMaterial.builder()
+                .diffuse((double) materialConfig.get("diffuse"))
+                .specular((double) materialConfig.get("specular"))
+                .subMaterial(subMaterial)
+                .build();
     }
 
     private Material parseRefractiveMaterial(Map<String, Object> materialConfig) {
-        Double refraction = (Double) materialConfig.get("refraction");
-        return new RefractiveMaterial(refraction);
+        Material subMaterial = parseSubMaterialIfExists(materialConfig);
+
+        return RefractiveMaterial.builder()
+                .refraction((double) materialConfig.get("refraction"))
+                .subMaterial(subMaterial)
+                .build();
     }
 
     private Material parseReflectiveMaterial(Map<String, Object> materialConfig) {
-        Double reflectivity = (Double) materialConfig.get("reflectivity");
-        return new ReflectiveMaterial(reflectivity);
+        Material subMaterial = parseSubMaterialIfExists(materialConfig);
+
+        return ReflectiveMaterial.builder()
+                .reflectivity((double)materialConfig.get("reflectivity"))
+                .subMaterial(subMaterial)
+                .build();
     }
 
     private Material parseColorMaterial(Map<String, Object> materialConfig) {
-        Color color = parseColor((Map<String, Double>) materialConfig.get("color"));
-        return new ColorMaterial(color);
+        Material subMaterial = parseSubMaterialIfExists(materialConfig);
+
+        return ColorMaterial.builder()
+                .color(parseColor(materialConfig.get("color")))
+                .subMaterial(subMaterial)
+                .build();
     }
 
-    private Color parseColor(final Map<String, Double> colorConfig) {
-        return new Color(colorConfig.get("r"), colorConfig.get("g"), colorConfig.get("b"));
+    private Color parseColor(final Object colorConfig) {
+        @SuppressWarnings("unchecked") Map<String, Double> conf = (Map<String, Double>)colorConfig;
+        return Color.builder()
+                .r(conf.get("r"))
+                .g(conf.get("g"))
+                .b(conf.get("b"))
+                .build();
     }
 
-    private Vector parseVector(final Map<String, Double> vectorConfig) {
-        return new Vector(vectorConfig.get("x"), vectorConfig.get("y"), vectorConfig.get("z"));
+    private Vector parseVector(final Object vectorConfig) {
+        @SuppressWarnings("unchecked") Map<String, Double> conf = castAs(vectorConfig, Map.class);
+        return Vector.builder()
+                .x(conf.get("x"))
+                .y(conf.get("y"))
+                .z(conf.get("z"))
+                .build();
+    }
+
+    private <T> Dimensions<T> parseDimensions(final Object config) {
+        @SuppressWarnings("unchecked") Map<String, T> dimensionsConfig = castAs(config, Map.class);
+        return new Dimensions<>(dimensionsConfig.get("width"), dimensionsConfig.get("height"));
+    }
+
+    private static class Dimensions<T> {
+        private T width;
+        private T height;
+
+        public Dimensions(T width, T height) {
+            this.width = width;
+            this.height = height;
+        }
+
+        public T getWidth() {
+            return this.width;
+        }
+
+        public T getHeight() {
+            return this.height;
+        }
     }
 }

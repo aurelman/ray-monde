@@ -101,7 +101,7 @@ public class RenderingJob implements Runnable {
             return result;
         }
 
-        //return intersection.getPrimitive().getMaterial()
+        //return intersection.getPrimitive().getSubMaterial()
         //        .computeColor(this, sc, intersection, ctx);
         return null;
     }

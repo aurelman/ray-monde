@@ -26,12 +26,8 @@ import com.raymonde.render.material.Material;
  * {@code Primitive} objects are the <em>solids</em> elements of a scene.
  * They might be intersected by rays.
  */
-public abstract class Primitive {
+public interface Primitive {
 
-    /**
-     * The root material of the pripmitive.
-     */
-    private Material material;
 
     /**
      * Compute the normal vector to the primitive surface for the specified
@@ -41,7 +37,7 @@ public abstract class Primitive {
      * 
      * @return The normal vector.
      */
-    public abstract Vector normalAt(final Vector point);
+    Vector normalAt(final Vector point);
     
     /**
      * Returns a an intersection distance from the ray origin.
@@ -50,22 +46,8 @@ public abstract class Primitive {
      * 
      * @return The intersection distance.
      */
-    public abstract double intersect(Ray ray);
+    double intersect(Ray ray);
 
-    /**
-     * Returns the root material of the primitive.
-     * 
-     * @return The root material.
-     */
-    public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * @param material The material to set.
-     */
-    public void setMaterial(final Material material) {
-        this.material = material;
-    }
+    Material getMaterial();
 }
 

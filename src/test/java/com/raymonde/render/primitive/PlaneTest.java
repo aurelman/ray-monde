@@ -39,7 +39,10 @@ public class PlaneTest {
 
     public Plane getPlane1() {
         if (this.plane1 == null) {
-            this.plane1 = new Plane(new Vector(0., 0., -1.), 100.0);
+            this.plane1 = Plane.builder()
+                    .normal(new Vector(0., 0., -1.))
+                    .distance(100.)
+                    .build();
         }
 
         return this.plane1;

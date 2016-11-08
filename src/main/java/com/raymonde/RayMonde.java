@@ -74,19 +74,21 @@ public class RayMonde {
         logger.info("start loading scene from {}", filename);
 
         Scene scene = new YamlSceneBuilder()
-                .setFile(filename)
+                .fromFile(filename)
                 .build();
 
         logger.info("scene is now loaded", filename);
         
         
         logger.info("start rendering scene");
-        renderer.render(scene);
+        renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera());
         logger.info("scene rendered");
-        
+
+        logger.info("saving result to {}", opt.getOutputFilename());
         SceneSaver ss = new SceneSaver();
-        ss.save(scene, opt.getOutputFilename());
-        
+        ss.save(scene.getDefaultCamera().createRenderingSurface(), opt.getOutputFilename());
+        logger.info("file {} saved", opt.getOutputFilename());
+
         logger.info("finishing ray-monde");
     }
 }

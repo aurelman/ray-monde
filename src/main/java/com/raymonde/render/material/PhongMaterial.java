@@ -27,6 +27,7 @@ import com.raymonde.render.RenderingContext;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
 import com.raymonde.scene.Scene;
+import lombok.Builder;
 
 /**
  */
@@ -43,21 +44,15 @@ public class PhongMaterial extends AbstractMaterial implements Material {
     private double specularFactor;
 
     /**
-     * Constructs an empty {@code PhongMaterial}.
-     */
-    public PhongMaterial() {
-        super();
-    }
-
-    /**
      * Constructs a {@code PhongMaterial} with the specified diffuse and
-     * specular.
+     * specular parameters.
      *
      * @param diffuse The diffuse factor.
      * @param specular The specular factor.
      */
-    public PhongMaterial(
-            final double diffuse, final double specular) {
+    @Builder
+    public PhongMaterial(final double diffuse, final double specular, final Material subMaterial) {
+        super(subMaterial);
         this.diffuseFactor = diffuse;
         this.specularFactor = specular;
     }
@@ -71,8 +66,7 @@ public class PhongMaterial extends AbstractMaterial implements Material {
         Ray ray = intersection.getIncomingRay();
         Primitive object = intersection.getPrimitive();
 
-        Color color = getMaterial().
-                computeColor(renderer, scene, intersection, ctx);
+        Color color = getSubMaterial().computeColor(renderer, scene, intersection, ctx);
         Color ambiantColor = scene.getAmbientColor();
         Color diffuseColor = Color.black();
         Color specularColor = Color.black();

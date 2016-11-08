@@ -43,9 +43,8 @@ public class Camera {
      */
     private final Vector up;
     /**
-     * The distance from the camera origin to the surface.
+     * The rendering surface's information
      */
-    private final double distance;
     private final RenderingSurfaceSpec renderingSurfaceSpec;
 
     /**
@@ -61,8 +60,7 @@ public class Camera {
         this.position = position;
         this.direction = direction.normalized();
         this.up = up.normalized();
-        this.distance = distance;
-        this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight);
+        this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight, distance);
     }
 
     /**
@@ -70,14 +68,12 @@ public class Camera {
      * @param pos
      * @param dir
      * @param up
-     * @param distance
      * @param surfaceSpec
      */
-    public Camera(final Vector pos, final Vector dir, final Vector up, final double distance, final RenderingSurfaceSpec surfaceSpec) {
+    public Camera(final Vector pos, final Vector dir, final Vector up, final RenderingSurfaceSpec surfaceSpec) {
         this.position = pos;
         this.direction = dir.normalized();
         this.up = up.normalized();
-        this.distance = distance;
         this.renderingSurfaceSpec = surfaceSpec;
     }
 
@@ -109,15 +105,9 @@ public class Camera {
         return renderingSurfaceSpec.getPixelHeight();
     }
 
-    /**
-     * @return the distance
-     */
-    public double getDistance() {
-        return this.distance;
-    }
 
     public RenderingSurface createRenderingSurface() {
-        return new RenderingSurface(renderingSurfaceSpec.getPixelWidth(), renderingSurfaceSpec.getPixelWidth());
+        return new RenderingSurface(renderingSurfaceSpec.getPixelWidth(), renderingSurfaceSpec.getPixelHeight());
     }
 
     /**
@@ -141,16 +131,18 @@ public class Camera {
      */
     private Vector absolutePositionOfPixel(final Pixel pixel) {
 
-        Vector dirVector = direction.normalized().multiply(distance);
+        Vector dirVector = direction.normalized();
         Vector yVector = up.normalized();
-        Vector xVector = direction.normalized().cross(up.normalized()).normalized();
+
+        // Is unique for camera, should be computed at construction time.
+        Vector xVector = direction.cross(up).normalized();
 
         // Need to be computed accordingly
         double somethingDependingOnX = pixel.x() * 1.0;
         double somethingDependingOnY = pixel.y() * 1.0;
 
         return position
-                .add(dirVector.multiply(distance))
+                .add(dirVector.multiply(renderingSurfaceSpec.getDistance()))
                 .add(xVector.multiply(somethingDependingOnX))
                 .add(yVector.multiply(somethingDependingOnY));
     }
@@ -176,11 +168,17 @@ public class Camera {
          */
         private final double height;
 
-        private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight) {
+        /**
+         * The distance from the camera's origin position
+         */
+        private final double distance;
+
+        private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight, double distance) {
             this.width = width;
             this.height = height;
             this.pixelWidth = pixelWidth;
             this.pixelHeight = pixelHeight;
+            this.distance = distance;
         }
 
         public int getPixelWidth() {
@@ -197,6 +195,10 @@ public class Camera {
 
         public double getHeight() {
             return height;
+        }
+
+        public double getDistance() {
+            return distance;
         }
     }
 }

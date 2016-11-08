@@ -19,6 +19,7 @@ package com.raymonde.render.light;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
+import lombok.Builder;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -45,6 +46,7 @@ public class OmnidirectionalLight extends Light {
      * @param color The color of the light.
      * @param attenuation The attenuation of the light.
      */
+    @Builder
     public OmnidirectionalLight(final Vector position,
             final Color color, final Vector attenuation) {
         super(position);

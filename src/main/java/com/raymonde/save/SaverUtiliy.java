@@ -18,6 +18,7 @@
 
 package com.raymonde.save;
 
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Color;
 
 /**
@@ -42,7 +43,9 @@ public class SaverUtiliy {
         int [] arr = new int[colors.length];
 
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = colors[i].rgb();
+            // TODO: Shouldn't need the use of firstNonNull
+
+            arr[i] = colors[i] != null ? colors[i].rgb() : Color.black().rgb();
         }
 
         return arr;

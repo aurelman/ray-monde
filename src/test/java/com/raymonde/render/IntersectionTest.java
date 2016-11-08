@@ -31,7 +31,11 @@ public class IntersectionTest {
         // Given
         Vector spherePosition = new Vector(0, 0, 0);
         Ray incomingRay = new Ray(new Vector(4, 0, 0), new Vector(-1, 0, 0));
-        Intersection instance = new Intersection(new Sphere(spherePosition, 1), incomingRay, 3);
+        Sphere sphere = Sphere.builder()
+                .position(spherePosition)
+                .radius(1)
+                .build();
+        Intersection instance = new Intersection(sphere, incomingRay, 3);
         Ray expResult = new Ray(new Vector(1, 0, 0), new Vector(1, 0, 0));
         // When
         Ray result = instance.getReflectedRay();

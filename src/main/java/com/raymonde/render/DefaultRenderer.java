@@ -45,21 +45,6 @@ public class DefaultRenderer implements Renderer {
     private Scene scene;
 
     /**
-     * Constructs a default rendered.
-     */
-//    public DefaultRenderer() {
-//        setMaxDepth(DefaultRenderer.DEFAULT_MAX_DEPTH);
-//    }
-
-    /**
-     *
-     * @param maxDepth The maximum depth.
-     */
-//    public DefaultRenderer(final int maxDepth) {
-//        setMaxDepth(maxDepth);
-//    }
-
-    /**
      *
      * @param scene The scene to shootThroughPixel.
      */

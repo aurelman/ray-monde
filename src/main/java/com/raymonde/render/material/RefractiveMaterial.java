@@ -26,6 +26,7 @@ import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.render.primitive.Primitive;
 import com.raymonde.scene.Scene;
+import lombok.Builder;
 
 /**
  * {@code RefractiveMaterial} adds refractivity properties to
@@ -39,19 +40,14 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     private double refraction;
 
     /**
-     * Constructs an empty {@code RefractiveMaterial}.
-     */
-    public RefractiveMaterial() {
-
-    }
-
-    /**
      * Constructs a {@code RefractiveMaterial} with the specified
      * refraction index.
      *
      * @param refraction The refraction index.
      */
-    public RefractiveMaterial(final double refraction) {
+    @Builder
+    public RefractiveMaterial(final double refraction, final Material subMaterial) {
+        super(subMaterial);
         this.refraction = refraction;
     }
     
@@ -62,7 +58,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
             final RenderingContext ctx) {
         Color refractColor = Color.black();
         Color surfaceColor =
-                getMaterial().computeColor(renderer, scene, inter, ctx);
+                getSubMaterial().computeColor(renderer, scene, inter, ctx);
         
         Ray refracted = refractedRay(inter.getIncomingRay(), inter, ctx);
 
@@ -82,15 +78,6 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     }
 
     /**
-     * Returns the reflectivity factor of the material.
-     *
-     * @return The reflectivity factor.
-     */
-    public double getRefraction() {
-        return this.refraction;
-    }
-    
-    /**
      * Computes the refracted ray according the incoming one.
      * 
      * @param ray The incoming ray.
@@ -103,7 +90,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
             final RenderingContext ctx) {
         double refract = ctx.getRefraction();
         Primitive primitive = inter.getPrimitive();
-        double refB = getRefraction();
+        double refB = refraction;
         double n = refract / refB;
 
         Vector normal = primitive.normalAt(inter.getIntersectionPosition());

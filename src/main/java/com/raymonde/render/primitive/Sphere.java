@@ -21,32 +21,36 @@ package com.raymonde.render.primitive;
 import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
+import com.raymonde.render.material.Material;
+import lombok.Builder;
 
 /**
  * {@code Sphere} represents spherical object in a scene.
  * The center of the sphere is represented by his position.
  * The radius is a double value.
  */
-public class Sphere extends Primitive {
+public class Sphere extends AbstractPrimitive {
 
     /**
      * The center position
      */
-    private Vector position;
+    private final Vector position;
     
     /**
      * The radius.
      */
-    private double radius;
+    private final double radius;
 
     /**
      * Constructs a {@code Sphere} object with the specified name.
      *
-     * @param pos The sphere center position.
+     * @param position The sphere center position.
      * @param radius The radius of the sphere.
      */
-    public Sphere(final Vector pos, final double radius) {
-        this.position = pos;
+    @Builder
+    public Sphere(final Vector position, final double radius, final Material material) {
+        super(material);
+        this.position = position;
         this.radius = radius;
     }
 
@@ -54,8 +58,7 @@ public class Sphere extends Primitive {
     public double intersect(final Ray ray) {
         
         Vector rayDir = ray.getDirection();
-        Vector sphereVector =
-                Vector.joining(ray.getOrigin(), getPosition());
+        Vector sphereVector = Vector.joining(ray.getOrigin(), getPosition());
         double scal = sphereVector.dot(rayDir);
 
         if (scal < 0.0) {
@@ -97,24 +100,10 @@ public class Sphere extends Primitive {
     }
 
     /**
-     * @param radius The radius to set.
-     */
-    public void setRadius(final double radius) {
-        this.radius = radius;
-    }
-
-    /**
      * @return the position
      */
     public Vector getPosition() {
         return position;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(final Vector position) {
-        this.position = position;
     }
 
     @Override

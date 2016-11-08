@@ -26,6 +26,7 @@ import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -48,17 +49,17 @@ public class Scene {
     /**
      * List of primitives
      */
-    private Map<String, Primitive> primitives;
+    private Map<String, Primitive> primitives = new LinkedHashMap<>();
 
     /**
      * List of lights
      */
-    private Map<String, Light> lights;
+    private Map<String, Light> lights = new LinkedHashMap<>();
 
     /**
      * List of cameras
      */
-    private Map<String, Camera> cameras;
+    private Map<String, Camera> cameras = new LinkedHashMap<>();
 
     /**
      * The ambient color of the scene.
