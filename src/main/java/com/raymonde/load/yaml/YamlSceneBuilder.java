@@ -16,8 +16,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.raymonde.load.yml;
+package com.raymonde.load.yaml;
 
+import com.esotericsoftware.yamlbeans.YamlReader;
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
 import com.raymonde.load.SceneBuilder;
@@ -37,7 +38,8 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
@@ -60,7 +62,6 @@ public class YamlSceneBuilder implements SceneBuilder {
     }
 
     public YamlSceneBuilder() {
-
     }
 
     @Override
@@ -72,14 +73,17 @@ public class YamlSceneBuilder implements SceneBuilder {
     public Scene build() throws SceneBuildingException {
         val yaml = new Yaml();
         Scene scene = null;
-        try (FileInputStream fis = new FileInputStream(file)) {
-            Map<String, Object> config = (Map<String, Object>) yaml.load(fis);
+
+        try (FileReader fis = new FileReader(file)) {
+            val yamlReader = new YamlReader(fis, );
+            Map<String, Object> config = (Map<String, Object>) yamlReader.read();
             Map<String, Object> sceneConfig = (Map<String, Object>) config.get("scene");
             scene = parseScene(sceneConfig);
+        } catch (FileNotFoundException ex) {
+            logger.error("scene file {} cannot be found", file.getAbsolutePath(), ex);
         } catch (IOException ex) {
-            logger.error("unable to read {}", file.getAbsolutePath(), ex);
+            logger.error("unable to read file {}", file.getAbsolutePath(), ex);
         }
-
         return scene;
     }
 

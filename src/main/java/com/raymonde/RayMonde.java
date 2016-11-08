@@ -19,7 +19,7 @@
 package com.raymonde;
 
 import com.raymonde.load.SceneBuildingException;
-import com.raymonde.load.yml.YamlSceneBuilder;
+import com.raymonde.load.yaml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
 import com.raymonde.render.RenderingException;
