@@ -37,7 +37,7 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
     /**
      * The reflectivity.
      */
-    private double reflectivity;
+    private final double reflectivity;
 
     /**
      * Constructs a {@code ReflectiveMaterial} with the specified
@@ -87,8 +87,8 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
      */
     protected Ray reflectedRay(final Ray ray, final Intersection inter) {
         Vector intersectionPoint = inter.getIntersectionPosition();
-        Vector normal = inter.getPrimitive().normalAt(intersectionPoint);
-        Vector reflected = ray.getDirection().reflected(normal);
+        Vector normal = inter.getIntersectedPrimitive().normalAt(intersectionPoint);
+        Vector reflected = ray.direction().reflected(normal);
         return new Ray(intersectionPoint, reflected);
     }
 }

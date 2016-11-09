@@ -45,22 +45,6 @@ public class DefaultRenderer implements Renderer {
     private Scene scene;
 
     /**
-     *
-     * @param scene The scene to shootThroughPixel.
-     */
-    @Override
-    public RenderingSurface render(final Scene scene) {
-        setScene(scene);
-        final RenderingSurface result = scene.getRenderingSurface();
-        for (int i = 0; i < result.getPixelWidth(); i++) {
-            for (int j = 0; j < result.getPixelHeight(); j++) {
-                result.setColor(i, j, shootThroughPixel(i, j));
-            }
-        }
-        return result;
-    }
-
-    /**
      * Renders the specified {@link Scene} through the specified {@link Camera}
      *
      * @param scene
@@ -77,6 +61,9 @@ public class DefaultRenderer implements Renderer {
 
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
+
+            Color computedColor = null;
+            rendered.setPixelColor(pixel, computedColor);
         });
 
         return rendered;
@@ -112,7 +99,7 @@ public class DefaultRenderer implements Renderer {
         Color result = Color.black();
         
         if (intersection != null) {
-            result = intersection.getPrimitive().getMaterial()
+            result = intersection.getIntersectedPrimitive().getMaterial()
                 .computeColor(this, sc, intersection, ctx);
         }
 

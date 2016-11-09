@@ -18,16 +18,36 @@
 
 package com.raymonde.render;
 
+import com.raymonde.exception.RayMondeException;
+import org.apache.commons.lang3.text.WordUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- *
+ * Returns a Rendered
  */
 public class RendererFactory {
-    
-    public static Renderer forType(final String type) {
-        if ("default".equals(type)) {
-            return new DefaultRenderer();
+
+    private final static Logger logger = LoggerFactory.getLogger(RendererFactory.class);
+
+
+    public static final Renderer createRenderer(final String type) throws RayMondeException {
+
+        final String name = "com.raymonde.render." + capitalize(type) + "Renderer";
+
+        try {
+            @SuppressWarnings("unchecked") Class<? extends Renderer> clazz =  (Class< ? extends Renderer>)Class.forName(name);
+            return clazz.newInstance();
+        } catch (ClassNotFoundException e) {
+            logger.error("cannot create renderer because class {} is not found", name, e);
+            throw new RayMondeException("cannot create renderer", e);
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("an error occurred while instantiating renderer {}", name, e);
+            throw new RayMondeException("cannot create renderer", e);
         }
-        return new MultithreadedRenderer();
     }
 
+    private static String capitalize(final String string) {
+        return WordUtils.capitalizeFully(string, '-').replace("-", "");
+    }
 }

@@ -100,19 +100,16 @@ public class RenderingSurface {
         return pixelHeight;
     }
 
-
     /**
-     * Sets the specified color at the specified position.
-     * 
-     * @param width The pixelWidth position on the surface.
-     * @param height The pixelHeight position on the surface.
+     * Sets the specified {@link Color} for the specified {@link Pixel}.
      *
+     * @param pixel The pixel the color will be set.
      * @param color The color to set at the specified position.
      */
-    public void setColor(final int width, final int height, final Color color) {    
+    public void setPixelColor(final Pixel pixel, final Color color) {
         try {
             rwLock.writeLock().lock();
-            colors[height* getPixelWidth() + width] = color;
+            colors[pixel.y() * pixelWidth + pixel.x()] = color;
         } finally {
             rwLock.writeLock().unlock();
         }
@@ -132,13 +129,12 @@ public class RenderingSurface {
     }
 
     /**
-     * Returns a <code>Color</code> array of the colors on the surface.
-     * The size of the array is : <code>(pixelWidth * pixelHeight)</code>
-     * and the color at the <code>(x, y)</code> position on the
-     * surface is located at <code>[y * pixelWidth + x]</code> in the returned array.
+     * Returns an array of {@link Color}s.
+     * The size of the array is : {@code (pixelWidth * pixelHeight)}.
+     * and the color at the {@code (x, y)} position on the
+     * surface is located at {@code [y * pixelWidth + x]} in the returned array.
      *
-     * @return A <code>Color</code> array containing the colors of each position
-     * of the surface.
+     * @return an array of {@link Color} objects
      */
     public Color [] getColors() {
         try {
@@ -150,12 +146,13 @@ public class RenderingSurface {
     }
 
     /**
-     * Runs the provided {@link Consumer#accept(Object) consumer} against every pixel of the surface
+     * Runs the provided {@link Consumer#accept(Object) consumer} for each pixel of the surface.
      *
-     * @param lambda
+     * @param lambda the code that should be processed for every {@link Pixel} of the surface.
+     *
+     * @see Pixel
      */
     public void eachPixel(final Consumer<Pixel> lambda) {
-        // TODO: Maybe should accept a function
         for (int w = 0; w < pixelWidth; w++) {
             for (int h = 0; h < pixelHeight; h++) {
                 lambda.accept(new Pixel(w, h));

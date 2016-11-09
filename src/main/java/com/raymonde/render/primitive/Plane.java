@@ -62,8 +62,8 @@ public class Plane extends AbstractPrimitive {
     @Override
     public double intersect(final Ray ray) {
         Vector planeNormal = getNormal();
-        Vector origin = ray.getOrigin();
-        Vector direction = ray.getDirection();
+        Vector origin = ray.origin();
+        Vector direction = ray.direction();
         
         double dot = planeNormal.dot(direction);
 

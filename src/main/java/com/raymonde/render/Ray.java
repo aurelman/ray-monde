@@ -67,7 +67,7 @@ public final class Ray {
      * 
      * @return the direction of the ray.
      */
-    public Vector getDirection() {
+    public Vector direction() {
         return direction;
     }
 
@@ -76,13 +76,13 @@ public final class Ray {
      *
      * @return the origin position of the ray.
      */
-    public Vector getOrigin() {
+    public Vector origin() {
         return origin;
     }
 
     /**
-     * Returns a <code>String</code> representation of the current object.
-     * @return a <code>String</code> representation of the current object.
+     * Returns a {@link String} representation of the {@code Ray}.
+     * @return a {@link String} representation of the {@code Ray}.
      */
     @Override
     public String toString() {

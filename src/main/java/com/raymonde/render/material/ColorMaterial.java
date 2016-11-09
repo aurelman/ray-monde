@@ -26,15 +26,14 @@ import com.raymonde.scene.Scene;
 import lombok.Builder;
 
 /**
- * This is a simple material.
- *
+ * This is a simple material. It represents a uniform {@link Color}.
  */
 public class ColorMaterial extends AbstractMaterial implements Material {
 
     /**
      * The color of the material.
      */
-    private Color color;
+    private final Color color;
     
     /**
      * Constructs a new {@link ColorMaterial} with the specified color.
@@ -52,15 +51,6 @@ public class ColorMaterial extends AbstractMaterial implements Material {
             final Scene scene,
             final Intersection inter,
             final RenderingContext ctx) {
-        return getColor();
-    }
-
-    /**
-     * Returns the color of the material.
-     * 
-     * @return The color of the material.
-     */
-    public Color getColor() {
         return color;
     }
 }

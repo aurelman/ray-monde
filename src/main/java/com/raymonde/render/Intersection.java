@@ -25,8 +25,8 @@ import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
- * {@code Intersection} wraps data about intersection between a ray and a primitive.
- * It stores the intersecting ray, the intersected primitive and the distance
+ * {@code Intersection} wraps data about intersection between a ray and a intersectedPrimitive.
+ * It stores the intersecting ray, the intersected intersectedPrimitive and the distance
  * from the ray origin the intersection occurred.
  */
 @Immutable
@@ -39,9 +39,9 @@ public final class Intersection {
     private final double distance;
 
     /**
-     * The concerned primitive by the intersection.
+     * The concerned intersectedPrimitive by the intersection.
      */
-    private final Primitive primitive;
+    private final Primitive intersectedPrimitive;
 
     /**
      * The intersecting ray.
@@ -62,12 +62,12 @@ public final class Intersection {
 
     /**
      *
-     * @param intersected The primitive intersected.
+     * @param intersected The intersectedPrimitive intersected.
      * @param ray The ray that intersect.
      * @param distance The distance.
      */
     public Intersection(final Primitive intersected, final Ray ray, final double distance) {
-        this.primitive = intersected;
+        this.intersectedPrimitive = intersected;
         this.distance = distance;
         this.incomingRay = ray;
     }
@@ -80,10 +80,10 @@ public final class Intersection {
     }
 
     /**
-     * @return the intersected primitive
+     * @return the intersected intersectedPrimitive
      */
-    public Primitive getPrimitive() {
-        return primitive;
+    public Primitive getIntersectedPrimitive() {
+        return intersectedPrimitive;
     }
 
     /**
@@ -98,8 +98,8 @@ public final class Intersection {
     public Ray getReflectedRay() {
         if (reflectedRay == null) {
             final Vector intersectionPosition = getIntersectionPosition();
-            final Vector normal = getPrimitive().normalAt(intersectionPosition);
-            final Vector reflected = incomingRay.getDirection().reflected(normal);
+            final Vector normal = getIntersectedPrimitive().normalAt(intersectionPosition);
+            final Vector reflected = incomingRay.direction().reflected(normal);
             reflectedRay = new Ray(intersectionPosition, reflected);
         }
         
@@ -115,8 +115,10 @@ public final class Intersection {
     public Vector getIntersectionPosition() {
         if (intersectionPoint == null) {
             // origin + dist*direction
-            intersectionPoint = getIncomingRay().getDirection().
-                    multiply(getDistance()).add(getIncomingRay().getOrigin());
+            intersectionPoint = incomingRay
+                    .direction()
+                    .multiply(distance)
+                    .add(incomingRay.origin());
         }
         return intersectionPoint;
     }

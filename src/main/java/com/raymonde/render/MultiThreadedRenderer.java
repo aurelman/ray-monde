@@ -26,20 +26,16 @@ import java.util.concurrent.Executors;
 /**
  *
  */
-public class MultithreadedRenderer implements Renderer {
+public class MultiThreadedRenderer implements Renderer {
     
     /**
-     * Each rendering taks is dispatched to service.
+     * Each rendering tasks is dispatched to on thread of the pool.
      */
-    private ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
 
     @Override
-    public RenderingSurface render(Scene scene) throws RenderingException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public RenderingSurface renderSceneThroughCamera(Scene scene, Camera camera) throws RenderingException {
-        return null;
+    public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) throws RenderingException {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 }

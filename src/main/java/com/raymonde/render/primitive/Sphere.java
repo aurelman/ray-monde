@@ -57,8 +57,8 @@ public class Sphere extends AbstractPrimitive {
     @Override
     public double intersect(final Ray ray) {
         
-        Vector rayDir = ray.getDirection();
-        Vector sphereVector = Vector.joining(ray.getOrigin(), getPosition());
+        Vector rayDir = ray.direction();
+        Vector sphereVector = Vector.joining(ray.origin(), getPosition());
         double scal = sphereVector.dot(rayDir);
 
         if (scal < 0.0) {

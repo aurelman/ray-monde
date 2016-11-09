@@ -18,6 +18,7 @@
 
 package com.raymonde;
 
+import com.raymonde.exception.RayMondeException;
 import com.raymonde.load.SceneBuildingException;
 import com.raymonde.load.yaml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
@@ -67,7 +68,12 @@ public class RayMonde {
         logger.info("starting ray-monde");
 
         OptionParsing opt = new OptionParsing(args);
-        final Renderer renderer = RendererFactory.forType(opt.getRenderer());
+        Renderer renderer = null;
+        try {
+            renderer = RendererFactory.createRenderer(opt.getRenderer());
+        } catch (RayMondeException e) {
+            e.printStackTrace();
+        }
 
         String filename = opt.getSceneFilename();
         
