@@ -21,5 +21,4 @@ public abstract class AbstractPrimitive implements Primitive {
     public Material getMaterial() {
         return material;
     }
-
 }
