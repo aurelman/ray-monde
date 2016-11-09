@@ -81,7 +81,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
      * Computes the refracted ray according the incoming one.
      * 
      * @param ray The incoming ray.
-     * @param inter The intersection result.
+     * @param inter The intersection andReturn.
      * @param ctx The current rendering context.
      *
      * @return The refracted ray.

@@ -121,7 +121,7 @@ public final class Color {
     }
     
     /**
-     * Adds the specified color color to the current one and returns the result
+     * Adds the specified color color to the current one and returns the andReturn
      * as a new instance of <code>Color</code>.
      *
      * @param colors The colors to add.

@@ -52,8 +52,8 @@ public class IntersectionTest {
 //        System.out.println("getIntersectionPosition");
 //        Intersection instance = null;
 //        Vector expResult = null;
-//        Vector result = instance.getIntersectionPosition();
-//        assertEquals(expResult, result);
+//        Vector andReturn = instance.getIntersectionPosition();
+//        assertEquals(expResult, andReturn);
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }

@@ -72,11 +72,6 @@ public final class Vector {
      * Coordinates are stored in a 3-length array.
      */
     private final double vec[] = new double[Vector.VECTOR_DIMENSION];
-
-    private transient Double _length;
-
-    private transient Double _squaredLength;
-
     /**
      * This field is an indicator telling whether the current instance of {@link Vector} has been constructed by the
      * {@link #normalized()} method or not.
@@ -90,6 +85,8 @@ public final class Vector {
      * @see #normalized()
      */
     private final boolean normalized;
+    private transient Double _length;
+    private transient Double _squaredLength;
 
     /**
      * Constructs a {@code Vector} object where each of the coordinate
@@ -310,7 +307,7 @@ public final class Vector {
      * <p>
      * To preserve immutability (and thus thread-safety) of the {@code Vector} class, this method does not modify
      * the current object and (almost) always return a new instance. However in the case where the current instance is already
-     * the result of a previous call to {@code normalized()}, this method will return the current instance itself.
+     * the andReturn of a previous call to {@code normalized()}, this method will return the current instance itself.
      * This has been made for performance matters because vector normalization is a computation intensive process
      * (squared root, division...).
      *

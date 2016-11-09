@@ -18,7 +18,6 @@
 
 package com.raymonde;
 
-import com.raymonde.core.TimeLogger;
 import com.raymonde.load.SceneBuildingException;
 import com.raymonde.load.yaml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.raymonde.core.TimeLogger.logExecutionTime;
+import static com.raymonde.core.TimeLogger.logElapsedTime;
 
 
 /**
@@ -76,17 +75,19 @@ public class RayMonde {
         String filename = opt.getSceneFilename();
         
         logger.info("start loading scene from {}", filename);
+        final Scene scene = logElapsedTime(() ->
+                new YamlSceneBuilder()
+                    .fromFile(filename)
+                    .build())
+                .andReturn();
+        logger.info("scene loaded", filename);
 
-        Scene scene = new YamlSceneBuilder()
-                .fromFile(filename)
-                .build();
-
-        logger.info("scene is now loaded", filename);
-
-        logExecutionTime("rendering scene", () ->
+        logger.info("start rendering scene", filename);
+        logElapsedTime("rendering scene", () ->
                 renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()));
+        logger.info("rendering scene finished", filename);
 
-        logger.info("saving result to {}", opt.getOutputFilename());
+        logger.info("saving scene to {}", opt.getOutputFilename());
         SceneSaver ss = new SceneSaver();
         ss.save(scene.getDefaultCamera().createRenderingSurface(), opt.getOutputFilename());
         logger.info("file {} saved", opt.getOutputFilename());

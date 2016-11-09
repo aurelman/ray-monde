@@ -81,7 +81,7 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
      * Computes the reflected ray according the incoming one.
      * 
      * @param ray The incoming ray.
-     * @param inter The intersection result.
+     * @param inter The intersection andReturn.
      *
      * @return The reflection ray.
      */
