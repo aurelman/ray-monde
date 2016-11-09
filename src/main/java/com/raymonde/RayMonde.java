@@ -83,13 +83,8 @@ public class RayMonde {
 
         logger.info("scene is now loaded", filename);
 
-        logExecutionTime("rendering scene", () -> {
-            try {
-                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera());
-            } catch (RenderingException ex) {
-                logger.error("rendering scene failed");
-            }
-        });
+        logExecutionTime("rendering scene", () ->
+                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()));
 
         logger.info("saving result to {}", opt.getOutputFilename());
         SceneSaver ss = new SceneSaver();
