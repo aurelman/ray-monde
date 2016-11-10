@@ -137,9 +137,34 @@ public class Camera {
         // Is unique for camera, should be computed at construction time.
         Vector xVector = direction.cross(up).normalized();
 
+        double heightOfPixel = renderingSurfaceSpec.getHeight() / renderingSurfaceSpec.getPixelHeight();
+        double widthOfPixel = renderingSurfaceSpec.getWidth() / renderingSurfaceSpec.getPixelWidth();
+
         // Need to be computed accordingly
-        double somethingDependingOnX = pixel.x() * 1.0;
-        double somethingDependingOnY = pixel.y() * 1.0;
+
+        double yCoeff = 1.;
+        if (pixel.y() == renderingSurfaceSpec.getPixelHeight() / 2) {
+            yCoeff = 0.;
+        }
+
+        if (pixel.y() < renderingSurfaceSpec.getPixelHeight() / 2) {
+            yCoeff = -1.;
+        }
+
+
+        double xCoeff = 1.;
+        if (pixel.x() == renderingSurfaceSpec.getPixelWidth() / 2) {
+            xCoeff = 0.;
+        }
+
+        if (pixel.x() < renderingSurfaceSpec.getPixelWidth() / 2) {
+            xCoeff = -1.;
+        }
+
+
+        // - (xCoeff * widthOfPixel / 2) -> to target the middle of the pixel
+        double somethingDependingOnX = xCoeff * pixel.x() * widthOfPixel - (xCoeff * widthOfPixel / 2.);
+        double somethingDependingOnY = yCoeff * pixel.y() * heightOfPixel - (yCoeff * heightOfPixel / 2.);
 
         return position
                 .add(dirVector.multiply(renderingSurfaceSpec.getDistance()))

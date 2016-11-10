@@ -74,7 +74,7 @@ public class RendererFactory {
     }
 
     /**
-     * Transforms {@code String}s written such as <i>"multi-threader"</i> into <i>"MultiThreaded"</i>
+     * Transforms {@code String}s written as <i>"multi-threader"</i> into <i>"MultiThreaded"</i>
      *
      * @param string
      * @return
