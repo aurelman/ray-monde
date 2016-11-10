@@ -53,6 +53,8 @@ public class DefaultRenderer implements Renderer {
      * @return
      */
     public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) {
+
+        setScene(scene); // TODO: shouldn't need to have to set the scene
         RenderingSurface rendered = camera.createRenderingSurface();
         // For every pixel of the rendering surface
             // Ask the camera to compute a ray that goes through the pixel.
@@ -62,7 +64,10 @@ public class DefaultRenderer implements Renderer {
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
 
-            Color computedColor = null;
+            RenderingContext ctx = new RenderingContext(0, 1.);
+            ctx.setRefraction(1.0);
+
+            Color computedColor = computeColor(ray, ctx);
             rendered.setPixelColor(pixel, computedColor);
         });
 
