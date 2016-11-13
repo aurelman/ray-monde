@@ -19,10 +19,11 @@
 package com.raymonde;
 
 import com.raymonde.load.SceneBuildingException;
-import com.raymonde.load.yml.YamlSceneBuilder;
+import com.raymonde.load.yaml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
 import com.raymonde.render.RenderingException;
+import com.raymonde.render.RenderingSurface;
 import com.raymonde.save.SaveException;
 import com.raymonde.save.SceneSaver;
 import com.raymonde.scene.Scene;
@@ -30,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+
+import static com.raymonde.core.TimeLogger.logElapsedTime;
 
 
 /**
@@ -67,26 +70,30 @@ public class RayMonde {
         logger.info("starting ray-monde");
 
         OptionParsing opt = new OptionParsing(args);
-        final Renderer renderer = RendererFactory.forType(opt.getRenderer());
+
+        Renderer renderer  = RendererFactory.createRenderer(opt.getRenderer());
 
         String filename = opt.getSceneFilename();
         
         logger.info("start loading scene from {}", filename);
+        final Scene scene = logElapsedTime(() ->
+                new YamlSceneBuilder()
+                    .fromFile(filename)
+                    .build())
+                .andReturn();
+        logger.info("scene loaded", filename);
 
-        Scene scene = new YamlSceneBuilder()
-                .setFile(filename)
-                .build();
+        logger.info("start rendering scene", filename);
+        final RenderingSurface rendered = logElapsedTime("rendering scene", () ->
+                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()))
+                .andReturn();
+        logger.info("rendering scene finished", filename);
 
-        logger.info("scene is now loaded", filename);
-        
-        
-        logger.info("start rendering scene");
-        renderer.render(scene);
-        logger.info("scene rendered");
-        
+        logger.info("saving scene to {}", opt.getOutputFilename());
         SceneSaver ss = new SceneSaver();
-        ss.save(scene, opt.getOutputFilename());
-        
+        ss.save(rendered, opt.getOutputFilename());
+        logger.info("file {} saved", opt.getOutputFilename());
+
         logger.info("finishing ray-monde");
     }
 }

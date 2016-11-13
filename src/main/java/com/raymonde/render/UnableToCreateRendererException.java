@@ -16,29 +16,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.raymonde.render.primitive;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.raymonde.render;
 
-import com.raymonde.core.Vector;
-import com.raymonde.render.Ray;
-import com.raymonde.render.material.Material;
 
 /**
- * A {@code Plane} object is defined by a normal vector and a distance from
- * the origin.
+ *
  */
-public class VerticalPlane extends AbstractPrimitive {
+public class UnableToCreateRendererException extends RuntimeException {
 
-    public VerticalPlane(Material material) {
-        super(material);
-    }
-
-    @Override
-    public Vector normalAt(final Vector point) {
-        return new Vector(0.0, 0.0, 1.0);
-    }
-
-    @Override
-    public double intersect(final Ray ray) {
-        return 900.0;
+    public UnableToCreateRendererException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 }

@@ -26,24 +26,18 @@ import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.render.primitive.Primitive;
 import com.raymonde.scene.Scene;
+import lombok.Builder;
 
 /**
- * {@code RefractiveMaterial} adds refractivity properties to
- * primitive. Reflectivity factor tells how an incoming ray will go through the surface.
+ * {@code RefractiveMaterial} adds refractive properties to
+ * primitive. Refraction factor tells how an incoming ray will go through the surface.
  */
 public class RefractiveMaterial extends AbstractMaterial implements Material {
 
     /**
      * The reflectivity.
      */
-    private double refraction;
-
-    /**
-     * Constructs an empty {@code RefractiveMaterial}.
-     */
-    public RefractiveMaterial() {
-
-    }
+    private final double refraction;
 
     /**
      * Constructs a {@code RefractiveMaterial} with the specified
@@ -51,7 +45,9 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
      *
      * @param refraction The refraction index.
      */
-    public RefractiveMaterial(final double refraction) {
+    @Builder
+    public RefractiveMaterial(final double refraction, final Material subMaterial) {
+        super(subMaterial);
         this.refraction = refraction;
     }
     
@@ -62,7 +58,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
             final RenderingContext ctx) {
         Color refractColor = Color.black();
         Color surfaceColor =
-                getMaterial().computeColor(renderer, scene, inter, ctx);
+                getSubMaterial().computeColor(renderer, scene, inter, ctx);
         
         Ray refracted = refractedRay(inter.getIncomingRay(), inter, ctx);
 
@@ -82,41 +78,31 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     }
 
     /**
-     * Returns the reflectivity factor of the material.
-     *
-     * @return The reflectivity factor.
-     */
-    public double getRefraction() {
-        return this.refraction;
-    }
-    
-    /**
      * Computes the refracted ray according the incoming one.
      * 
      * @param ray The incoming ray.
-     * @param inter The intersection result.
+     * @param inter The intersection.
      * @param ctx The current rendering context.
      *
-     * @return The reflection ray.
+     * @return The refracted ray.
      */
-    protected Ray refractedRay(final Ray ray, final Intersection inter,
-            final RenderingContext ctx) {
+    protected Ray refractedRay(final Ray ray, final Intersection inter, final RenderingContext ctx) {
         double refract = ctx.getRefraction();
-        Primitive primitive = inter.getPrimitive();
-        double refB = getRefraction();
+        Primitive primitive = inter.getIntersectedPrimitive();
+        double refB = refraction;
         double n = refract / refB;
 
         Vector normal = primitive.normalAt(inter.getIntersectionPosition());
         if (ctx.getDepth() % 2 == 0) {
             normal = normal.opposite();
         }
-        double cosi = ray.getDirection().dot(normal);
+        double cosi = ray.direction().dot(normal);
         double cosr = Math.sqrt(1 - n*n*(1 - cosi*cosi));
 
-        Vector term1 = ray.getDirection().multiply(n);
+        Vector term1 = ray.direction().multiply(n);
         Vector term2 = normal.multiply(cosr - n*cosi);
 
-        Vector direction = term1.substract(term2);
+        Vector direction = term1.subtract(term2);
          
         return new Ray(inter.getIntersectionPosition(), direction);
     }

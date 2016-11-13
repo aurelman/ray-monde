@@ -79,7 +79,7 @@ public class ColorTest {
     }
 
     @Test
-    public void shouldAddTwoColorWithComponentOverflow() {
+    public void shouldAddTwoColorsWithComponentOverflow() {
         // Given
         Color c1 = new Color(0.5, 0.5, 0.5);
         Color c2 = new Color(0.6, 0.6, 0.6);
@@ -94,13 +94,13 @@ public class ColorTest {
     }
 
     @Test
-    public void shouldBeEqualOtherColorWithSameComponents() {
+    public void shouldEqualAnOtherColorWithSameComponents() {
         // Given
         Color color = new Color(0.2, 0.3, 0.4);
-        Color colorOther = new Color(0.2, 0.3, 0.4);
+        Color otherColor = new Color(0.2, 0.3, 0.4);
 
         // Expect
-        assertThat(color).isEqualTo(colorOther);
+        assertThat(color).isEqualTo(otherColor);
     }
 
     @Test(expected = IllegalArgumentException.class)

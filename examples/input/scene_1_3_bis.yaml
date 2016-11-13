@@ -1,0 +1,94 @@
+scene:
+  ambient: {r: 0.05, g: 0.05, b: 0.05}
+  camera:
+    position: {x: 0., y: 0., z: 0.}
+    direction: {x: 0., y: 0., z: -1.}
+    up: {x: 0., y: 1., z: 0.}
+    surface:
+      distance: 300.
+      pixels: {width: 400, height: 300}
+      dimensions: {width: 40., height: 30.}
+  primitives:
+    - name: plane1
+      type: plane
+      distance: 900.
+      normal: {x: 0., y: 0., z: 1.}
+      subMaterial:
+        type: phong
+        diffuse: 0.8
+        specular: 12.
+        subMaterial:
+          type: color
+          color: {r: 0.95, g: 0.95, b: 0.95}
+    - name: plane2
+      type: plane
+      distance: 145.
+      normal: {x: 0., y: 1., z: 0.}
+      subMaterial:
+        type: phong
+        diffuse: 0.8
+        specular: 12.
+        subMaterial:
+          type: color
+          color: {r: 0.95, g: 0.95, b: 0.95}
+    - name: plane3
+      type: plane
+      distance: 350.
+      normal: {x: -1., y: 0., z: 0.}
+      subMaterial:
+        type: phong
+        diffuse: 0.8
+        specular: 12.
+        subMaterial:
+          type: color
+          color: {r: 0.3, g: 0.95, b: 0.3}
+    - name: plane4
+      type: plane
+      distance: 350.
+      normal: {x: 1., y: 0., z: 0.}
+      subMaterial:
+        type: phong
+        diffuse: 0.8
+        specular: 12.
+        subMaterial:
+          type: color
+          color: {r: 0.95, g: 0.3, b: 0.3}
+    - name: sphere01
+      type: sphere
+      radius: 50.
+      position: {x: -90., y: -50., z: -350.}
+      subMaterial:
+        type: reflective
+        reflectivity: 0.2
+        subMaterial:
+          type: phong
+          diffuse: 0.8
+          specular: 12.
+          subMaterial:
+            type: color
+            color: {r: 0.8, g: 0.8, b: 0.2}
+    - name: sphere02
+      type: sphere
+      radius: 50.
+      position: {x: 90., y: -50., z: -350.}
+      subMaterial:
+        type: refractive
+        refraction: 1.33
+        subMaterial:
+          type: phong
+          diffuse: 0.8
+          specular: 12.
+          subMaterial:
+            type: color
+            color: {r: 0.2, g: 0.2, b: 0.8}
+  lights:
+    - name: light1
+      type: omnidirectional
+      position: {x: 150., y: 30., z: -200.}
+      attenuation: 0.000005
+      color: {r: 0.8, g: 0.8, b: 0.8}
+    - name: light2
+      type: omnidirectional
+      position: {x: -10., y: 160., z: -10.}
+      attenuation: 0.000005
+      color: {r: 0.8, g: 0.8, b: 0.8}

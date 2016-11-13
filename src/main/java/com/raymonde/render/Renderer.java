@@ -26,17 +26,6 @@ import com.raymonde.scene.Scene;
 public interface Renderer {
 
     /**
-     * Renders the specified scene.
-     * 
-     * @param scene The scene to render.
-     *
-     * @throws RenderingException When an unrecoverable error occurs during
-     * rendering process. Message exception, or cause exception should give more detail
-     */
-    RenderingSurface render(final Scene scene)
-            throws RenderingException;
-
-    /**
      * Renders the specified {@link Scene} through the specified {@link Camera}
      *
      * @param scene The {@link Scene} object to render

@@ -21,32 +21,36 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
+import com.raymonde.render.material.Material;
+import lombok.Builder;
 
 /**
  * A {@code Plane} object is defined by a normal vector and a distance from
  * the origine.
  */
-public class Plane extends Primitive {
+public class Plane extends AbstractPrimitive {
 
     /**
      * The distance from the origin.
      */
-    private double distance;
+    private final double distance;
 
     /**
      * The normal to the plan.
      */
-    private Vector normal;
+    private final Vector normal;
 
     /**
      * Constructs the plane with the specified name.
      *
      * @param normal The normal of the plane.
-     * @param dist The distance from origin to the plane.
+     * @param distance The distance from origin to the plane.
      */
-    public Plane(final Vector normal, final double dist) {
+    @Builder
+    public Plane(final Vector normal, final double distance, final Material material) {
+        super(material);
         this.normal = normal.normalized();
-        this.distance = dist;
+        this.distance = distance;
 
     }
 
@@ -58,8 +62,8 @@ public class Plane extends Primitive {
     @Override
     public double intersect(final Ray ray) {
         Vector planeNormal = getNormal();
-        Vector origin = ray.getOrigin();
-        Vector direction = ray.getDirection();
+        Vector origin = ray.origin();
+        Vector direction = ray.direction();
         
         double dot = planeNormal.dot(direction);
 

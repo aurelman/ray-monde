@@ -45,37 +45,6 @@ public class DefaultRenderer implements Renderer {
     private Scene scene;
 
     /**
-     * Constructs a default rendered.
-     */
-//    public DefaultRenderer() {
-//        setMaxDepth(DefaultRenderer.DEFAULT_MAX_DEPTH);
-//    }
-
-    /**
-     *
-     * @param maxDepth The maximum depth.
-     */
-//    public DefaultRenderer(final int maxDepth) {
-//        setMaxDepth(maxDepth);
-//    }
-
-    /**
-     *
-     * @param scene The scene to shootThroughPixel.
-     */
-    @Override
-    public RenderingSurface render(final Scene scene) {
-        setScene(scene);
-        final RenderingSurface result = scene.getRenderingSurface();
-        for (int i = 0; i < result.getPixelWidth(); i++) {
-            for (int j = 0; j < result.getPixelHeight(); j++) {
-                result.setColor(i, j, shootThroughPixel(i, j));
-            }
-        }
-        return result;
-    }
-
-    /**
      * Renders the specified {@link Scene} through the specified {@link Camera}
      *
      * @param scene
@@ -84,6 +53,8 @@ public class DefaultRenderer implements Renderer {
      * @return
      */
     public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) {
+
+        setScene(scene); // TODO: shouldn't need to have to set the scene
         RenderingSurface rendered = camera.createRenderingSurface();
         // For every pixel of the rendering surface
             // Ask the camera to compute a ray that goes through the pixel.
@@ -92,6 +63,12 @@ public class DefaultRenderer implements Renderer {
 
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
+
+            RenderingContext ctx = new RenderingContext(0, 1.);
+            ctx.setRefraction(1.0);
+
+            Color computedColor = computeColor(ray, ctx);
+            rendered.setPixelColor(pixel, computedColor);
         });
 
         return rendered;
@@ -127,7 +104,7 @@ public class DefaultRenderer implements Renderer {
         Color result = Color.black();
         
         if (intersection != null) {
-            result = intersection.getPrimitive().getMaterial()
+            result = intersection.getIntersectedPrimitive().getMaterial()
                 .computeColor(this, sc, intersection, ctx);
         }
 

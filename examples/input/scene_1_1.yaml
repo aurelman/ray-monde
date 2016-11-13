@@ -1,0 +1,44 @@
+scene:
+  ambient: {r: 0.00, g: 0.00, b: 0.00}
+  camera:
+    name: camera00
+    position: {x: 0., y: 0., z: 0.}
+    direction: {x: 0., y: 0., z: -1.}
+    up: {x: 0., y: 1., z: 0.}
+    surface:
+      distance: 100.
+      pixels: {width: 1900, height: 1080}
+      dimensions: {width: 40., height: 22.73}
+  primitives:
+    - name: plane01
+      type: plane
+      distance: 900.
+      normal: {x: 0., y: 0., z: 1.}
+      material:
+        type: color
+        color: {r: 1.0, g: 1.0, b: 1.0}
+    - name: sphere01
+      type: sphere
+      radius: 30.
+      position: {x: 0., y: 0., z: -350.}
+      material:
+        type: reflective
+        reflectivity: 0.2
+        material:
+          type: phong
+          diffuse: 0.8
+          specular: 12.
+          material:
+            type: color
+            color: {r: 0.5, g: 0.5, b: 0.5}
+  lights:
+    - name: light1
+      type: omnidirectional
+      position: {x: 150., y: 30., z: -200.}
+      attenuation: 0.000005
+      color: {r: 1.0, g: 1.0, b: 1.0}
+    - name: light2
+      type: omnidirectional
+      position: {x: -10., y: 160., z: -10.}
+      attenuation: 0.000005
+      color: {r: 1.0, g: 1.0, b: 1.0}

@@ -36,45 +36,18 @@ public class SceneSaver {
     /**
      * The available logger for this class.
      */
-    private static Logger logger = LoggerFactory.getLogger(SceneSaver.class.getName());
+    private final static Logger logger = LoggerFactory.getLogger(SceneSaver.class);
     
     /**
      * 
-     * @param scene The scene to save.
+     * @param renderingSurface the surface on which to draw the scene.
      * @param outputFilename The destination file.
      * 
      * @throws SaveException
      */
-    public void save(final Scene scene, final String outputFilename)
+    public void save(final RenderingSurface renderingSurface, final String outputFilename)
             throws SaveException {
-        save(scene, new File(outputFilename));
-    }
-
-    /**
-     * Saves the given scene to the given file.
-     * 
-     * @param scene The scene to save.
-     * @param outputFilename The filename where to save the scene.
-     * @throws SaveException
-     */
-    public void save(final Scene scene, final File outputFilename)
-            throws SaveException {
-        int width = scene.getRenderingSurface().getPixelWidth();
-        int height = scene.getRenderingSurface().getPixelHeight();
-
-        BufferedImage bi =
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        int [] rgbColors = SaverUtiliy.colorArrayToIntegerArray(
-                scene.getRenderingSurface().getColors());
-
-        bi.setRGB(0, 0, width, height, rgbColors, 0, width);
-        
-        try {
-            ImageIO.write(bi, "png", outputFilename);
-        } catch (IOException ex) {
-            getLogger().error(null, ex);
-            throw new SaveException("Image couldn't be saved", ex);
-        }
+        save(renderingSurface, new File(outputFilename));
     }
 
     /**
@@ -88,27 +61,16 @@ public class SceneSaver {
         int width = renderingSurface.getPixelWidth();
         int height = renderingSurface.getPixelHeight();
 
-        BufferedImage bi =
-                new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        int [] rgbColors = SaverUtiliy.colorArrayToIntegerArray(
-                renderingSurface.getColors());
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        int [] rgbColors = SaverUtiliy.colorArrayToIntegerArray(renderingSurface.getColors());
 
         bi.setRGB(0, 0, width, height, rgbColors, 0, width);
 
         try {
             ImageIO.write(bi, "png", outputFilename);
         } catch (IOException ex) {
-            getLogger().error(null, ex);
-            throw new SaveException("Image couldn't be saved", ex);
+            logger.error("an error occurred while trying to save rendered scene to {}", outputFilename.getAbsolutePath(), ex);
+            throw new SaveException("image couldn't be saved", ex);
         }
-    }
-
-    /**
-     * Returns the available logger for the current class.
-     * 
-     * @return The available logger for the current class.
-     */
-    public static Logger getLogger() {
-        return SceneSaver.logger;
     }
 }

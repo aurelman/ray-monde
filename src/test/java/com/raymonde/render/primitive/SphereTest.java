@@ -40,7 +40,10 @@ public class SphereTest {
 
     public Sphere getSphere1() {
         if (this.sphere1 == null) {
-            this.sphere1 = new Sphere(new Vector(0., 0., 100.), 15.);
+            this.sphere1 = Sphere.builder()
+                    .position(new Vector(0., 0., 100.))
+                    .radius(15.)
+                    .build();
         }
         
         return this.sphere1;

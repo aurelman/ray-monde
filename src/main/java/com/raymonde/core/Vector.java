@@ -18,6 +18,7 @@
 package com.raymonde.core;
 
 import com.google.common.base.MoreObjects;
+import lombok.Builder;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -44,7 +45,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class Vector {
 
     /**
-     * The cardinality of <code>Vector</code> object.
+     * The cardinality of {@code Vector} object.
      */
     private static final int VECTOR_DIMENSION = 3;
 
@@ -71,7 +72,6 @@ public final class Vector {
      * Coordinates are stored in a 3-length array.
      */
     private final double vec[] = new double[Vector.VECTOR_DIMENSION];
-
     /**
      * This field is an indicator telling whether the current instance of {@link Vector} has been constructed by the
      * {@link #normalized()} method or not.
@@ -85,9 +85,11 @@ public final class Vector {
      * @see #normalized()
      */
     private final boolean normalized;
+    private transient Double _length;
+    private transient Double _squaredLength;
 
     /**
-     * Constructs a <code>Vector</code> object where each of the coordinate
+     * Constructs a {@code Vector} object where each of the coordinate
      * is initialized with 0.0 by default.
      */
     public Vector() {
@@ -95,12 +97,12 @@ public final class Vector {
     }
 
     /**
-     * Constructs a <code>Vector</code> object initialized with the
+     * Constructs a {@code Vector} object initialized with the
      * specified coordinates.
      * <ul>
-     * <li><code>vector[0]</code> is the x coordinate.</li>
-     * <li><code>vector[1]</code> is the y coordinate.</li>
-     * <li><code>vector[2]</code> is the z coordinate.</li>
+     * <li>{@code vector[0]} is the x coordinate.</li>
+     * <li>{@code vector[1]} is the y coordinate.</li>
+     * <li>{@code vector[2]} is the z coordinate.</li>
      * </ul>
      *
      * @param vector A 3-length array containing
@@ -118,6 +120,7 @@ public final class Vector {
      * @param y The value to set for the y coordinate.
      * @param z The value to set for the z coordinate.
      */
+    @Builder
     public Vector(final double x, final double y, final double z) {
         this(x, y, z, false);
     }
@@ -130,9 +133,9 @@ public final class Vector {
     }
 
     /**
-     * Returns true if the current vector is the 0 vector, false otherwise.
+     * Returns {@©ode true} if the current vector is the 0 vector, {@code false} otherwise.
      *
-     * @return true or false whether the current vector is the 0 vector.
+     * @return {@code true} or {@code false} whether the current vector is the 0 vector.
      */
     public boolean isZero() {
         // return vec[X] == 0.0 && vec[Y] == 0.0 && vec[Z] == 0.0;
@@ -160,16 +163,19 @@ public final class Vector {
      */
     public double length() {
 
-        // TODO: If optimization is needed we could cache the length value.
-        // Avoid making useless multiplication
-        if (isZero()) {
-            return 0.0;
+        // already computed value is returned (it makes sense as the class is immutable)
+        if (_length != null) {
+            return _length;
         }
 
-        return Math.sqrt(
-                vec[X] * vec[X] +
-                vec[Y] * vec[Y] +
-                vec[Z] * vec[Z]);
+        // Avoid making useless multiplication
+        if (squaredLength() == 0. || isZero()) {
+            _length = 0.;
+            return _length;
+        }
+
+        _length = Math.sqrt(squaredLength());
+        return _length;
     }
 
     /**
@@ -179,14 +185,22 @@ public final class Vector {
      */
     public double squaredLength() {
 
-        // Avoid making useless multiplication
-        if (isZero()) {
-            return 0.0;
+        // Returns already computed value if exists
+        if (_squaredLength != null) {
+            return _squaredLength;
         }
 
-        return vec[X] * vec[X]
-             + vec[Y] * vec[Y]
-             + vec[Z] * vec[Z];
+        // Avoid making useless multiplication
+        if (isZero()) {
+            _squaredLength = 0.;
+            return _squaredLength;
+        }
+
+        _squaredLength = vec[X] * vec[X]
+                + vec[Y] * vec[Y]
+                + vec[Z] * vec[Z];
+
+        return _squaredLength;
     }
     
     /**
@@ -249,13 +263,13 @@ public final class Vector {
     }
 
     /**
-     * Substracts the specified vector to the current
+     * Subtracts the specified vector to the current
      * and returns the resulting vector.
      *
-     * @param vector The vector to substract.
+     * @param vector The vector to subtract.
      * @return the new resulting vector.
      */
-    public Vector substract(final Vector vector) {
+    public Vector subtract(final Vector vector) {
         return new Vector(
                 vec[X] - vector.vec[X],
                 vec[Y] - vector.vec[Y],
@@ -293,7 +307,7 @@ public final class Vector {
      * <p>
      * To preserve immutability (and thus thread-safety) of the {@code Vector} class, this method does not modify
      * the current object and (almost) always return a new instance. However in the case where the current instance is already
-     * the result of a previous call to {@code normalized()}, this method will return the current instance itself.
+     * the andReturn of a previous call to {@code normalized()}, this method will return the current instance itself.
      * This has been made for performance matters because vector normalization is a computation intensive process
      * (squared root, division...).
      *
@@ -336,7 +350,7 @@ public final class Vector {
      */
     public Vector reflected(final Vector normalVector) {
         // VR = V - ( 2 * ( V . N )) * N
-        return substract(normalVector
+        return subtract(normalVector
                 .multiply(2. * dot(normalVector)));
     }
 
@@ -413,7 +427,7 @@ public final class Vector {
     public static Vector joining(final Vector source, final Vector destination) {
         checkNotNull(source, "source vector cannot be null");
         checkNotNull(destination, "destination vector cannot be null");
-        return destination.substract(source);
+        return destination.subtract(source);
     }
 
     /**

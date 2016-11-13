@@ -41,12 +41,4 @@ public interface Material {
         final Scene scene,
         final Intersection inter,
         final RenderingContext ctx);
-
-    /**
-     * Sets the sub material of the current one.
-     *
-     * @param material the sub material to set
-     */
-    void setMaterial(final Material material);
-    
 }
