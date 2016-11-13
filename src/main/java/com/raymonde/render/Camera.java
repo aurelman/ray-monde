@@ -42,9 +42,8 @@ public class Camera {
      * The up {@link Vector}
      */
     private final Vector up;
-
     /**
-     * The complementary vector to define the 3 orthogonal vector of the system. (directionCrossUp, direction, up).
+     * The complementary vector that define the 3 orthogonal unit vectors of the system. (directionCrossUp, direction, up).
      * It is the result of the cross product between {@code direction} and {@code up} {@link Vector}s
      */
     private final Vector directionCrossUp;
@@ -66,7 +65,7 @@ public class Camera {
         this.position = position;
         this.direction = direction.normalized();
         this.up = up.normalized();
-        directionCrossUp = direction.cross(up).normalized();
+        this.directionCrossUp = direction.cross(up).normalized();
         this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight, distance);
     }
 
@@ -109,15 +108,11 @@ public class Camera {
      */
     private Vector absolutePositionOfPixel(final Pixel pixel) {
 
-        // Is unique for camera, should be computed at construction time.
-        Vector xVector = direction.cross(up).normalized();
+        final double yFactor = (renderingSurfaceSpec.getPixelHeight() - 1) / 2. - pixel.y();
+        final double xFactor = pixel.x() - ((renderingSurfaceSpec.getPixelWidth() - 1) / 2.);
 
-        final double yCoeff = (renderingSurfaceSpec.getPixelHeight() - 1) / 2. - pixel.y();
-        final double xCoeff = pixel.x() - ((renderingSurfaceSpec.getPixelWidth() - 1) / 2.);
-
-        double somethingDependingOnX = xCoeff * renderingSurfaceSpec.widthOfPixel();
-        double somethingDependingOnY = yCoeff * renderingSurfaceSpec.heightOfPixel();
-
+        final double somethingDependingOnX = xFactor * renderingSurfaceSpec.widthOfPixel();
+        final double somethingDependingOnY = yFactor * renderingSurfaceSpec.heightOfPixel();
 
         return position
                 .add(direction.multiply(renderingSurfaceSpec.getDistance()))
@@ -125,6 +120,9 @@ public class Camera {
                 .add(up.multiply(somethingDependingOnY));
     }
 
+    /**
+     * Origin of the surface {@code -0, 0)} is the upper-left corner.
+     */
     @ThreadSafe
     private static class RenderingSurfaceSpec {
         /**

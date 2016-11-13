@@ -30,8 +30,9 @@ import java.util.function.Consumer;
 
 /**
  * {@code RenderingSurface} is the plane where the scene will be rendered onto.
+ * Note that the origin {@code (0, 0)} is the upper-left corner.
  *
- * This class is thread-safe: a surface can be updated by many thread at the same time.
+ * This class is thread-safe: a surface can be updated by many thread at a same time.
  *
  * todo: Rendering surfaces should be in a way bound to camera. they are part of the camera or build from camera properties.
  */
