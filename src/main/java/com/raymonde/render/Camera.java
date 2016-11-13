@@ -42,6 +42,12 @@ public class Camera {
      * The up {@link Vector}
      */
     private final Vector up;
+
+    /**
+     * The complementary vector to define the 3 orthogonal vector of the system. (directionCrossUp, direction, up).
+     * It is the result of the cross product between {@code direction} and {@code up} {@link Vector}s
+     */
+    private final Vector directionCrossUp;
     /**
      * The rendering surface's information
      */
@@ -60,21 +66,8 @@ public class Camera {
         this.position = position;
         this.direction = direction.normalized();
         this.up = up.normalized();
+        directionCrossUp = direction.cross(up).normalized();
         this.renderingSurfaceSpec = new RenderingSurfaceSpec(width, height, pixelWidth, pixelHeight, distance);
-    }
-
-    /**
-     *
-     * @param pos
-     * @param dir
-     * @param up
-     * @param surfaceSpec
-     */
-    public Camera(final Vector pos, final Vector dir, final Vector up, final RenderingSurfaceSpec surfaceSpec) {
-        this.position = pos;
-        this.direction = dir.normalized();
-        this.up = up.normalized();
-        this.renderingSurfaceSpec = surfaceSpec;
     }
 
     /**
@@ -90,21 +83,6 @@ public class Camera {
     public Vector getDirection() {
         return this.direction;
     }
-
-    /**
-     * @return the pixelWidth
-     */
-    public int getPixelWidth() {
-        return renderingSurfaceSpec.getPixelWidth();
-    }
-
-    /**
-     * @return the pixelHeight
-     */
-    public int getPixelHeight() {
-        return renderingSurfaceSpec.getPixelHeight();
-    }
-
 
     public RenderingSurface createRenderingSurface() {
         return new RenderingSurface(renderingSurfaceSpec.getPixelWidth(), renderingSurfaceSpec.getPixelHeight());
@@ -131,47 +109,23 @@ public class Camera {
      */
     private Vector absolutePositionOfPixel(final Pixel pixel) {
 
-        Vector dirVector = direction.normalized();
-        Vector yVector = up.normalized();
-
         // Is unique for camera, should be computed at construction time.
         Vector xVector = direction.cross(up).normalized();
 
-        double heightOfPixel = renderingSurfaceSpec.getHeight() / renderingSurfaceSpec.getPixelHeight();
-        double widthOfPixel = renderingSurfaceSpec.getWidth() / renderingSurfaceSpec.getPixelWidth();
+        final double yCoeff = (renderingSurfaceSpec.getPixelHeight() - 1) / 2. - pixel.y();
+        final double xCoeff = pixel.x() - ((renderingSurfaceSpec.getPixelWidth() - 1) / 2.);
 
-        // Need to be computed accordingly
+        double somethingDependingOnX = xCoeff * renderingSurfaceSpec.widthOfPixel();
+        double somethingDependingOnY = yCoeff * renderingSurfaceSpec.heightOfPixel();
 
-        double yCoeff = 1.;
-        if (pixel.y() == renderingSurfaceSpec.getPixelHeight() / 2) {
-            yCoeff = 0.;
-        }
-
-        if (pixel.y() < renderingSurfaceSpec.getPixelHeight() / 2) {
-            yCoeff = -1.;
-        }
-
-
-        double xCoeff = 1.;
-        if (pixel.x() == renderingSurfaceSpec.getPixelWidth() / 2) {
-            xCoeff = 0.;
-        }
-
-        if (pixel.x() < renderingSurfaceSpec.getPixelWidth() / 2) {
-            xCoeff = -1.;
-        }
-
-
-        // - (xCoeff * widthOfPixel / 2) -> to target the middle of the pixel
-        double somethingDependingOnX = xCoeff * pixel.x() * widthOfPixel - (xCoeff * widthOfPixel / 2.);
-        double somethingDependingOnY = yCoeff * pixel.y() * heightOfPixel - (yCoeff * heightOfPixel / 2.);
 
         return position
-                .add(dirVector.multiply(renderingSurfaceSpec.getDistance()))
-                .add(xVector.multiply(somethingDependingOnX))
-                .add(yVector.multiply(somethingDependingOnY));
+                .add(direction.multiply(renderingSurfaceSpec.getDistance()))
+                .add(directionCrossUp.multiply(somethingDependingOnX))
+                .add(up.multiply(somethingDependingOnY));
     }
 
+    @ThreadSafe
     private static class RenderingSurfaceSpec {
         /**
          * The width in pixels of the surface.
@@ -197,6 +151,16 @@ public class Camera {
          * The distance from the camera's origin position
          */
         private final double distance;
+
+        /**
+         * The cached height of a pixel of the surface
+         */
+        private transient Double _heightOfPixel;
+
+        /**
+         * The cached width of a pixel of the surface
+         */
+        private transient Double _widthOfPixel;
 
         private RenderingSurfaceSpec(double width, double height, int pixelWidth, int pixelHeight, double distance) {
             this.width = width;
@@ -224,6 +188,21 @@ public class Camera {
 
         public double getDistance() {
             return distance;
+        }
+
+        public double widthOfPixel() {
+            if (_widthOfPixel == null) {
+                _widthOfPixel = width / pixelWidth;
+            }
+            return _widthOfPixel;
+        }
+
+        public double heightOfPixel() {
+            if (_heightOfPixel == null) {
+                _heightOfPixel = height / pixelHeight;
+            }
+
+            return _heightOfPixel;
         }
     }
 }

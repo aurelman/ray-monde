@@ -23,6 +23,7 @@ import com.raymonde.load.yaml.YamlSceneBuilder;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RendererFactory;
 import com.raymonde.render.RenderingException;
+import com.raymonde.render.RenderingSurface;
 import com.raymonde.save.SaveException;
 import com.raymonde.save.SceneSaver;
 import com.raymonde.scene.Scene;
@@ -83,13 +84,14 @@ public class RayMonde {
         logger.info("scene loaded", filename);
 
         logger.info("start rendering scene", filename);
-        logElapsedTime("rendering scene", () ->
-                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()));
+        final RenderingSurface rendered = logElapsedTime("rendering scene", () ->
+                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()))
+                .andReturn();
         logger.info("rendering scene finished", filename);
 
         logger.info("saving scene to {}", opt.getOutputFilename());
         SceneSaver ss = new SceneSaver();
-        ss.save(scene.getDefaultCamera().createRenderingSurface(), opt.getOutputFilename());
+        ss.save(rendered, opt.getOutputFilename());
         logger.info("file {} saved", opt.getOutputFilename());
 
         logger.info("finishing ray-monde");
