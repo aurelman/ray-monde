@@ -18,9 +18,8 @@
 
 package com.raymonde.render;
 
-import com.raymonde.scene.Scene;
 import com.raymonde.core.Color;
-import com.raymonde.core.Vector;
+import com.raymonde.scene.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,38 +52,21 @@ public class DefaultRenderer implements Renderer {
      * @return
      */
     public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) {
-
-        setScene(scene); // TODO: shouldn't need to have to set the scene
+        // TODO: shouldn't need to have to set the scene
+        setScene(scene);
         RenderingSurface rendered = camera.createRenderingSurface();
-        // For every pixel of the rendering surface
-            // Ask the camera to compute a ray that goes through the pixel.
-            // shoot this ray in the scene and compute the resulting color
-            // update the pixel of the rendering surface with the computed color.
 
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
 
             RenderingContext ctx = new RenderingContext(0, 1.);
             ctx.setRefraction(1.0);
-
             Color computedColor = computeColor(ray, ctx);
+
             rendered.setPixelColor(pixel, computedColor);
         });
 
         return rendered;
-    }
-
-    /**
-     *
-     * @param x The x position.
-     * @param y The y position.
-     */
-    protected Color shootThroughPixel(final int x, final int y) {
-        RenderingContext ctx = new RenderingContext(0, 1.);
-        ctx.setRefraction(1.0);
-        Ray mainRay = rayThroughPixel(x, y);
-        
-        return computeColor(mainRay, ctx);
     }
 
     /**
@@ -109,27 +91,6 @@ public class DefaultRenderer implements Renderer {
         }
 
         return result;
-    }
-
-    /**
-     * x and z are the components in the screen coordinate.
-     *
-     * @param x The x coordinate on the rendering surface.
-     * @param y The y coordinate on the rendering surface.
-     *
-     * @return The ray passing through the x, y point of the rendering surface.
-     */
-    public Ray rayThroughPixel(final int x, final int y) {
-
-        Vector surfacePosition =
-                getScene().getRenderingSurface().getPosition();
-
-        Vector cameraPosition = getScene().getDefaultCamera().getPosition();
-        double endZ = surfacePosition.z();
-        double endY = surfacePosition.y() - y;
-        double endX = x + surfacePosition.x();
-
-        return Ray.joining(cameraPosition, new Vector(endX, endY, endZ));
     }
     
     /**
