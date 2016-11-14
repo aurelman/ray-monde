@@ -20,32 +20,92 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
+import static org.assertj.core.api.Assertions.withinPercentage;
 
 
 public class SphereTest {
 
-    private Sphere sphere1;
-
     @Test
-    public void testIntersect() {
-        Ray ray = new Ray(new Vector(0., 0., 1.), new Vector(0., 0., 1.));
-        Sphere instance = getSphere1();
-        double expResult = 84.;
-        double result = instance.intersect(ray);
-        assertEquals(expResult, result, 0.00000000001);
+    public void shouldNotIntersectSphere() {
+        // Given
+        Sphere sphere = Sphere.builder()
+                .origin(Vector.builder()
+                    .x(0.)
+                    .y(0.)
+                    .z(-100.)
+                    .build())
+                .radius(10.)
+                .build();
+
+        Ray ray = Ray.joining(Vector.builder()
+                .x(0)
+                .y(0)
+                .z(0)
+                .build(), Vector.builder()
+                .x(0)
+                .y(11)
+                .z(-100)
+                .build());
+
+        // Expect
+        assertThat(sphere.intersect(ray)).isCloseTo(Double.POSITIVE_INFINITY, offset(0.00000001));
     }
 
-    public Sphere getSphere1() {
-        if (this.sphere1 == null) {
-            this.sphere1 = Sphere.builder()
-                    .position(new Vector(0., 0., 100.))
-                    .radius(15.)
-                    .build();
-        }
-        
-        return this.sphere1;
+    @Test
+    public void rayRayGoingThroughSphereShouldIntersect() {
+        // Given
+        Sphere sphere = Sphere.builder()
+                .origin(Vector.builder()
+                        .x(0.)
+                        .y(0.)
+                        .z(-100.)
+                        .build())
+                .radius(10.)
+                .build();
+
+        Ray ray = Ray.joining(Vector.builder()
+                .x(0)
+                .y(0)
+                .z(0)
+                .build(), Vector.builder()
+                .x(0)
+                .y(10)
+                .z(-100)
+                .build());
+
+        // Expect
+        assertThat(sphere.intersect1(ray)).isCloseTo(Math.sqrt(100 * 100 + 10 * 10), withinPercentage(2));
+    }
+
+
+    @Test
+    public void rayRayJustTouchingSphereShouldIntersect() {
+        // Given
+        Sphere sphere = Sphere.builder()
+                .origin(Vector.builder()
+                        .x(0.)
+                        .y(0.)
+                        .z(-100.)
+                        .build())
+                .radius(10.)
+                .build();
+
+        Ray ray = Ray.joining(Vector.builder()
+                .x(0)
+                .y(0)
+                .z(0)
+                .build(), Vector.builder()
+                .x(0)
+                .y(0.0)
+                .z(-100)
+                .build());
+
+        // Expect
+        assertThat(sphere.intersect(ray)).isCloseTo(90.0, offset(0.00000001));
     }
 }

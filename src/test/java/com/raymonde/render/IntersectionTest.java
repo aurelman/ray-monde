@@ -32,7 +32,7 @@ public class IntersectionTest {
         Vector spherePosition = new Vector(0, 0, 0);
         Ray incomingRay = new Ray(new Vector(4, 0, 0), new Vector(-1, 0, 0));
         Sphere sphere = Sphere.builder()
-                .position(spherePosition)
+                .origin(spherePosition)
                 .radius(1)
                 .build();
         Intersection instance = new Intersection(sphere, incomingRay, 3);

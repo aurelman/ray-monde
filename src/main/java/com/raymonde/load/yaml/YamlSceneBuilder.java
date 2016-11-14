@@ -30,6 +30,7 @@ import com.raymonde.render.material.*;
 import com.raymonde.render.primitive.Plane;
 import com.raymonde.render.primitive.Primitive;
 import com.raymonde.render.primitive.Sphere;
+import com.raymonde.render.primitive.Triangle;
 import com.raymonde.scene.Scene;
 import lombok.val;
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -160,9 +162,23 @@ public class YamlSceneBuilder implements SceneBuilder {
                 return parseSphere(primitiveConfig);
             case "plane":
                 return parsePlane(primitiveConfig);
+            case "triangle":
+                return parseTriangle(primitiveConfig);
             default:
                 return parseSphere(primitiveConfig);
         }
+    }
+
+    private Primitive parseTriangle(final Map<String, Object> primitiveConfig) {
+
+        List<Object> points = castAs(primitiveConfig.get("points"), List.class);
+
+        return Triangle.builder()
+                .first(parseVector(points.get(0)))
+                .second(parseVector(points.get(0)))
+                .third(parseVector(points.get(0)))
+                .material(parseMaterial(primitiveConfig.get("material")))
+                .build();
     }
 
     private Primitive parsePlane(final Map<String, Object> primitiveConfig) {
@@ -175,7 +191,7 @@ public class YamlSceneBuilder implements SceneBuilder {
 
     private Primitive parseSphere(final Map<String, Object> primitiveConfig) {
         return Sphere.builder()
-                .position(parseVector(primitiveConfig.get("position")))
+                .origin(parseVector(primitiveConfig.get("position")))
                 .radius((double) primitiveConfig.get("radius"))
                 .material(parseMaterial(primitiveConfig.get("material")))
                 .build();

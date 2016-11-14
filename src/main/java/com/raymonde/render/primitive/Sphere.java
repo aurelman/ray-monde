@@ -24,21 +24,22 @@ import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
+import lombok.val;
 
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * {@code Sphere} represents spherical object in a scene.
- * The center of the sphere is represented by his position.
+ * The center of the sphere is represented by his origin.
  * The radius is a double value.
  */
 @ThreadSafe
 public class Sphere extends AbstractPrimitive {
 
     /**
-     * The center position
+     * The center origin
      */
-    private final Vector position;
+    private final Vector origin;
     
     /**
      * The radius.
@@ -53,71 +54,37 @@ public class Sphere extends AbstractPrimitive {
     /**
      * Constructs a {@code Sphere} object with the specified name.
      *
-     * @param position The sphere center position.
+     * @param origin The sphere center origin.
      * @param radius The radius of the sphere.
      */
     @Builder
-    public Sphere(final Vector position, final double radius, final Material material) {
+    public Sphere(final Vector origin, final double radius, final Material material) {
         super(material);
-        this.position = position;
+        this.origin = origin;
         this.radius = radius;
     }
-
-    // @Override
-    public double intersect1(final Ray ray) {
-        
-        final Vector rayDirection = ray.direction();
-        final Vector rayOriginToSphereVector = Vector.joining(ray.origin(), position);
-
-
-        double scal = rayOriginToSphereVector.dot(rayDirection);
-
-        if (scal < 0.0) {
-            return Double.POSITIVE_INFINITY;
-        }
-
-        double ch2 = rayOriginToSphereVector.squaredLength() - scal * scal;
-
-        double r2 = radius * radius;
-        if (ch2 > r2) {
-            return Double.POSITIVE_INFINITY;
-        }
-
-        double d = Math.sqrt(r2 - ch2);
-        double t1 = scal + d;
-        double t2 = scal - d;
-
-        if (t1 > 0 || t2 > 0) {
-            
-            return Math.min(t1, t2);
-        }
-
-        return Double.POSITIVE_INFINITY;
-    }
-
 
     @Override
     public double intersect(final Ray ray) {
 
-        final Vector rayOriginMinusSphereCenter = ray.origin().subtract(position);
-        final double a = ray.direction().squaredLength();
-        final double b = 2 * (ray.direction().dot(rayOriginMinusSphereCenter));
+        val rayOriginMinusSphereCenter = Vector.joining(origin, ray.origin());
+        val a = ray.direction().squaredLength();
+        val b = 2 * (ray.direction().dot(rayOriginMinusSphereCenter));
+        val c = rayOriginMinusSphereCenter.squaredLength() - squaredRadius();
 
-        final double c = rayOriginMinusSphereCenter.squaredLength() - squaredRadius();
-
-        QuadraticEquation.Result result = new QuadraticEquation(a, b, c).solve();
+        val result = new QuadraticEquation(a, b, c).solve();
 
         if (result.rootNumber() == 0) {
             return Double.POSITIVE_INFINITY;
         }
 
+        // First root is always the lower value
         return result.firstRoot();
     }
 
-
     @Override
     public Vector normalAt(final Vector point) {
-        return Vector.joining(position, point)
+        return Vector.joining(origin, point)
                 .normalized();
     }
 
@@ -126,16 +93,14 @@ public class Sphere extends AbstractPrimitive {
             _squaredRadius = radius * radius;
         }
 
-        return radius;
+        return _squaredRadius;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("position", position)
+                .add("origin", origin)
                 .add("radius", radius)
                 .toString();
     }
-
-
 }
