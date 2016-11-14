@@ -38,7 +38,7 @@ public class IntersectionTest {
         Intersection instance = new Intersection(sphere, incomingRay, 3);
         Ray expResult = new Ray(new Vector(1, 0, 0), new Vector(1, 0, 0));
         // When
-        Ray result = instance.getReflectedRay();
+        Ray result = instance.reflectedRay();
 
         // Then
         assertEquals(expResult, result);

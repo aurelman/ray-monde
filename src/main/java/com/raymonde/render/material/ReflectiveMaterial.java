@@ -58,11 +58,10 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
             final Intersection inter,
             final RenderingContext ctx) {
         Color reflectColor = Color.black();
-        Color surfaceColor =
-                getSubMaterial().computeColor(renderer, scene, inter, ctx);
+
+        Color surfaceColor = getSubMaterial().computeColor(renderer, scene, inter, ctx);
         
-        // Ray reflected = reflectedRay(inter.getIncomingRay(), inter);
-        Ray reflected = inter.getReflectedRay();
+        Ray reflected = inter.reflectedRay();
 
         // TODO: deleted to avoid commiting not compiling code
         /**

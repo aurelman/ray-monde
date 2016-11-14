@@ -58,7 +58,14 @@ public final class Intersection {
      * The computed reflected ray.
      * Lazy-initialized.
      */
-    private Ray reflectedRay;
+    private Ray _reflectedRay;
+
+
+    /**
+     * The computed normal.
+     * Lazy-initialized.
+     */
+    private Vector _normal;
 
     /**
      *
@@ -95,17 +102,25 @@ public final class Intersection {
         return incomingRay;
     }
     
-    public Ray getReflectedRay() {
-        if (reflectedRay == null) {
+    public Ray reflectedRay() {
+        if (_reflectedRay == null) {
             final Vector intersectionPosition = getIntersectionPosition();
             final Vector normal = getIntersectedPrimitive().normalAt(intersectionPosition);
             final Vector reflected = incomingRay.direction().reflected(normal);
-            reflectedRay = new Ray(intersectionPosition, reflected);
+            _reflectedRay = new Ray(intersectionPosition, reflected);
         }
         
-        return reflectedRay;
+        return _reflectedRay;
     }
 
+
+    public Vector normal() {
+        if (_normal == null) {
+            _normal = intersectedPrimitive.normalAt(intersectionPoint).normalized();
+        }
+
+        return _normal;
+    }
 
     /**
      * Computes and returns the intersection point.

@@ -121,7 +121,7 @@ public final class QuadraticEquation {
      */
     @ThreadSafe
     @Immutable
-    static final class Result {
+    public static final class Result {
 
         /**
          * The first solution

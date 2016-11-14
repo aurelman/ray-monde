@@ -64,7 +64,6 @@ public class PhongMaterial extends AbstractMaterial implements Material {
             final RenderingContext ctx) {
 
         val ray = intersection.getIncomingRay();
-        val intersectedPrimitive = intersection.getIntersectedPrimitive();
 
         val color = getSubMaterial().computeColor(renderer, scene, intersection, ctx);
         val ambientColor = scene.getAmbientColor();
@@ -89,21 +88,19 @@ public class PhongMaterial extends AbstractMaterial implements Material {
              */
             if (occludingIntersection == null || occludingIntersection.getDistance() > distanceToLight) {
 
-                Vector normal = intersectedPrimitive.normalAt(intersectionPoint);
+                Vector normal = intersection.normal();
                 Color lightColor = light.colorAt(intersectionPoint);
 
                 // Diffuse
                 double diff = directionToLight.dot(normal) * diffuseFactor;
 
                 if (diff > 0.) {
-                    Color currentDiffuseColor =
-                            lightColor.multiply(color).multiply(diff);
-
+                    Color currentDiffuseColor = lightColor.multiply(color).multiply(diff);
                     diffuseColor = diffuseColor.add(currentDiffuseColor);
                 }
 
                 // Specular
-                final Vector lightReflect =directionToLight
+                final Vector lightReflect = directionToLight
                         .reflected(normal)
                         .opposite()
                         .normalized();

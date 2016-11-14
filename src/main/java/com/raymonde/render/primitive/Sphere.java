@@ -19,16 +19,20 @@
 package com.raymonde.render.primitive;
 
 import com.google.common.base.MoreObjects;
+import com.raymonde.core.QuadraticEquation;
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * {@code Sphere} represents spherical object in a scene.
  * The center of the sphere is represented by his position.
  * The radius is a double value.
  */
+@ThreadSafe
 public class Sphere extends AbstractPrimitive {
 
     /**
@@ -40,6 +44,11 @@ public class Sphere extends AbstractPrimitive {
      * The radius.
      */
     private final double radius;
+
+    /**
+     * Cached value of the squared radius
+     */
+    private Double _squaredRadius;
 
     /**
      * Constructs a {@code Sphere} object with the specified name.
@@ -54,20 +63,22 @@ public class Sphere extends AbstractPrimitive {
         this.radius = radius;
     }
 
-    @Override
-    public double intersect(final Ray ray) {
+    // @Override
+    public double intersect1(final Ray ray) {
         
-        Vector rayDir = ray.direction();
-        Vector sphereVector = Vector.joining(ray.origin(), getPosition());
-        double scal = sphereVector.dot(rayDir);
+        final Vector rayDirection = ray.direction();
+        final Vector rayOriginToSphereVector = Vector.joining(ray.origin(), position);
+
+
+        double scal = rayOriginToSphereVector.dot(rayDirection);
 
         if (scal < 0.0) {
             return Double.POSITIVE_INFINITY;
         }
 
-        double ch2 = sphereVector.squaredLength() - scal*scal;
+        double ch2 = rayOriginToSphereVector.squaredLength() - scal * scal;
 
-        double r2 = getRadius()*getRadius();
+        double r2 = radius * radius;
         if (ch2 > r2) {
             return Double.POSITIVE_INFINITY;
         }
@@ -84,26 +95,38 @@ public class Sphere extends AbstractPrimitive {
         return Double.POSITIVE_INFINITY;
     }
 
+
+    @Override
+    public double intersect(final Ray ray) {
+
+        final Vector rayOriginMinusSphereCenter = ray.origin().subtract(position);
+        final double a = ray.direction().squaredLength();
+        final double b = 2 * (ray.direction().dot(rayOriginMinusSphereCenter));
+
+        final double c = rayOriginMinusSphereCenter.squaredLength() - squaredRadius();
+
+        QuadraticEquation.Result result = new QuadraticEquation(a, b, c).solve();
+
+        if (result.rootNumber() == 0) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        return result.firstRoot();
+    }
+
+
     @Override
     public Vector normalAt(final Vector point) {
         return Vector.joining(position, point)
                 .normalized();
     }
-    
-    /**
-     * Returns the radius of the sphere.
-     * 
-     * @return The radius of the sphere.
-     */
-    public double getRadius() {
-        return radius;
-    }
 
-    /**
-     * @return the position
-     */
-    public Vector getPosition() {
-        return position;
+    private final double squaredRadius() {
+        if (_squaredRadius == null) {
+            _squaredRadius = radius * radius;
+        }
+
+        return radius;
     }
 
     @Override
@@ -113,4 +136,6 @@ public class Sphere extends AbstractPrimitive {
                 .add("radius", radius)
                 .toString();
     }
+
+
 }

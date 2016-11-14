@@ -24,6 +24,9 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
+import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -38,7 +41,10 @@ public class Scene {
     /**
      * The minimum distance a ray must have run to valid collision.
      */
-    private static double DELTA_COLLISION_DETECTION = 0.000000001;
+    private final static double DELTA_COLLISION_DETECTION = 0.000000001;
+
+
+    private final static Logger logger = LoggerFactory.getLogger(Scene.class);
 
     private final SpatialPartitionFactory spatialPartitionFactory = new DefaultSpatialPartitionFactory();
     /**
@@ -88,25 +94,29 @@ public class Scene {
     /**
      * Computes the nearest intersected primitive with the specified ray and
      * and returns intersection data,
-     * <code>null</code> if no intersection occurs.
+     * {@code null} if no intersection occurs.
      * 
      * @param ray The ray which might intersect one or more primitive.
      * 
-     * @return The <code>Intersection</code> object, which contains data about
-     * intersection. Returns <code>null</code> if no intersection occurs.
+     * @return The {@link Intersection} object, which contains data about
+     * intersection. Returns {@code null} if no intersection occurs.
      */
     public Intersection nearestIntersection(final Ray ray) {
+
         Intersection res = null;
 
         // Nearest collided primitive, distances
         Primitive minPrimitive = null;
+        String minPrimitiveName = null;
         double minDistance = Double.POSITIVE_INFINITY;
         
         double distance;
 
         double delta = Scene.DELTA_COLLISION_DETECTION;
-        for (Primitive primitive : getPrimitives()) {
-            distance = primitive.intersect(ray);
+        for (Map.Entry<String, Primitive> primitive : primitives.entrySet()) {
+            val p = primitive.getValue();
+
+            distance = p.intersect(ray);
 
             /*
              * - Avoid intersection detection with previous one
@@ -116,11 +126,13 @@ public class Scene {
                 && distance > delta 
                 && minDistance - distance > delta) {
                 minDistance = distance;
-                minPrimitive = primitive;
+                minPrimitive = p;
+                minPrimitiveName = primitive.getKey();
             }
         }
 
         if (minPrimitive != null) {
+            logger.debug("intersection detected with primitive {} for ray {}", minPrimitiveName, ray);
             res = new Intersection(minPrimitive, ray, minDistance);
         }
         return res;

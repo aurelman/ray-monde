@@ -13,6 +13,7 @@ public abstract class AbstractPrimitive implements Primitive {
     public AbstractPrimitive(final Material material) {
         this.material = material;
     }
+    
     /**
      * Returns the root material of the primitive.
      *
