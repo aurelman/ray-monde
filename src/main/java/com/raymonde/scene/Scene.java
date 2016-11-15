@@ -37,14 +37,13 @@ import java.util.Map;
  * of what would be rendered.
  */
 public class Scene {
-    
+
+    private final static Logger logger = LoggerFactory.getLogger(Scene.class);
+
     /**
      * The minimum distance a ray must have run to valid collision.
      */
     private final static double DELTA_COLLISION_DETECTION = 0.000000001;
-
-
-    private final static Logger logger = LoggerFactory.getLogger(Scene.class);
 
     private final SpatialPartitionFactory spatialPartitionFactory = new DefaultSpatialPartitionFactory();
     /**
@@ -103,8 +102,6 @@ public class Scene {
      */
     public IntersectionResult nearestIntersection(final Ray ray) {
 
-
-
         IntersectionResult minInter = null;
         // Nearest collided primitive, distances
         Primitive minPrimitive = null;
@@ -134,11 +131,10 @@ public class Scene {
                     minInter = res;
                 }
             }
-
         }
 
-        if (minPrimitive != null) {
-            logger.info("intersection detected with primitive {} for ray {}", minPrimitiveName, ray);
+        if (minInter != null) {
+            logger.debug("intersection detected with primitive {} for ray {}", minPrimitiveName, ray);
         }
 
         return minInter;

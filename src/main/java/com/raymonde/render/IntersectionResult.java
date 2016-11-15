@@ -18,7 +18,6 @@
 
 package com.raymonde.render;
 
-import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import com.raymonde.render.primitive.Primitive;
 import lombok.Builder;
