@@ -175,8 +175,8 @@ public class YamlSceneBuilder implements SceneBuilder {
 
         return Triangle.builder()
                 .first(parseVector(points.get(0)))
-                .second(parseVector(points.get(0)))
-                .third(parseVector(points.get(0)))
+                .second(parseVector(points.get(1)))
+                .third(parseVector(points.get(2)))
                 .material(parseMaterial(primitiveConfig.get("material")))
                 .build();
     }

@@ -20,12 +20,9 @@ package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.offset;
-import static org.assertj.core.api.Assertions.withinPercentage;
+import static org.assertj.core.api.Assertions.*;
 
 
 public class SphereTest {
@@ -79,7 +76,7 @@ public class SphereTest {
                 .build());
 
         // Expect
-        assertThat(sphere.intersect1(ray)).isCloseTo(Math.sqrt(100 * 100 + 10 * 10), withinPercentage(2));
+        assertThat(sphere.intersect(ray)).isCloseTo(Math.sqrt(100 * 100 + 10 * 10), withinPercentage(2));
     }
 
 

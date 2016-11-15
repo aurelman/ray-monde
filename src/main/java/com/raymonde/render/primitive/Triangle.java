@@ -23,13 +23,16 @@ import com.raymonde.core.Vector;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
+import lombok.val;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class Triangle extends AbstractPrimitive {
 
-    private final Vector [] _points = new Vector[3];
+    private final Vector [] vertices = new Vector[3];
 
     private static final int FIRST = 0;
 
@@ -37,21 +40,61 @@ public class Triangle extends AbstractPrimitive {
 
     private static final int THIRD = 2;
 
+    private static final double EPSILON = 0.0000000001;
+
     @Builder
     public Triangle(final Vector first, final Vector second, final Vector third, final Material material) {
         super(material);
-        _points[FIRST] = first;
-        _points[SECOND] = second;
-        _points[THIRD] = third;
+        vertices[FIRST] = first;
+        vertices[SECOND] = second;
+        vertices[THIRD] = third;
     }
 
     @Override
     public Vector normalAt(Vector point) {
-        return null;
+        val edge1 = Vector.joining(vertices[FIRST], vertices[SECOND]);
+        val edge2 = Vector.joining(vertices[FIRST], vertices[THIRD]);
+        return edge1.cross(edge2);
     }
 
     @Override
-    public double intersect(Ray ray) {
-        return 0;
+    public double intersect(final Ray ray) {
+
+        // Follow the Möller-Trumblore algorithm
+        // see : https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+        val edge1 = Vector.joining(vertices[FIRST], vertices[SECOND]);
+        val edge2 = Vector.joining(vertices[FIRST], vertices[THIRD]);
+
+        val pVec = ray.direction().cross(edge2);
+        double det = edge1.dot(pVec);
+
+        if (det > -EPSILON && det < EPSILON) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        double invDet = 1. / det;
+
+        val tVec = Vector.joining(vertices[FIRST], ray.origin());
+
+        double u = tVec.dot(pVec) * invDet;
+
+        if (u < 0. || u > 1.) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        val qVec = tVec.cross(edge1);
+
+        double v = ray.direction().dot(qVec) * invDet;
+
+        if (v < 0. || u + v > 1.) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        double t = edge2.dot(qVec) * invDet;
+
+        if (t > EPSILON) {
+            return t;
+        }
+        return Double.POSITIVE_INFINITY;
     }
 }
