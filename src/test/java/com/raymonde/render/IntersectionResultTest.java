@@ -16,46 +16,60 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.raymonde.render.primitive;
+package com.raymonde.render;
 
 import com.raymonde.core.Vector;
-import com.raymonde.render.Ray;
+import com.raymonde.render.primitive.Sphere;
 import lombok.val;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.offset;
 
-public class PlaneTest {
+public class IntersectionResultTest {
 
     @Test
-    public void shouldDetectIntersectionWithPlan() {
-        // When
-        val plane = Plane.builder()
-                .normal(Vector.builder()
-                        .x(0.)
-                        .y(0.)
-                        .z(-1.)
-                        .build())
-                .distance(100.)
-                .build();
-
-
-        val ray = new Ray(Vector.builder()
-                .x(0.)
+    public void shouldComputeReflectedRay() {
+        // Given
+        val incomingRay = new Ray(Vector.builder()
+                .x(4.)
                 .y(0.)
                 .z(0.)
                 .build(), Vector.builder()
-                .x(0.)
+                .x(-1.)
                 .y(0.)
-                .z(1.)
+                .z(0.)
                 .build());
 
+
+        val sphere = Sphere.builder()
+                .origin(Vector.builder()
+                    .x(0.)
+                    .y(0.)
+                    .z(0.)
+                    .build())
+                .radius(1.)
+                .build();
+
+        val instance = IntersectionResult.builder()
+                .primitive(sphere)
+                .ray(incomingRay)
+                .distance(3.)
+                .build();
+
         // When
-        val result = plane.intersect(ray);
+        val result = instance.reflectedRay();
 
         // Then
-        assertThat(result.intersect()).isTrue();
-        assertThat(result.distance()).isCloseTo(100., offset(0.00000001));
+        val expResult = new Ray(Vector.builder()
+                .x(1.)
+                .y(0.)
+                .z(0.)
+                .build(), Vector.builder()
+                .x(1.)
+                .y(0.)
+                .z(0.)
+                .build());
+
+        assertThat(result).isEqualTo(expResult);
     }
 }

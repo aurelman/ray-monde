@@ -20,7 +20,7 @@ package com.raymonde.render.material;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
-import com.raymonde.render.Intersection;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
@@ -60,7 +60,7 @@ public class PhongMaterial extends AbstractMaterial implements Material {
     @Override
     public Color computeColor(final Renderer renderer,
             final Scene scene,
-            final Intersection intersection,
+            final IntersectionResult intersection,
             final RenderingContext ctx) {
 
         val ray = intersection.getIncomingRay();
@@ -86,7 +86,7 @@ public class PhongMaterial extends AbstractMaterial implements Material {
              * A ray is not occluded unless there is a primitive between the ray
              * origin and the light.
              */
-            if (occludingIntersection == null || occludingIntersection.getDistance() > distanceToLight) {
+            if (occludingIntersection == null || occludingIntersection.distance() > distanceToLight) {
 
                 Vector normal = intersection.normal();
                 Color lightColor = light.colorAt(intersectionPoint);

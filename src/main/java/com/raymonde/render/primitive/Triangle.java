@@ -20,6 +20,7 @@ package com.raymonde.render.primitive;
 
 
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
@@ -58,7 +59,7 @@ public class Triangle extends AbstractPrimitive {
     }
 
     @Override
-    public double intersect(final Ray ray) {
+    public IntersectionResult intersect(final Ray ray) {
 
         // Follow the Möller-Trumblore algorithm
         // see : https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
@@ -69,7 +70,11 @@ public class Triangle extends AbstractPrimitive {
         double det = edge1.dot(pVec);
 
         if (det > -EPSILON && det < EPSILON) {
-            return Double.POSITIVE_INFINITY;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
         }
 
         double invDet = 1. / det;
@@ -79,7 +84,11 @@ public class Triangle extends AbstractPrimitive {
         double u = tVec.dot(pVec) * invDet;
 
         if (u < 0. || u > 1.) {
-            return Double.POSITIVE_INFINITY;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
         }
 
         val qVec = tVec.cross(edge1);
@@ -87,14 +96,27 @@ public class Triangle extends AbstractPrimitive {
         double v = ray.direction().dot(qVec) * invDet;
 
         if (v < 0. || u + v > 1.) {
-            return Double.POSITIVE_INFINITY;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
         }
 
         double t = edge2.dot(qVec) * invDet;
 
         if (t > EPSILON) {
-            return t;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(true)
+                    .distance(t)
+                    .build();
         }
-        return Double.POSITIVE_INFINITY;
+        return IntersectionResult.builder()
+                .primitive(this)
+                .ray(ray)
+                .intersect(false)
+                .build();
     }
 }

@@ -21,6 +21,7 @@ package com.raymonde.render.primitive;
 import com.google.common.base.MoreObjects;
 import com.raymonde.core.QuadraticEquation;
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
@@ -64,8 +65,8 @@ public class Sphere extends AbstractPrimitive {
         this.radius = radius;
     }
 
-    @Override
-    public double intersect(final Ray ray) {
+    // @Override
+    public double intersect1(final Ray ray) {
 
         val rayOriginMinusSphereCenter = Vector.joining(origin, ray.origin());
         val a = ray.direction().squaredLength();
@@ -80,6 +81,33 @@ public class Sphere extends AbstractPrimitive {
 
         // First root is always the lower value
         return result.firstRoot();
+    }
+
+    @Override
+    public IntersectionResult intersect(final Ray ray) {
+
+        val rayOriginMinusSphereCenter = Vector.joining(origin, ray.origin());
+        val a = ray.direction().squaredLength();
+        val b = 2 * (ray.direction().dot(rayOriginMinusSphereCenter));
+        val c = rayOriginMinusSphereCenter.squaredLength() - squaredRadius();
+
+        val result = new QuadraticEquation(a, b, c).solve();
+
+        if (result.rootNumber() == 0) {
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
+        }
+
+        // First root is always the lower value
+        return IntersectionResult.builder()
+                .primitive(this)
+                .ray(ray)
+                .intersect(true)
+                .distance(result.firstRoot())
+                .build();
     }
 
     @Override

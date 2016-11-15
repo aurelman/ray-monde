@@ -89,15 +89,8 @@ scene:
         - {x: 40., y: -80., z: -290.}
         - {x: 0., y: -95., z: -320.}
       material:
-        type: reflective
-        reflectivity: 0.2
-        material:
-          type: phong
-          diffuse: 0.8
-          specular: 12.
-          material:
-            type: color
-            color: {r: 0.2, g: 0.8, b: 0.2}
+        type: color
+        color: {r: 0.95, g: 0.95, b: 0.05}
   lights:
     - name: light1
       type: omnidirectional

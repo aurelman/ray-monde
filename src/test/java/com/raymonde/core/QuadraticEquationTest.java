@@ -18,6 +18,7 @@
 
 package com.raymonde.core;
 
+import lombok.val;
 import org.junit.Test;
 
 import static com.raymonde.core.QuadraticEquation.Result;
@@ -31,7 +32,7 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnTheCorrectRootsStatic() {
         // When
-        Result result = QuadraticEquation.solve(2.0, 5.0, 2.0);
+        val result = QuadraticEquation.solve(2.0, 5.0, 2.0);
 
         // Expect
         assertThat(result.rootNumber()).isEqualTo(2);
@@ -45,7 +46,7 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnTheCorrectRootStatic() {
         // When
-        Result result = QuadraticEquation.solve(0.0, 5.0, 2.0);
+        val result = QuadraticEquation.solve(0.0, 5.0, 2.0);
 
         // Expect
         assertThat(result.rootNumber()).isEqualTo(1);
@@ -57,7 +58,7 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnZeroRootsStatic() {
         // When
-        Result result = QuadraticEquation.solve(2.0, -1.0, 2.0);
+        val result = QuadraticEquation.solve(2.0, -1.0, 2.0);
 
         // Expect
         assertThat(result.rootNumber()).isEqualTo(0);
@@ -66,10 +67,10 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnTheCorrectRoots() {
         // Given
-        QuadraticEquation instance = new QuadraticEquation(2.0, 5.0, 2.0);
+        val instance = new QuadraticEquation(2.0, 5.0, 2.0);
 
         // When
-        Result result = instance.solve();
+        val result = instance.solve();
 
         // Then
         assertThat(result.rootNumber()).isEqualTo(2);
@@ -80,10 +81,10 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnTheCorrectRoot() {
         // Given
-        QuadraticEquation instance = new QuadraticEquation(0.0, 5.0, 2.0);
+        val instance = new QuadraticEquation(0.0, 5.0, 2.0);
 
         // When
-        Result result = instance.solve();
+        val result = instance.solve();
 
         // Then
         assertThat(result.rootNumber()).isEqualTo(1);
@@ -94,10 +95,10 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnZeroRoots() {
         // Given
-        QuadraticEquation instance = new QuadraticEquation(2.0, -1.0, 2.0);
+        val instance = new QuadraticEquation(2.0, -1.0, 2.0);
 
         // When
-        Result result = instance.solve();
+        val result = instance.solve();
 
         // THen
         assertThat(result.rootNumber()).isEqualTo(0);
@@ -107,10 +108,10 @@ public class QuadraticEquationTest {
     @Test
     public void shouldReturnTheCorrectRootIfDiscriminantIsZero() {
         // Given
-        QuadraticEquation instance = new QuadraticEquation(1.0, 2.0, 1.0);
+        val instance = new QuadraticEquation(1.0, 2.0, 1.0);
 
         // When
-        Result result = instance.solve();
+        val result = instance.solve();
 
         // Then
         assertThat(result.rootNumber()).isEqualTo(1);
@@ -120,9 +121,8 @@ public class QuadraticEquationTest {
 
     @Test
     public void shouldReturnTheCorrectRootIfDiscriminantIsZeroStatic() {
-
         // When
-        Result result = QuadraticEquation.solve(1.0, 2.0, 1.0);
+        val result = QuadraticEquation.solve(1.0, 2.0, 1.0);
 
         // Expect
         assertThat(result.rootNumber()).isEqualTo(1);
@@ -132,9 +132,8 @@ public class QuadraticEquationTest {
 
     @Test
     public void shouldAvoidCancellationProblemsWhenComputingRoots() {
-
         // When
-        Result result = QuadraticEquation.solve(1.0, 200.0, -0.000015);
+        val result = QuadraticEquation.solve(1.0, 200.0, -0.000015);
 
         // Expect
         assertThat(result.rootNumber()).isEqualTo(2);
