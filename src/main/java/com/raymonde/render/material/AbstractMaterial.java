@@ -25,9 +25,7 @@ import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
 
 /**
- * {@code Material}s represents physical properties of the object on which
- * they are applied. The alter the way objects are rendered (color, reflection,
- * transparency/refraction).
+ * {@code AbstractMaterial} adds capacity to compose {@link Material}s.
  *
  */
 public abstract class AbstractMaterial implements Material {
@@ -58,7 +56,7 @@ public abstract class AbstractMaterial implements Material {
     /**
      * @return the subMaterial
      */
-    public Material getSubMaterial() {
+    Material getSubMaterial() {
         return subMaterial;
     }
 }

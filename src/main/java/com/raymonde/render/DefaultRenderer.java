@@ -23,6 +23,8 @@ import com.raymonde.scene.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * The default renderer. The initial renderer developed for ray-monde.
  */
@@ -63,6 +65,25 @@ public class DefaultRenderer implements Renderer {
             ctx.setRefraction(1.0);
             Color computedColor = computeColor(ray, ctx);
 
+
+            rendered.setPixelColor(pixel, computedColor);
+        });
+
+        return rendered;
+    }
+
+    public RenderingSurface renderSceneThroughCameraAntialiased(final Scene scene, final Camera camera) {
+        // TODO: shouldn't need to have to set the scene
+        setScene(scene);
+        RenderingSurface rendered = camera.createRenderingSurface();
+
+        rendered.eachPixel(pixel -> {
+            List<Ray> rays = camera.raysThroughPixel(pixel);
+
+            RenderingContext ctx = new RenderingContext(0, 1.);
+            ctx.setRefraction(1.0);
+            Color computedColor = computeColor(rays, ctx);
+
             rendered.setPixelColor(pixel, computedColor);
         });
 
@@ -92,6 +113,61 @@ public class DefaultRenderer implements Renderer {
 
         return result;
     }
+
+
+    /**
+     *
+     * @param ray The ray.
+     * @param ctx The current context.
+     *
+     * @return The resulting color object.
+     */
+    public Color computeColor(final List<Ray> ray, final RenderingContext ctx) {
+
+        //double refraction = ctx.getRefraction();
+        Scene sc = getScene();
+
+
+        IntersectionResult intersection = sc.nearestIntersection(ray.get(0));
+
+        Color result1 = null;
+
+        if (intersection != null) {
+            result1 = intersection.primitive().getMaterial()
+                    .computeColor(this, sc, intersection, ctx);
+        }
+
+
+        intersection = sc.nearestIntersection(ray.get(1));
+
+        Color result2 = null;
+
+        if (intersection != null) {
+            result2 = intersection.primitive().getMaterial()
+                    .computeColor(this, sc, intersection, ctx);
+        }
+
+        intersection = sc.nearestIntersection(ray.get(2));
+
+        Color result3 = null;
+
+        if (intersection != null) {
+            result3 = intersection.primitive().getMaterial()
+                    .computeColor(this, sc, intersection, ctx);
+        }
+
+        intersection = sc.nearestIntersection(ray.get(3));
+
+        Color result4 = null;
+
+        if (intersection != null) {
+            result4 = intersection.primitive().getMaterial()
+                    .computeColor(this, sc, intersection, ctx);
+        }
+
+        return Color.average(result1, result2, result3, result4);
+    }
+
     
     /**
      * @return the scene

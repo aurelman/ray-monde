@@ -17,11 +17,16 @@
  */
 package com.raymonde.render;
 
+import com.google.common.collect.Lists;
 import com.raymonde.core.Vector;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.Builder;
 
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code Camera} objects represents a point of view in a Scene
@@ -100,6 +105,12 @@ public class Camera {
         return Ray.joining(position, absolutePositionOfPixel(pixel));
     }
 
+    public List<Ray> raysThroughPixel(final Pixel pixel) {
+        return absolutePositionsForPixel(pixel).stream()
+                .map( vect -> Ray.joining(position, vect))
+                .collect(Collectors.toList());
+    }
+
     /**
      * Computes the absolute position of the specified pixel on the screen.
      *
@@ -118,6 +129,41 @@ public class Camera {
                 .add(direction.multiply(renderingSurfaceSpec.getDistance()))
                 .add(directionCrossUp.multiply(somethingDependingOnX))
                 .add(up.multiply(somethingDependingOnY));
+    }
+
+    /**
+     *
+     * Tests for antialiasing
+     * @param pixel
+     * @return
+     */
+    private List<Vector> absolutePositionsForPixel(final Pixel pixel) {
+
+        final double yFactor = (renderingSurfaceSpec.getPixelHeight() - 1) / 2. - pixel.y();
+        final double xFactor = pixel.x() - ((renderingSurfaceSpec.getPixelWidth() - 1) / 2.);
+
+        final double somethingDependingOnX = xFactor * renderingSurfaceSpec.widthOfPixel();
+        final double somethingDependingOnY = yFactor * renderingSurfaceSpec.heightOfPixel();
+
+        Vector vector1 = position
+                .add(direction.multiply(renderingSurfaceSpec.getDistance()))
+                .add(directionCrossUp.multiply(somethingDependingOnX).add(
+                        directionCrossUp.multiply(1.2 *renderingSurfaceSpec.heightOfPixel()))) //
+                .add(up.multiply(somethingDependingOnY));
+        Vector vector2 = position.add(direction.multiply(renderingSurfaceSpec.getDistance()))
+                .add(directionCrossUp.multiply(somethingDependingOnX).add(
+                        directionCrossUp.multiply(-(1.2 * renderingSurfaceSpec.heightOfPixel())))) //
+                .add(up.multiply(somethingDependingOnY));
+        Vector vector3 = position.add(direction.multiply(renderingSurfaceSpec.getDistance()))
+                .add(directionCrossUp.multiply(somethingDependingOnX))
+                .add(up.multiply(somethingDependingOnY).add(
+                        directionCrossUp.multiply(renderingSurfaceSpec.widthOfPixel())));
+        Vector vector4 = position.add(direction.multiply(1.2 * renderingSurfaceSpec.getDistance()))
+                .add(directionCrossUp.multiply(somethingDependingOnX))
+                .add(up.multiply(somethingDependingOnY).add(
+                        directionCrossUp.multiply(-(1.2 * renderingSurfaceSpec.heightOfPixel()))));
+
+        return newArrayList(vector1, vector2, vector3, vector4);
     }
 
     /**

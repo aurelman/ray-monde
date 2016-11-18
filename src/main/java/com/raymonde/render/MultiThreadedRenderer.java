@@ -38,4 +38,9 @@ public class MultiThreadedRenderer implements Renderer {
     public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) throws RenderingException {
         throw new UnsupportedOperationException("not yet implemented");
     }
+
+    @Override
+    public RenderingSurface renderSceneThroughCameraAntialiased(final Scene scene, final Camera camera) throws RenderingException {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

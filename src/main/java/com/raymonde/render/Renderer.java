@@ -38,4 +38,6 @@ public interface Renderer {
      * @see Camera
      */
     RenderingSurface renderSceneThroughCamera(Scene scene, Camera camera) throws RenderingException;
+
+    RenderingSurface renderSceneThroughCameraAntialiased(Scene scene, Camera camera) throws RenderingException;
 }

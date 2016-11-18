@@ -91,6 +91,31 @@ public final class Color {
         setBasic(f2i(r), f2i(g), f2i(b));
     }
 
+    public static Color average(Color ... colors) {
+        int nb = 0;
+
+        double red = 0.;
+        double green = 0.;
+        double blue = 0.;
+
+        for (Color c : colors) {
+            if (c != null) {
+                nb++;
+                red += c.r();
+                green += c.g();
+                blue += c.b();
+            }
+        }
+
+        return Color.builder()
+                .r(red/nb)
+                .g(green/nb)
+                .b(blue/nb)
+                .build();
+    }
+
+
+
     /**
      *
      * @param other The color to add to the current.

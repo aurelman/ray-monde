@@ -24,7 +24,11 @@ import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
 
 /**
+ * {@code Material}s represents physical properties of the object on which
+ * they are applied.
  *
+ * They alter the way objects are rendered (color, reflection,
+ * transparency/refraction).
  */
 public interface Material {
     
