@@ -89,8 +89,12 @@ scene:
         - {x: 40., y: -80., z: -290.}
         - {x: 0., y: -95., z: -320.}
       material:
-        type: color
-        color: {r: 0.95, g: 0.95, b: 0.05}
+        type: phong
+        diffuse: 0.8
+        specular: 12.
+        material:
+          type: color
+          color: {r: 0.6, g: 0.2, b: 1.0}
   lights:
     - name: light1
       type: omnidirectional
