@@ -19,6 +19,7 @@
 package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 
@@ -38,7 +39,7 @@ public class VerticalPlane extends AbstractPrimitive {
     }
 
     @Override
-    public double intersect(final Ray ray) {
-        return 900.0;
+    public IntersectionResult intersect(final Ray ray) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 }

@@ -81,12 +81,12 @@ public class DefaultRenderer implements Renderer {
 
         //double refraction = ctx.getRefraction();
         Scene sc = getScene();
-        Intersection intersection = sc.nearestIntersection(ray);
+        IntersectionResult intersection = sc.nearestIntersection(ray);
 
         Color result = Color.black();
         
         if (intersection != null) {
-            result = intersection.getIntersectedPrimitive().getMaterial()
+            result = intersection.primitive().getMaterial()
                 .computeColor(this, sc, intersection, ctx);
         }
 

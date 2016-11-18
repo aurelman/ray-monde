@@ -18,6 +18,7 @@
 
 package com.raymonde.core;
 
+import lombok.val;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,9 +31,9 @@ public class VectorTest {
     @Test
     public void shouldComputeLengthOfVectors() {
         // Given
-        Vector vector1 = new Vector(2, 4, 6);
-        Vector vector2 = new Vector(1.0, 1.0, 1.0);
-        Vector vector3 = new Vector();
+        val vector1 = new Vector(2, 4, 6);
+        val vector2 = new Vector(1.0, 1.0, 1.0);
+        val vector3 = new Vector();
 
         // Expect
         assertThat(vector1.length()).isCloseTo(7.483, offset(DELTA));
@@ -43,9 +44,9 @@ public class VectorTest {
     @Test
     public void shouldComputeSquaredLengthOfVector() {
         // Given
-        Vector vector1 = new Vector(2, 4, 6);
-        Vector vector2 = new Vector(-1.0, 1.0, 1.0);
-        Vector vector3 = new Vector();
+        val vector1 = new Vector(2, 4, 6);
+        val vector2 = new Vector(-1.0, 1.0, 1.0);
+        val vector3 = new Vector();
 
         // Expect
         assertThat(vector1.squaredLength()).isCloseTo(56.0, offset(DELTA));
@@ -56,8 +57,8 @@ public class VectorTest {
     @Test
     public void shouldComputeTheDistanceToAVector() {
         // Given
-        Vector vector1 = new Vector(2., 3., 4.);
-        Vector vector2 = new Vector(2., 3., 4.);
+        val vector1 = new Vector(2., 3., 4.);
+        val vector2 = new Vector(2., 3., 4.);
 
         // When
         double result = vector1.distanceTo(vector2);
@@ -69,8 +70,8 @@ public class VectorTest {
     @Test
     public void shouldComputeCrossProduct() {
         // Given
-        Vector vector1 = new Vector(1., 0., 0.);
-        Vector vector2 = new Vector(0., 1., 0.);
+        val vector1 = new Vector(1., 0., 0.);
+        val vector2 = new Vector(0., 1., 0.);
 
         // When
         Vector result = vector1.cross(vector2);
@@ -84,8 +85,8 @@ public class VectorTest {
     @Test
     public void shouldComputeDistanceBetweenTwoVectors() {
         // Given
-        Vector vector1 = new Vector(2., 3., 4.);
-        Vector vector2 = new Vector(2., 3., 4.);
+        val vector1 = new Vector(2., 3., 4.);
+        val vector2 = new Vector(2., 3., 4.);
 
         // Expect
         assertThat(Vector.distance(vector1, vector2)).isCloseTo(0.0, offset(DELTA));
@@ -94,11 +95,11 @@ public class VectorTest {
     @Test
     public void shouldComputeAdditionOfTwoVector() {
         // Given
-        Vector vector1 = new Vector(1.0, 2.0, -3.0);
-        Vector vector2 = new Vector(2.0, -1.0, -9.0);
+        val vector1 = new Vector(1.0, 2.0, -3.0);
+        val vector2 = new Vector(2.0, -1.0, -9.0);
 
         // When
-        Vector result = vector1.add(vector2);
+        val result = vector1.add(vector2);
 
         // Then
         assertThat(result.x()).isCloseTo(3.0, offset(DELTA));
@@ -107,10 +108,10 @@ public class VectorTest {
     }
 
     @Test
-    public void shouldComputeSubstractionOfTwoVectors() {
+    public void shouldComputeSubtractionOfTwoVectors() {
         // Given
-        Vector vector1 = new Vector(1.0, 2.0, -3.0);
-        Vector vector2 = new Vector(2.0, -1.0, -9.0);
+        val vector1 = new Vector(1.0, 2.0, -3.0);
+        val vector2 = new Vector(2.0, -1.0, -9.0);
 
         // When
         Vector result = vector1.subtract(vector2);
@@ -124,11 +125,11 @@ public class VectorTest {
     @Test
     public void shouldConstructAVectorJoiningTwoPoint() {
         // Given
-        Vector vector1 = new Vector(2.0, -1.0, -9.0);
-        Vector vector2 = new Vector(1.0, 2.0, -3.0);
+        val vector1 = new Vector(2.0, -1.0, -9.0);
+        val vector2 = new Vector(1.0, 2.0, -3.0);
 
         // When
-        Vector result = Vector.joining(vector1, vector2);
+        val result = Vector.joining(vector1, vector2);
 
         // Then
         assertThat(result.x()).isCloseTo(-1.0, offset(DELTA));
@@ -139,10 +140,10 @@ public class VectorTest {
     @Test
     public void shouldComputeMultiplicationOfVectorByAScalar() {
         // Given
-        Vector vector1 = new Vector(1.0, 2.0, -3.0);
+        val vector1 = new Vector(1.0, 2.0, -3.0);
 
         // When
-        Vector result = vector1.multiply(-6.0);
+        val result = vector1.multiply(-6.0);
 
         // Then
         assertThat(result.x()).isCloseTo(-6.0, offset(DELTA));
@@ -153,10 +154,10 @@ public class VectorTest {
     @Test
     public void shouldNormalizeAVector() {
         // Given
-        Vector instance = new Vector(6.0, -5.0, 4.0);
+        val instance = new Vector(6.0, -5.0, 4.0);
 
         // When
-        Vector result = instance.normalized();
+        val result = instance.normalized();
 
         // Then
         assertThat(result.length()).isCloseTo(1.0, offset(DELTA));
@@ -172,10 +173,10 @@ public class VectorTest {
     @Test
     public void shouldNormalizeAVectorWithTwoSubsequentCalls() {
         // Given
-        Vector instance = new Vector(6.0, -5.0, 4.0);
+        val instance = new Vector(6.0, -5.0, 4.0);
 
         // When
-        Vector result = instance.normalized().normalized();
+        val result = instance.normalized().normalized();
 
         // Then
         assertThat(result.length()).isCloseTo(1.0, offset(DELTA));
@@ -187,11 +188,11 @@ public class VectorTest {
     @Test
     public void shouldComputeReflectedVector() {
         // Given
-        Vector vector = new Vector(6.0, -5.0, 0.0);
-        Vector normal = new Vector(0.0, 1.0, 0.0);
+        val vector = new Vector(6.0, -5.0, 0.0);
+        val normal = new Vector(0.0, 1.0, 0.0);
 
         // When
-        Vector reflected = vector.reflected(normal);
+        val reflected = vector.reflected(normal);
 
         // Then
         assertThat(reflected.x()).isCloseTo(6.0, offset(DELTA));
@@ -202,8 +203,8 @@ public class VectorTest {
     @Test
     public void shouldComputeDotProduct() {
         // Given
-        Vector vector1 = new Vector(6.0, -5.0, -4.0);
-        Vector vector2 = new Vector(3.0, 2.0, -1.0);
+        val vector1 = new Vector(6.0, -5.0, -4.0);
+        val vector2 = new Vector(3.0, 2.0, -1.0);
 
         // When
         double result = vector1.dot(vector2);
@@ -215,8 +216,8 @@ public class VectorTest {
     @Test
     public void shouldCorrectlyCompareTwoVectors() {
         // Given
-        Vector vector1 = new Vector(6.0, -5.0, -4.0);
-        Vector vector2 = new Vector(6.0, -5.0, -4.0);
+        val vector1 = new Vector(6.0, -5.0, -4.0);
+        val vector2 = new Vector(6.0, -5.0, -4.0);
 
         // Expect
         assertThat(vector1.equals(vector2)).isTrue();
@@ -225,7 +226,7 @@ public class VectorTest {
     @Test
     public void nullVectorShouldNotEqualAnyOtherVector() {
         // Given
-        Vector vector = new Vector(6.0, -5.0, -4.0);
+        val vector = new Vector(6.0, -5.0, -4.0);
 
         // Expect
         assertThat(vector.equals(null)).isFalse();
@@ -234,10 +235,10 @@ public class VectorTest {
     @Test
     public void shouldComputeTheOppositeVector() {
         // Given
-        Vector vector = new Vector(6.0, 0.0, -12.0);
+        val vector = new Vector(6.0, 0.0, -12.0);
 
         // When
-        Vector result = vector.opposite();
+        val result = vector.opposite();
 
         // Then
         assertThat(result.x()).isEqualTo(-6.0);
@@ -248,7 +249,7 @@ public class VectorTest {
     @Test
     public void toStringShouldBeCorrect() {
         // Given
-        Vector vector = new Vector(1.0, 1.0, 1.0);
+        val vector = new Vector(1.0, 1.0, 1.0);
 
         // Expect
         assertThat(vector.toString()).isEqualTo("Vector{x=1.0, y=1.0, z=1.0, normalized=false}");

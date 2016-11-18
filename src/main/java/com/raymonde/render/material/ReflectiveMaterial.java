@@ -20,7 +20,7 @@ package com.raymonde.render.material;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
-import com.raymonde.render.Intersection;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
@@ -55,7 +55,7 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
     @Override
     public Color computeColor(final Renderer renderer,
             final Scene scene,
-            final Intersection inter,
+            final IntersectionResult inter,
             final RenderingContext ctx) {
         Color reflectColor = Color.black();
 
@@ -84,9 +84,9 @@ public class ReflectiveMaterial extends AbstractMaterial implements Material {
      *
      * @return The reflection ray.
      */
-    protected Ray reflectedRay(final Ray ray, final Intersection inter) {
+    protected Ray reflectedRay(final Ray ray, final IntersectionResult inter) {
         Vector intersectionPoint = inter.getIntersectionPosition();
-        Vector normal = inter.getIntersectedPrimitive().normalAt(intersectionPoint);
+        Vector normal = inter.primitive().normalAt(intersectionPoint);
         Vector reflected = ray.direction().reflected(normal);
         return new Ray(intersectionPoint, reflected);
     }

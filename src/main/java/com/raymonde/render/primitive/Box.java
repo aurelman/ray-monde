@@ -19,6 +19,7 @@
 package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 
@@ -42,12 +43,12 @@ public class Box extends AbstractPrimitive {
 
 
     @Override
-    public double intersect(final Ray ray) {
-        return Double.POSITIVE_INFINITY;
+    public IntersectionResult intersect(final Ray ray) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     public Vector normalAt(final Vector point) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("not supported yet.");
     }
 }

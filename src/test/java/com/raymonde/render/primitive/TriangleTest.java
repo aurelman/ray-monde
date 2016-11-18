@@ -27,47 +27,65 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 
 
-public class SphereTest {
+public class TriangleTest {
 
     @Test
-    public void shouldNotIntersectSphere() {
+    public void shouldNotIntersectTriangle() {
         // Given
-        Sphere sphere = Sphere.builder()
-                .origin(Vector.builder()
-                    .x(0.)
-                    .y(0.)
-                    .z(-100.)
-                    .build())
-                .radius(10.)
+        val triangle = Triangle.builder()
+                .first(Vector.builder()
+                        .x(-10.)
+                        .y(0.)
+                        .z(-150.)
+                        .build())
+                .second(Vector.builder()
+                        .x(10.)
+                        .y(.0)
+                        .z(-150.)
+                        .build())
+                .third(Vector.builder()
+                        .x(0.)
+                        .y(10.)
+                        .z(-150.)
+                        .build())
                 .build();
 
-        Ray ray = Ray.joining(Vector.builder()
+        val ray = Ray.joining(Vector.builder()
                 .x(0)
                 .y(0)
                 .z(0)
                 .build(), Vector.builder()
-                .x(0)
-                .y(11)
+                .x(90.)
+                .y(0)
                 .z(-100)
                 .build());
 
         // When
-        IntersectionResult result = sphere.intersect(ray);
+        val result = triangle.intersect(ray);
 
-        // Then
+        // Expect
         assertThat(result.intersect()).isFalse();
     }
 
     @Test
-    public void rayRayGoingThroughSphereShouldIntersect() {
+    public void shouldDetectIntersectionWithTriangle() {
         // Given
-        val sphere = Sphere.builder()
-                .origin(Vector.builder()
-                        .x(0.)
+        val triangle = Triangle.builder()
+                .first(Vector.builder()
+                        .x(-10.)
                         .y(0.)
-                        .z(-100.)
+                        .z(-150.)
                         .build())
-                .radius(10.)
+                .second(Vector.builder()
+                        .x(10.)
+                        .y(.0)
+                        .z(-150.)
+                        .build())
+                .third(Vector.builder()
+                        .x(0.)
+                        .y(10.)
+                        .z(-150.)
+                        .build())
                 .build();
 
         val ray = Ray.joining(Vector.builder()
@@ -76,47 +94,15 @@ public class SphereTest {
                 .z(0)
                 .build(), Vector.builder()
                 .x(0)
-                .y(10)
-                .z(-100)
-                .build());
-
-        // When
-        val result = sphere.intersect(ray);
-
-        // Then
-        assertThat(result.intersect()).isTrue();
-        assertThat(result.distance()).isCloseTo(Math.sqrt(100 * 100 + 10 * 10), withinPercentage(2));
-    }
-
-
-    @Test
-    public void rayRayJustTouchingSphereShouldIntersect() {
-        // Given
-        val sphere = Sphere.builder()
-                .origin(Vector.builder()
-                        .x(0.)
-                        .y(0.)
-                        .z(-100.)
-                        .build())
-                .radius(10.)
-                .build();
-
-        val ray = Ray.joining(Vector.builder()
-                .x(0)
                 .y(0)
-                .z(0)
-                .build(), Vector.builder()
-                .x(0)
-                .y(0.0)
                 .z(-100)
                 .build());
 
-
         // When
-        val result = sphere.intersect(ray);
+        val result = triangle.intersect(ray);
 
         // Expect
         assertThat(result.intersect()).isTrue();
-        assertThat(result.distance()).isCloseTo(90.0, offset(0.00000001));
+        assertThat(result.distance()).isCloseTo(150., offset(0.00000001));
     }
 }

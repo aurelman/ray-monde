@@ -19,6 +19,7 @@
 package com.raymonde.render.primitive;
 
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 
@@ -46,7 +47,7 @@ public interface Primitive {
      * 
      * @return The intersection distance.
      */
-    double intersect(Ray ray);
+    IntersectionResult intersect(Ray ray);
 
     Material getMaterial();
 }

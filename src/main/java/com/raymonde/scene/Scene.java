@@ -19,7 +19,7 @@ package com.raymonde.scene;
 
 import com.raymonde.core.Color;
 import com.raymonde.render.Camera;
-import com.raymonde.render.Intersection;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
@@ -37,14 +37,13 @@ import java.util.Map;
  * of what would be rendered.
  */
 public class Scene {
-    
+
+    private final static Logger logger = LoggerFactory.getLogger(Scene.class);
+
     /**
      * The minimum distance a ray must have run to valid collision.
      */
     private final static double DELTA_COLLISION_DETECTION = 0.000000001;
-
-
-    private final static Logger logger = LoggerFactory.getLogger(Scene.class);
 
     private final SpatialPartitionFactory spatialPartitionFactory = new DefaultSpatialPartitionFactory();
     /**
@@ -98,13 +97,12 @@ public class Scene {
      * 
      * @param ray The ray which might intersect one or more primitive.
      * 
-     * @return The {@link Intersection} object, which contains data about
+     * @return The {@link IntersectionResult} object, which contains data about
      * intersection. Returns {@code null} if no intersection occurs.
      */
-    public Intersection nearestIntersection(final Ray ray) {
+    public IntersectionResult nearestIntersection(final Ray ray) {
 
-        Intersection res = null;
-
+        IntersectionResult minInter = null;
         // Nearest collided primitive, distances
         Primitive minPrimitive = null;
         String minPrimitiveName = null;
@@ -116,26 +114,30 @@ public class Scene {
         for (Map.Entry<String, Primitive> primitive : primitives.entrySet()) {
             val p = primitive.getValue();
 
-            distance = p.intersect(ray);
+            val res = p.intersect(ray);
 
-            /*
-             * - Avoid intersection detection with previous one
-             * - Avoid intersection with an other very close other primitive.
-             */
-            if (distance < minDistance
-                && distance > delta 
-                && minDistance - distance > delta) {
-                minDistance = distance;
-                minPrimitive = p;
-                minPrimitiveName = primitive.getKey();
+            if (res.intersect()) {
+                distance = res.distance();
+
+                /*
+                 * - Avoid intersection detection with previous one
+                 * - Avoid intersection with an other very close other primitive.
+                 */
+                if (distance < minDistance
+                        && distance > delta
+                        && minDistance - distance > delta) {
+                    minDistance = distance;
+                    minPrimitiveName = primitive.getKey();
+                    minInter = res;
+                }
             }
         }
 
-        if (minPrimitive != null) {
+        if (minInter != null) {
             logger.debug("intersection detected with primitive {} for ray {}", minPrimitiveName, ray);
-            res = new Intersection(minPrimitive, ray, minDistance);
         }
-        return res;
+
+        return minInter;
     }
 
     /**

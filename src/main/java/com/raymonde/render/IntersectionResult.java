@@ -20,40 +20,46 @@ package com.raymonde.render;
 
 import com.raymonde.core.Vector;
 import com.raymonde.render.primitive.Primitive;
+import lombok.Builder;
 
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
+
 /**
- * {@code Intersection} wraps data about intersection between a ray and a intersectedPrimitive.
- * It stores the intersecting ray, the intersected intersectedPrimitive and the distance
+ * {@code IntersectionResult} wraps data about intersection between a ray and a primitive.
+ * It stores the intersecting ray, the intersected primitive and the distance
  * from the ray origin the intersection occurred.
  */
 @Immutable
 @ThreadSafe
-public final class Intersection {
+public final class IntersectionResult {
 
     /**
      * Only consistent where intersect is true.
      */
     private final double distance;
-
     /**
-     * The concerned intersectedPrimitive by the intersection.
+     * The concerned primitive by the intersection.
      */
-    private final Primitive intersectedPrimitive;
+    private final Primitive primitive;
+    /**
+     * Whether an intersection really occurred
+     */
+    private final boolean intersect;
 
     /**
      * The intersecting ray.
      */
     private final Ray incomingRay;
-
     /**
      * The computed intersection position. 
      * Lazy-initialized.
      */
     private Vector intersectionPoint;
-    
+
+
     /**
      * The computed reflected ray.
      * Lazy-initialized.
@@ -69,28 +75,39 @@ public final class Intersection {
 
     /**
      *
-     * @param intersected The intersectedPrimitive intersected.
+     * @param primitive The primitive intersected.
      * @param ray The ray that intersect.
-     * @param distance The distance.
+     * @param intersect whether an intersection really occurred or not
+     * @param distance The distance from the ray origin where the intersection occurred.
      */
-    public Intersection(final Primitive intersected, final Ray ray, final double distance) {
-        this.intersectedPrimitive = intersected;
-        this.distance = distance;
+    @Builder
+    public IntersectionResult(final Primitive primitive, final Ray ray, final Boolean intersect, final Double distance) {
+        this.primitive = primitive;
+        this.distance = firstNonNull(distance, Double.NaN) ;
         this.incomingRay = ray;
+        this.intersect = firstNonNull(intersect, false);
+    }
+
+    /**
+     * Returns whether an intersection occured between the ray and the primitive
+     * @return
+     */
+    public boolean intersect() {
+        return intersect;
     }
 
     /**
      * @return the distance
      */
-    public double getDistance() {
+    public double distance() {
         return distance;
     }
 
     /**
-     * @return the intersected intersectedPrimitive
+     * @return the intersected primitive
      */
-    public Primitive getIntersectedPrimitive() {
-        return intersectedPrimitive;
+    public Primitive primitive() {
+        return primitive;
     }
 
     /**
@@ -105,7 +122,7 @@ public final class Intersection {
     public Ray reflectedRay() {
         if (_reflectedRay == null) {
             final Vector intersectionPosition = getIntersectionPosition();
-            final Vector normal = getIntersectedPrimitive().normalAt(intersectionPosition);
+            final Vector normal = primitive().normalAt(intersectionPosition);
             final Vector reflected = incomingRay.direction().reflected(normal);
             _reflectedRay = new Ray(intersectionPosition, reflected);
         }
@@ -116,7 +133,7 @@ public final class Intersection {
 
     public Vector normal() {
         if (_normal == null) {
-            _normal = intersectedPrimitive.normalAt(intersectionPoint).normalized();
+            _normal = primitive.normalAt(intersectionPoint).normalized();
         }
 
         return _normal;
@@ -129,7 +146,7 @@ public final class Intersection {
      */
     public Vector getIntersectionPosition() {
         if (intersectionPoint == null) {
-            // origin + dist*direction
+            // origin + dist * direction
             intersectionPoint = incomingRay
                     .direction()
                     .multiply(distance)
@@ -137,6 +154,4 @@ public final class Intersection {
         }
         return intersectionPoint;
     }
-    
-    
 }

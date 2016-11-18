@@ -20,7 +20,7 @@ package com.raymonde.render.material;
 
 import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
-import com.raymonde.render.Intersection;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
@@ -54,7 +54,7 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     @Override
     public Color computeColor(final Renderer renderer,
             final Scene scene,
-            final Intersection inter,
+            final IntersectionResult inter,
             final RenderingContext ctx) {
         Color refractColor = Color.black();
         Color surfaceColor =
@@ -86,9 +86,9 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
      *
      * @return The refracted ray.
      */
-    protected Ray refractedRay(final Ray ray, final Intersection inter, final RenderingContext ctx) {
+    protected Ray refractedRay(final Ray ray, final IntersectionResult inter, final RenderingContext ctx) {
         double refract = ctx.getRefraction();
-        Primitive primitive = inter.getIntersectedPrimitive();
+        Primitive primitive = inter.primitive();
         double refB = refraction;
         double n = refract / refB;
 

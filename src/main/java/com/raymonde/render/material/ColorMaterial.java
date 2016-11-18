@@ -19,7 +19,7 @@
 package com.raymonde.render.material;
 
 import com.raymonde.core.Color;
-import com.raymonde.render.Intersection;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.scene.Scene;
@@ -49,7 +49,7 @@ public class ColorMaterial extends AbstractMaterial implements Material {
     @Override
     public Color computeColor(final Renderer renderer,
             final Scene scene,
-            final Intersection inter,
+            final IntersectionResult inter,
             final RenderingContext ctx) {
         return color;
     }

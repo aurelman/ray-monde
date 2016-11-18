@@ -18,7 +18,6 @@
 package com.raymonde.render;
 
 import com.raymonde.core.Color;
-import com.raymonde.core.Vector;
 import com.raymonde.scene.Scene;
 
 /**
@@ -44,7 +43,7 @@ public class RayRenderer {
 
         //double refraction = ctx.getRefraction();
         Scene sc = scene;
-        Intersection intersection = sc.nearestIntersection(ray);
+        IntersectionResult intersection = sc.nearestIntersection(ray);
 
         Color result = Color.black();
         // No intersection
@@ -52,7 +51,7 @@ public class RayRenderer {
             return result;
         }
 
-        //return intersection.getIntersectedPrimitive().getSubMaterial()
+        //return intersection.primitive().getSubMaterial()
         //        .computeColor(this, sc, intersection, ctx);
 
         return null;

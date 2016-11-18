@@ -8,3 +8,4 @@ root(INFO, [ "CONSOLE" ])
 
 // enable TimeLogger logs
 logger("com.raymonde.core.TimeLogger", TRACE)
+// logger("com.raymonde.scene.Scene", DEBUG)

@@ -20,13 +20,14 @@ package com.raymonde.render.primitive;
 
 
 import com.raymonde.core.Vector;
+import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
 import com.raymonde.render.material.Material;
 import lombok.Builder;
 
 /**
  * A {@code Plane} object is defined by a normal vector and a distance from
- * the origine.
+ * the origin.
  */
 public class Plane extends AbstractPrimitive {
 
@@ -56,41 +57,37 @@ public class Plane extends AbstractPrimitive {
 
     @Override
     public Vector normalAt(final Vector point) {
-        return getNormal().normalized();
+        return normal.normalized();
     }
 
     @Override
-    public double intersect(final Ray ray) {
-        Vector planeNormal = getNormal();
-        Vector origin = ray.origin();
-        Vector direction = ray.direction();
-        
-        double dot = planeNormal.dot(direction);
+    public IntersectionResult intersect(final Ray ray) {
+        double dot = normal.dot(ray.direction());
 
         if (dot >= 0.0) {
-            return Double.POSITIVE_INFINITY;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
         }
         
-        double dot2 = -(planeNormal.dot(origin) + getDistance());
+        double dot2 = -(normal.dot(ray.origin()) + distance);
 
         double t = dot2 / dot;
         if (t < 0.0) {
-            return Double.POSITIVE_INFINITY;
+            return IntersectionResult.builder()
+                    .primitive(this)
+                    .ray(ray)
+                    .intersect(false)
+                    .build();
         }
-        return t;
-    }
 
-    /**
-     * @return The normal vector.
-     */
-    public Vector getNormal() {
-        return normal;
-    }
-    
-    /**
-     * @return the distance
-     */
-    public double getDistance() {
-        return distance;
+        return IntersectionResult.builder()
+                .primitive(this)
+                .ray(ray)
+                .intersect(true)
+                .distance(t)
+                .build();
     }
 }
