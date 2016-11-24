@@ -50,14 +50,20 @@ public final class Color {
      * Message to give to exceptions when any of a component value
      * is out of the rage.
      */
-    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE = "Color components %s should be between 0.0 and 1.0, but is %s";
+    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE = "%s component should be between 0.0 and 1.0, but is %s";
+
+    /**
+     * Message to give to exceptions when any of a component value
+     * is out of the rage.
+     */
+    private static final String COMPONENTS_OUT_OF_RANGE_MESSAGE_BYTE = "%s component should be between 0 and 255, but is %s";
 
     /**
      * Internal storage of the color is an int value where
      * the 24 last bits are used to store red, green and blue component.
      * Each component is stored on 8 bits.
      */
-    private int rgb;
+    private final int rgb;
 
     /**
      * Constructs the color with 0 for each component.
@@ -76,6 +82,22 @@ public final class Color {
     }
 
     /**
+     * Sets the color components with the specified values.
+     * This method doesn't do any verification on the incoming values. This the
+     * caller's responsibility.
+     *
+     * @param red The red component.
+     * @param green The green component.
+     * @param blue The blue component.
+     */
+    private  Color(final int red, final int green, final int blue) {
+        checkArgument(isComponentValid(red), COMPONENTS_OUT_OF_RANGE_MESSAGE_BYTE, "red", red);
+        checkArgument(isComponentValid(green), COMPONENTS_OUT_OF_RANGE_MESSAGE_BYTE, "green", green);
+        checkArgument(isComponentValid(blue), COMPONENTS_OUT_OF_RANGE_MESSAGE_BYTE, "blue", blue);
+        rgb = componentsAsInteger(red, green, blue);
+    }
+
+    /**
      * Constructs the color object with the given components.
      *
      * @param r The red component intensity.
@@ -84,11 +106,10 @@ public final class Color {
      */
     @Builder
     public Color(final double r, final double g, final double b) {
-        checkArgument(isValidComponent(r), COMPONENTS_OUT_OF_RANGE_MESSAGE, "red", r);
-        checkArgument(isValidComponent(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);
-        checkArgument(isValidComponent(b), COMPONENTS_OUT_OF_RANGE_MESSAGE, "blue", b);
-
-        setBasic(f2i(r), f2i(g), f2i(b));
+        checkArgument(isComponentValid(r), COMPONENTS_OUT_OF_RANGE_MESSAGE, "red", r);
+        checkArgument(isComponentValid(g), COMPONENTS_OUT_OF_RANGE_MESSAGE, "green", g);
+        checkArgument(isComponentValid(b), COMPONENTS_OUT_OF_RANGE_MESSAGE, "blue", b);
+        rgb = componentsAsInteger(f2i(r), f2i(g), f2i(b));
     }
 
     public static Color average(Color ... colors) {
@@ -114,8 +135,6 @@ public final class Color {
                 .build();
     }
 
-
-
     /**
      *
      * @param other The color to add to the current.
@@ -140,8 +159,7 @@ public final class Color {
             components[2] = 255;
         }
 
-        Color res = new Color();
-        res.setBasic(components[0], components[1], components[2]);
+        Color res = new Color(components[0], components[1], components[2]);
         return res;
     }
     
@@ -176,9 +194,7 @@ public final class Color {
                 components[2] = 255;
             }
         }
-        Color res = new Color();
-        res.setBasic(components[0], components[1], components[2]);
-        return res;
+        return new Color(components[0], components[1], components[2]);
     }
 
     /**
@@ -234,10 +250,7 @@ public final class Color {
         if (components[2] > 255) {
             components[2] = 255;
         }
-
-        Color res = new Color();
-        res.setBasic(components[0], components[1], components[2]);
-        return res;
+        return new Color(components[0], components[1], components[2]);
     }
 
     /**
@@ -246,7 +259,7 @@ public final class Color {
      * @return The red component of the color.
      */
     public double r() {
-        return getRedBasic() / 255.;
+        return redAsByte() / 255.;
     }
 
     /**
@@ -255,7 +268,7 @@ public final class Color {
      * @return The green component of the color.
      */
     public double g() {
-        return getGreenBasic() / 255.;
+        return greenAsByte() / 255.;
     }
 
     /**
@@ -264,7 +277,7 @@ public final class Color {
      * @return The blue component of the color.
      */
     public double b() {
-        return getBlueBasic() / 255.;
+        return blueAsByte() / 255.;
     }
 
     /**
@@ -333,9 +346,9 @@ public final class Color {
      * @param green The green component.
      * @param blue The blue component.
      */
-    private void setBasic(final int red, final int green, final int blue) {
+    private int componentsAsInteger(final int red, final int green, final int blue) {
         int alpha = 255;
-        rgb = ((alpha & 0xFF) << 24)
+        return ((alpha & 0xFF) << 24)
             | ((red & 0xFF) << 16)
             | ((green & 0xFF) << 8)
             | ((blue & 0xFF));
@@ -348,9 +361,9 @@ public final class Color {
      */
     private int[] getBasic() {
         int[] res = new int[3];
-        res[0] = getRedBasic();
-        res[1] = getGreenBasic();
-        res[2] = getBlueBasic();
+        res[0] = redAsByte();
+        res[1] = greenAsByte();
+        res[2] = blueAsByte();
         return res;
     }
 
@@ -359,7 +372,7 @@ public final class Color {
      *
      * @return The basic integer value of the red component.
      */
-    private int getRedBasic() {
+    private int redAsByte() {
         return (rgb >> 16) & 0xFF;
     }
 
@@ -368,7 +381,7 @@ public final class Color {
      *
      * @return The basic integer value of the green component.
      */
-    private int getGreenBasic() {
+    private int greenAsByte() {
         return (rgb >> 8) & 0xFF;
     }
 
@@ -377,7 +390,7 @@ public final class Color {
      *
      * @return The basic integer value of the blue component.
      */
-    private int getBlueBasic() {
+    private int blueAsByte() {
         return rgb & 0xFF;
     }
 
@@ -397,8 +410,19 @@ public final class Color {
      *
      * @return {@code true} or {@code false} whether the value is valid.
      */
-    private static boolean isValidComponent(double value) {
+    private static boolean isComponentValid(double value) {
         return Range.closed(0., 1.).contains(value);
+    }
+
+    /**
+     * Checks whether a color component is valid (within 0. and 1.)
+     *
+     * @param value the value to check.
+     *
+     * @return {@code true} or {@code false} whether the value is valid.
+     */
+    private static boolean isComponentValid(int value) {
+        return Range.closed(0, 255).contains(value);
     }
 
     /**
@@ -421,5 +445,4 @@ public final class Color {
     private static int f2i(double value) {
         return (int) ((value * 255.) + 0.5);
     }
-
 }
