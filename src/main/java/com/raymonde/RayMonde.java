@@ -85,7 +85,7 @@ public class RayMonde {
 
         logger.info("start rendering scene", filename);
         final RenderingSurface rendered = logElapsedTime("rendering scene", () ->
-                renderer.renderSceneThroughCameraAntialiased(scene, scene.getDefaultCamera()))
+                renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()))
                 .andReturn();
         logger.info("rendering scene finished", filename);
 

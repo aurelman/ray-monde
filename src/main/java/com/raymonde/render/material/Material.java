@@ -33,16 +33,10 @@ import com.raymonde.scene.Scene;
 public interface Material {
     
     /**
-     *
-     * @param renderer The renderer.
-     * @param scene The scene.
      * @param inter The intersection.
      * @param ctx  The rendering context.
      *
      * @return The color.
      */
-    Color computeColor(final Renderer renderer,
-        final Scene scene,
-        final IntersectionResult inter,
-        final RenderingContext ctx);
+    Color computeColor(final IntersectionResult inter, final RenderingContext ctx);
 }

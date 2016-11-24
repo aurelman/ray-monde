@@ -47,10 +47,7 @@ public class ColorMaterial extends AbstractMaterial implements Material {
     }
 
     @Override
-    public Color computeColor(final Renderer renderer,
-            final Scene scene,
-            final IntersectionResult inter,
-            final RenderingContext ctx) {
+    public Color computeColor(final IntersectionResult inter, final RenderingContext ctx) {
         return color;
     }
 }

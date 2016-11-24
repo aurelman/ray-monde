@@ -35,10 +35,10 @@ scene:
     - name: light1
       type: omnidirectional
       position: {x: 150., y: 30., z: -200.}
-      attenuation: 0.000005
+      attenuation: 0.000000001
       color: {r: 1.0, g: 1.0, b: 1.0}
     - name: light2
       type: omnidirectional
       position: {x: -10., y: 160., z: -10.}
-      attenuation: 0.000005
+      attenuation: 0.000000001
       color: {r: 1.0, g: 1.0, b: 1.0}

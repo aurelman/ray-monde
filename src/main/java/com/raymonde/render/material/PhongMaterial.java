@@ -58,21 +58,18 @@ public class PhongMaterial extends AbstractMaterial implements Material {
     }
     
     @Override
-    public Color computeColor(final Renderer renderer,
-            final Scene scene,
-            final IntersectionResult intersection,
-            final RenderingContext ctx) {
+    public Color computeColor(final IntersectionResult intersection, final RenderingContext ctx) {
 
         val ray = intersection.getIncomingRay();
 
-        val color = getSubMaterial().computeColor(renderer, scene, intersection, ctx);
-        val ambientColor = scene.getAmbientColor();
+        val color = getSubMaterial().computeColor(intersection, ctx);
+        val ambientColor = ctx.getScene().getAmbientColor();
         val intersectionPoint = intersection.getIntersectionPosition();
 
         Color diffuseColor = Color.black();
         Color specularColor = Color.black();
 
-        for (Light light : scene.getLights()) {
+        for (Light light : ctx.getScene().getLights()) {
            
             val vectorToLight = Vector.joining(intersectionPoint, light.getPosition());
             double distanceToLight = vectorToLight.length();
@@ -80,7 +77,7 @@ public class PhongMaterial extends AbstractMaterial implements Material {
             val rayToLight = new Ray(intersectionPoint, vectorToLight);
             val directionToLight = rayToLight.direction();
 
-            val occludingIntersection = scene.nearestIntersection(rayToLight);
+            val occludingIntersection = ctx.getScene().nearestIntersection(rayToLight);
 
             /*
              * A ray is not occluded unless there is a primitive between the ray

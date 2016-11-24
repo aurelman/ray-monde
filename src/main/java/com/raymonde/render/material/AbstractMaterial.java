@@ -40,18 +40,12 @@ public abstract class AbstractMaterial implements Material {
     }
 
     /**
-     *
-     * @param renderer The renderer.
-     * @param scene The scene.
      * @param inter The intersection.
      * @param ctx  The rendering context.
      *
      * @return The color.
      */
-    public abstract Color computeColor(final Renderer renderer,
-            final Scene scene,
-            final IntersectionResult inter,
-            final RenderingContext ctx);
+    public abstract Color computeColor(final IntersectionResult inter, final RenderingContext ctx);
 
     /**
      * @return the subMaterial

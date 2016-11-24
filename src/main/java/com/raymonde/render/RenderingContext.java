@@ -18,6 +18,10 @@
 
 package com.raymonde.render;
 
+import com.raymonde.core.Color;
+import com.raymonde.scene.Scene;
+import lombok.Builder;
+
 /**
  * {@code RenderingContext} objects stores key elements (such as refraction factor, or depth) that are
  * specific to the current rendering step.
@@ -27,20 +31,19 @@ public class RenderingContext {
     /**
      * The current refraction index.
      */
-    private double refraction;
+    private final double refraction;
 
     /**
      * The current depth in the algorithm.
      */
-    private int depth;
+    private final int depth;
 
-    private boolean out;
+    private final Scene scene;
 
-    public RenderingContext() {
+    @Builder
+    public RenderingContext(final Scene scene, final int depth, final double refraction) {
+        this.scene = scene;
 
-    }
-    
-    public RenderingContext(final int depth, final double refraction) {
         this.depth = depth;
         this.refraction = refraction;
     }
@@ -53,13 +56,6 @@ public class RenderingContext {
     }
 
     /**
-     * @param refraction The refraction to set
-     */
-    public void setRefraction(final double refraction) {
-        this.refraction = refraction;
-    }
-
-    /**
      * @return the depth
      */
     public int getDepth() {
@@ -67,27 +63,49 @@ public class RenderingContext {
     }
 
     /**
-     * @param depth the depth to set
+     *
+     * @return
      */
-    public void setDepth(final int depth) {
-        this.depth = depth;
+    public Scene getScene() {
+        return scene;
     }
 
     /**
-     * @return the out
+     *
+     * @param ray The ray.
+     *
+     * @return The resulting color object.
      */
-    public boolean isOut() {
-        return this.out;
-    }
+    public Color computeColor(final Ray ray) {
 
-    /**
-     * @param out the out to set
-     */
-    public void setOut(final boolean out) {
-        this.out = out;
+        //double refraction = ctx.getRefraction();
+        Scene sc = scene;
+        IntersectionResult intersection = sc.nearestIntersection(ray);
+
+        Color result = Color.black();
+
+        if (intersection != null) {
+            result = intersection.primitive().getMaterial()
+                    .computeColor(intersection, this);
+        }
+
+        return result;
     }
 
     public static RenderingContext incremented(final RenderingContext ctx) {
-        return new RenderingContext(ctx.getDepth()+1, ctx.getRefraction());
+        return RenderingContext.builder()
+                .scene(ctx.scene)
+                .depth(ctx.depth + 1)
+                .refraction(ctx.refraction)
+                .build();
+    }
+
+
+    public static RenderingContext incremented(final RenderingContext ctx, final double refraction) {
+        return RenderingContext.builder()
+                .scene(ctx.scene)
+                .depth(ctx.depth + 1)
+                .refraction(refraction)
+                .build();
     }
 }

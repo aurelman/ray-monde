@@ -52,25 +52,18 @@ public class RefractiveMaterial extends AbstractMaterial implements Material {
     }
     
     @Override
-    public Color computeColor(final Renderer renderer,
-            final Scene scene,
-            final IntersectionResult inter,
-            final RenderingContext ctx) {
+    public Color computeColor(final IntersectionResult inter, final RenderingContext ctx) {
         Color refractColor = Color.black();
-        Color surfaceColor =
-                getSubMaterial().computeColor(renderer, scene, inter, ctx);
+        Color surfaceColor = getSubMaterial().computeColor(inter, ctx);
         
         Ray refracted = refractedRay(inter.getIncomingRay(), inter, ctx);
 
 
         // TODO: deleted to avoid commiting not compiling code
-        /*
-        if (ctx.getDepth() < renderer.getMaxDepth()) {
-            RenderingContext newCtx = new RenderingContext(
-                    ctx.getDepth()+1, getRefraction());
-            refractColor = renderer.computeColor(refracted,newCtx);
+        if (ctx.getDepth() < 8) {
+            RenderingContext newCtx = RenderingContext.incremented(ctx, refraction);
+            refractColor = newCtx.computeColor(refracted);
         }
-        */
 
         double refl = 0.5;
         return surfaceColor.multiply(1. - refl)

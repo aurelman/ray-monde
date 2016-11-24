@@ -39,11 +39,6 @@ public class DefaultRenderer implements Renderer {
      * The available logger for the <code>DefaultRenderer</code> class.
      */
     private static final Logger logger = LoggerFactory.getLogger(DefaultRenderer.class);
-    
-    /**
-     * The scene to shootThroughPixel.
-     */
-    private Scene scene;
 
     /**
      * Renders the specified {@link Scene} through the specified {@link Camera}
@@ -54,132 +49,23 @@ public class DefaultRenderer implements Renderer {
      * @return
      */
     public RenderingSurface renderSceneThroughCamera(final Scene scene, final Camera camera) {
-        // TODO: shouldn't need to have to set the scene
-        setScene(scene);
         RenderingSurface rendered = camera.createRenderingSurface();
 
         rendered.eachPixel(pixel -> {
             Ray ray = camera.rayThroughPixel(pixel);
 
-            RenderingContext ctx = new RenderingContext(0, 1.);
-            ctx.setRefraction(1.0);
-            Color computedColor = computeColor(ray, ctx);
+            RenderingContext ctx = RenderingContext.builder()
+                    .scene(scene)
+                    .depth(0)
+                    .refraction(1.)
+                    .build();
+
+            final Color computedColor = ctx.computeColor(ray);
 
 
             rendered.setPixelColor(pixel, computedColor);
         });
 
         return rendered;
-    }
-
-    public RenderingSurface renderSceneThroughCameraAntialiased(final Scene scene, final Camera camera) {
-        // TODO: shouldn't need to have to set the scene
-        setScene(scene);
-        RenderingSurface rendered = camera.createRenderingSurface();
-
-        rendered.eachPixel(pixel -> {
-            List<Ray> rays = camera.raysThroughPixel(pixel);
-
-            RenderingContext ctx = new RenderingContext(0, 1.);
-            ctx.setRefraction(1.0);
-            Color computedColor = computeColor(rays, ctx);
-
-            rendered.setPixelColor(pixel, computedColor);
-        });
-
-        return rendered;
-    }
-
-    /**
-     *
-     * @param ray The ray.
-     * @param ctx The current context.
-     *
-     * @return The resulting color object.
-     */
-    public Color computeColor(final Ray ray,
-            final RenderingContext ctx) {
-
-        //double refraction = ctx.getRefraction();
-        Scene sc = getScene();
-        IntersectionResult intersection = sc.nearestIntersection(ray);
-
-        Color result = Color.black();
-        
-        if (intersection != null) {
-            result = intersection.primitive().getMaterial()
-                .computeColor(this, sc, intersection, ctx);
-        }
-
-        return result;
-    }
-
-
-    /**
-     *
-     * @param ray The ray.
-     * @param ctx The current context.
-     *
-     * @return The resulting color object.
-     */
-    public Color computeColor(final List<Ray> ray, final RenderingContext ctx) {
-
-        //double refraction = ctx.getRefraction();
-        Scene sc = getScene();
-
-
-        IntersectionResult intersection = sc.nearestIntersection(ray.get(0));
-
-        Color result1 = null;
-
-        if (intersection != null) {
-            result1 = intersection.primitive().getMaterial()
-                    .computeColor(this, sc, intersection, ctx);
-        }
-
-
-        intersection = sc.nearestIntersection(ray.get(1));
-
-        Color result2 = null;
-
-        if (intersection != null) {
-            result2 = intersection.primitive().getMaterial()
-                    .computeColor(this, sc, intersection, ctx);
-        }
-
-        intersection = sc.nearestIntersection(ray.get(2));
-
-        Color result3 = null;
-
-        if (intersection != null) {
-            result3 = intersection.primitive().getMaterial()
-                    .computeColor(this, sc, intersection, ctx);
-        }
-
-        intersection = sc.nearestIntersection(ray.get(3));
-
-        Color result4 = null;
-
-        if (intersection != null) {
-            result4 = intersection.primitive().getMaterial()
-                    .computeColor(this, sc, intersection, ctx);
-        }
-
-        return Color.average(result1, result2, result3, result4);
-    }
-
-    
-    /**
-     * @return the scene
-     */
-    public Scene getScene() {
-        return scene;
-    }
-
-    /**
-     * @param scene the scene to set
-     */
-    public void setScene(final Scene scene) {
-        this.scene = scene;
     }
 }
