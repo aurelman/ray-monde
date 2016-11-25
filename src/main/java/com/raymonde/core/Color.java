@@ -44,7 +44,12 @@ public final class Color {
     /**
      * An instance of the black color.
      */
-    private static final Color BLACK = new Color(0., 0., 0.);
+    private static final Color BLACK = new Color(0, 0, 0);
+
+    /**
+     * An instance of the white color.
+     */
+    private static final Color WHITE = new Color(255, 255, 255);
 
     /**
      * Message to give to exceptions when any of a component value
@@ -70,15 +75,6 @@ public final class Color {
      */
     public Color() {
         this(0., 0., 0.);
-    }
-
-     /**
-     * Constructs a {@link Color} object by copying the given {@link Color} object.
-     *
-     * @param other The {@link Color} object to copy.
-     */
-    private Color(final Color other) {
-        rgb = other.rgb;
     }
 
     /**
@@ -282,11 +278,11 @@ public final class Color {
 
     /**
      * Returns an array containing the 3 color components.
-     * If <code>res</code> is the resulting array, then
-     * <code>res[0]</code> is the red component,
-     * <code>res[1]</code> is the green component and
-     * <code>res[2]</code> is the blue component.
-
+     * If {@code res} is the resulting array, then
+     * {@code res[0]} is the red component,
+     * {@code res[1]} is the green component and
+     * {@code res[2]} is the blue component.
+     *
      * @return The array containing the 3 color components.
      */
     public double[] get() {
@@ -392,6 +388,15 @@ public final class Color {
      */
     private int blueAsByte() {
         return rgb & 0xFF;
+    }
+
+    /**
+     * The white color.
+     *
+     * @return The white color.
+     */
+    public static Color white() {
+        return Color.WHITE;
     }
 
     /**

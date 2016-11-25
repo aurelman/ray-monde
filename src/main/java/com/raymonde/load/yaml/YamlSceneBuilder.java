@@ -109,27 +109,28 @@ public class YamlSceneBuilder implements SceneBuilder {
 
     @SuppressWarnings("unchecked")
     private Scene parseScene(final Map<String, Object> sceneConfig) {
-        val scene = new Scene();
-        scene.setAmbientColor(parseColor(sceneConfig.get("ambient")));
+        val builder = Scene.builder()
+                .ambientColor(parseColor(sceneConfig.get("ambient")));
 
         Map<String, Object> cameraConfig = castAs(sceneConfig.get("camera"), Map.class);
         Camera camera = parseCamera(cameraConfig);
-        scene.addCamera(cameraConfig.get("name").toString(), camera);
+
+        builder.camera(cameraConfig.get("name").toString(), camera);
 
         Collection<Map> primitivesConfig = castAs(sceneConfig.get("primitives"), Collection.class);
         for (Map<String, Object> primitive : primitivesConfig) {
-            scene.addPrimitive(primitive.get("name").toString(), parsePrimitive(primitive));
+            builder.primitive(primitive.get("name").toString(), parsePrimitive(primitive));
         }
 
         Collection<Map> lightsConfig = castAs(sceneConfig.get("lights"), Collection.class);
         for (Map<String, Object> light : lightsConfig) {
-            scene.addLight(light.get("name").toString(), parseLight(light));
+            builder.light(light.get("name").toString(), parseLight(light));
         }
 
-        return scene;
+        return builder.build();
     }
 
-    private static final <T> T castAs(Object object, Class<T> targetClass) {
+    private static <T> T castAs(Object object, Class<T> targetClass) {
         return targetClass.cast(object);
     }
 

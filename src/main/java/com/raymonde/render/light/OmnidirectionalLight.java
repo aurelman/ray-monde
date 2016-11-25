@@ -28,15 +28,15 @@ import javax.annotation.concurrent.ThreadSafe;
  */
 @ThreadSafe
 @Immutable
-public class OmnidirectionalLight extends Light {
+public final class OmnidirectionalLight extends Light {
 
     /**
-     * 
+     * The attenuation factor
      */
     private final Vector attenuation;
 
     /**
-     * The color of the light.
+     * The color of the light. Default is white
      */
     private final Color color;
 
@@ -47,8 +47,7 @@ public class OmnidirectionalLight extends Light {
      * @param attenuation The attenuation of the light.
      */
     @Builder
-    public OmnidirectionalLight(final Vector position,
-            final Color color, final Vector attenuation) {
+    public OmnidirectionalLight(final Vector position, final Color color, final Vector attenuation) {
         super(position);
         this.color = color;
         this.attenuation = attenuation;
@@ -58,21 +57,15 @@ public class OmnidirectionalLight extends Light {
     @Override
     public Color colorAt(final Vector point) {
         double dist = point.distanceTo(getPosition());
-        double attCoeff = 1./(getAttenuation().x()*dist*dist);
-        return getColor().multiply(attCoeff);
-    }
+        // TODO: Review this formula
+        double attCoeff = 1. / (attenuation.x() * 4 * Math.PI * dist * dist);
+        return color.multiply(attCoeff);
 
-    /**
-     * @return the attenuation
-     */
-    public Vector getAttenuation() {
-        return attenuation;
-    }
+        /*
+        double dist = point.distanceTo(getPosition());
+        double attCoeff = 1./(attenuation.x()*dist*dist);
+        return color.multiply(attCoeff);
 
-    /**
-     * @return the color
-     */
-    public Color getColor() {
-        return color;
+        */
     }
 }

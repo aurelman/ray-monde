@@ -100,7 +100,6 @@ public class RenderingContext {
                 .build();
     }
 
-
     public static RenderingContext incremented(final RenderingContext ctx, final double refraction) {
         return RenderingContext.builder()
                 .scene(ctx.scene)

@@ -24,6 +24,8 @@ import com.raymonde.render.Ray;
 import com.raymonde.render.RenderingSurface;
 import com.raymonde.render.light.Light;
 import com.raymonde.render.primitive.Primitive;
+import lombok.Builder;
+import lombok.Singular;
 import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,7 @@ import java.util.Map;
  * {@code Scene} object are responsible of representing the description
  * of what would be rendered.
  */
+@Builder
 public class Scene {
 
     private final static Logger logger = LoggerFactory.getLogger(Scene.class);
@@ -54,41 +57,25 @@ public class Scene {
     /**
      * List of primitives
      */
+    @Singular
     private Map<String, Primitive> primitives = new LinkedHashMap<>();
 
     /**
      * List of lights
      */
+    @Singular
     private Map<String, Light> lights = new LinkedHashMap<>();
 
     /**
      * List of cameras
      */
+    @Singular
     private Map<String, Camera> cameras = new LinkedHashMap<>();
 
     /**
      * The ambient color of the scene.
      */
     private Color ambientColor;
-
-    /**
-     *
-     */
-    public Scene() {
-        this(null, null, null);
-    }
-    
-    /**
-     *
-     * @param primitives The list of the primitives in the scene.
-     * @param lights The list of the lights in the scene.
-     * @param cameras The list of the cameras in the scene.
-     */
-    @Deprecated
-    private Scene(final Collection<Primitive> primitives,
-            final Collection<Light> lights,
-            final Collection<Camera> cameras) {
-    }
 
     /**
      * Computes the nearest intersected primitive with the specified ray and
@@ -104,11 +91,9 @@ public class Scene {
 
         IntersectionResult minInter = null;
         // Nearest collided primitive, distances
-        Primitive minPrimitive = null;
         String minPrimitiveName = null;
         double minDistance = Double.POSITIVE_INFINITY;
-        
-        double distance;
+
 
         double delta = Scene.DELTA_COLLISION_DETECTION;
         for (Map.Entry<String, Primitive> primitive : primitives.entrySet()) {
@@ -117,7 +102,7 @@ public class Scene {
             val res = p.intersect(ray);
 
             if (res.intersect()) {
-                distance = res.distance();
+                double distance = res.distance();
 
                 /*
                  * - Avoid intersection detection with previous one
@@ -141,56 +126,10 @@ public class Scene {
     }
 
     /**
-     *
-     * @return The collection of the primitives contained in the scene.
-     */
-    public Collection<Primitive> getPrimitives() {
-        return primitives.values();
-    }
-
-    /**
-     *
      * @return The collection of lights contained in the scene.
      */
     public Collection<Light> getLights() {
         return lights.values();
-    }
-
-       
-    /**
-     * Adds the specified primitive to the scene.
-     *
-     * @param name
-     * @param primitive The primitive to add to the scene.
-     */
-    public void addPrimitive(final String name, final Primitive primitive) {
-        primitives.put(name, primitive);
-    }
-
-    /**
-     * Adds the specified light to the scene.
-     *
-     * @param name
-     * @param light The light to add.
-     */
-    public void addLight(final String name, final Light light) {
-        lights.put(name, light);
-    }
-
-    /**
-     * Adds the specified camera to the scene.
-     *
-     * @param camera The camera to add.
-     */
-    public void addCamera(final String cameraName, final Camera camera) {
-        cameras.put(cameraName, camera);
-    }
-
-    /**
-     * @return The rendering surface.
-     */
-    public RenderingSurface getRenderingSurface() {
-        return renderingSurface;
     }
 
     /**
@@ -212,7 +151,7 @@ public class Scene {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[Scene : primitives = (");
-        for (Primitive p : getPrimitives()) {
+        for (Primitive p : primitives.values()) {
             sb.append(p).append(", ");
         }
         sb.append(")]");
@@ -227,14 +166,5 @@ public class Scene {
      */
     public Color getAmbientColor() {
         return ambientColor;
-    }
-
-    /**
-     * Sets the specified color as the ambient color of the scene.
-     * 
-     * @param ambientColor The ambient color to set to the scene.
-     */
-    public void setAmbientColor(final Color ambientColor) {
-        this.ambientColor = ambientColor;
     }
 }

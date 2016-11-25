@@ -22,8 +22,7 @@ import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
 
 /**
- * <p>Base class for a light in a scene.</p>
-
+ * Base class for a light in a scene.
  */
 public abstract class Light {
     
@@ -33,7 +32,6 @@ public abstract class Light {
     private Vector position;
 
     /**
-     *
      * @param position The position of the light.
      */
     public Light(final Vector position) {
@@ -54,12 +52,5 @@ public abstract class Light {
      */
     public Vector getPosition() {
         return this.position;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(final Vector position) {
-        this.position = position;
     }
 }
