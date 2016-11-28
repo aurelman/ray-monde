@@ -19,6 +19,7 @@
 package com.raymonde.render.primitive;
 
 
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
@@ -89,5 +90,18 @@ public class Plane extends AbstractPrimitive {
                 .intersect(true)
                 .distance(t)
                 .build();
+    }
+
+    /**
+     * Returns a {@link String} representation of {@code Plane}.
+     *
+     * @return A {@link String} representation of {@code Plane}.
+     */
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("normal", normal)
+                .add("distance", distance)
+                .toString();
     }
 }

@@ -17,7 +17,7 @@
  */
 package com.raymonde.render;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Vector;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.Builder;
@@ -222,14 +222,6 @@ public class Camera {
             return pixelHeight;
         }
 
-        public double getWidth() {
-            return width;
-        }
-
-        public double getHeight() {
-            return height;
-        }
-
         public double getDistance() {
             return distance;
         }
@@ -248,5 +240,26 @@ public class Camera {
 
             return _heightOfPixel;
         }
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                    .add("distance", distance)
+                    .add("width", width)
+                    .add("height", height)
+                    .add("pixelHeight", pixelHeight)
+                    .add("pixelWidth", pixelWidth)
+                    .toString();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("position", position)
+                .add("direction", direction)
+                .add("up", up)
+                .add("renderingSurface", renderingSurfaceSpec)
+                .toString();
     }
 }

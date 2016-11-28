@@ -18,6 +18,7 @@
 
 package com.raymonde.core;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Range;
 import lombok.Builder;
 
@@ -324,13 +325,17 @@ public final class Color {
     }
 
     /**
-     * Returns a <code>String</code> representation of the current color.
+     * Returns a {@link String} representation of the current color.
      *
-     * @return A <code>String</code> representation of the current color.
+     * @return A {@link String} representation of the current color.
      */
     @Override
     public String toString() {
-        return "Color : " + Arrays.toString(get());
+        return MoreObjects.toStringHelper(this)
+                .add("r", redAsByte())
+                .add("g", greenAsByte())
+                .add("b", blueAsByte())
+                .toString();
     }
     
     /**

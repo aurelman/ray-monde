@@ -17,6 +17,7 @@
  */
 package com.raymonde.scene;
 
+import com.google.common.base.MoreObjects;
 import com.raymonde.core.Color;
 import com.raymonde.render.Camera;
 import com.raymonde.render.IntersectionResult;
@@ -150,13 +151,12 @@ public class Scene {
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[Scene : primitives = (");
-        for (Primitive p : primitives.values()) {
-            sb.append(p).append(", ");
-        }
-        sb.append(")]");
-        
-        return sb.toString();
+        return MoreObjects.toStringHelper(this)
+                .add("ambientColor", ambientColor)
+                .add("primitives", primitives)
+                .add("lights", lights)
+                .add("cameras", cameras)
+                .toString();
     }
 
     /**

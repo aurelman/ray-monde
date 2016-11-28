@@ -22,10 +22,8 @@ import com.raymonde.core.Color;
 import com.raymonde.core.Vector;
 import com.raymonde.render.IntersectionResult;
 import com.raymonde.render.Ray;
-import com.raymonde.render.Renderer;
 import com.raymonde.render.RenderingContext;
 import com.raymonde.render.light.Light;
-import com.raymonde.scene.Scene;
 import lombok.Builder;
 import lombok.val;
 

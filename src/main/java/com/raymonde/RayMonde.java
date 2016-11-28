@@ -83,6 +83,7 @@ public class RayMonde {
                 .andReturn();
         logger.info("scene loaded", filename);
 
+        System.out.println(scene);
         logger.info("start rendering scene", filename);
         final RenderingSurface rendered = logElapsedTime("rendering scene", () ->
                 renderer.renderSceneThroughCamera(scene, scene.getDefaultCamera()))
